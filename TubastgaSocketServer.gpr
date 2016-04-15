@@ -1,0 +1,132 @@
+--
+--
+--      Tubastga Server is the core part of the server infrastructure of the Tubastga Game.
+--      Copyright (C) 2015  Frank J Jorgensen
+--
+--      This program is free software: you can redistribute it and/or modify
+--      it under the terms of the GNU General Public License as published by
+--      the Free Software Foundation, either version 3 of the License, or
+--      (at your option) any later version.
+--
+--      This program is distributed in the hope that it will be useful,
+--      but WITHOUT ANY WARRANTY; without even the implied warranty of
+--      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--      GNU General Public License for more details.
+--
+--      You should have received a copy of the GNU General Public License
+--      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+--
+
+with "SisyfosSocket";
+
+project TubastgaSocketServer is
+
+   for Object_Dir use "build";
+   type Gtkada_Kind_Type is
+      ("static", "relocatable");
+   Library_Type : Gtkada_Kind_Type := external ("LIBRARY_TYPE", "static");
+   type Runtime_Type is
+      ("full");
+   Runtime : Runtime_Type := external ("RUNTIME", "full");
+
+   case Library_Type is
+
+      when "static" =>
+
+         case Runtime is
+
+            when "full" =>
+               for Source_Dirs use (".", "src", "src\socket\server");
+               for Main use ("tubastga_server_starter.adb");
+               for Exec_Dir use ".";
+         end case;
+
+      when "relocatable" =>
+         for Source_Dirs use (".", "src\gui", "src\engine", "src\map", "src\landscape", "src\piece", 
+         "src\report");
+         for Main use ("tubastga_server_starter.adb", "tubastga_window.adb");
+   end case;
+
+   package Dsa is
+
+      case Runtime is
+
+         when "full" =>
+
+            case Library_Type is
+
+               when "static" =>
+
+               when "relocatable" =>
+                  for Configuration_File use "src\config\hexagon_conf.cfg";
+            end case;
+      end case;
+   end Dsa;
+
+   package Ide is
+   end Ide;
+
+   package Compiler is
+
+      case Runtime is
+
+         when "full" =>
+
+            case Library_Type is
+
+               when "static" =>
+
+               when "relocatable" =>
+                  for Default_Switches ("ada") use ("-gnatwu");
+            end case;
+      end case;
+   end Compiler;
+
+   package Pretty_Printer is
+
+      case Runtime is
+
+         when "full" =>
+
+            case Library_Type is
+
+               when "static" =>
+                  for Default_Switches ("ada") use ("-M100");
+
+               when "relocatable" =>
+
+            end case;
+      end case;
+   end Pretty_Printer;
+
+   package Builder is
+
+      case Runtime is
+
+         when "full" =>
+
+            case Library_Type is
+
+               when "static" =>
+                  for Executable ("tubastga_server_starter.adb") use "tubastga_server";
+
+               when "relocatable" =>
+
+            end case;
+      end case;
+   end Builder;
+
+   package Binder is
+   end Binder;
+
+   package Linker is
+
+      case Runtime is
+
+         when "full" =>
+            for Default_Switches ("ada") use ("-L..\ada-lua-master", "-llua");
+      end case;
+   end Linker;
+
+end TubastgaSocketServer;
+
