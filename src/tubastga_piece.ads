@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -18,23 +18,15 @@
 --
 
 with Landscape;
-with Player;
 with Piece;
 with Piece.Server.Fighting_Piece;
 with Piece.Server.House_Piece;
-with Hexagon.Area.Server_Area;
-with Hexagon.Server_Map;
 with Utilities;
-with Status;
 with Construction;
 with Effect;
-with Goods;
-with Ada.Containers.Ordered_Maps;
 with Landscape.Server;
 with Construction.Server;
 with Effect.Server;
-with Lua;
-with Action;
 
 package Tubastga_Piece is
 
@@ -47,6 +39,8 @@ package Tubastga_Piece is
    Lumberjack_House  : constant Piece.Type_Piece_Type := 7;
    Stonecutter_House : constant Piece.Type_Piece_Type := 8;
    Tower_House       : constant Piece.Type_Piece_Type := 9;
+   --
+   Rat_Piece         : constant Piece.Type_Piece_Type := 1000;
    --
    Landscape_Grass    : constant Landscape.Type_Landscape := 100;
    Landscape_Forest   : constant Landscape.Type_Landscape := 101;

@@ -1,6 +1,6 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
+--      Tubastga Game - A turn based strategy game.
 --      Copyright (C) 2015  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ package body Client.ClientRPC is
    Socket  : GNAT.Sockets.Socket_Type;
    Channel : GNAT.Sockets.Stream_Access := null;
 
-   Verbose : constant Boolean := True;
+   Verbose : constant Boolean := False;
 
    procedure Init is
    begin
@@ -131,11 +131,10 @@ package body Client.ClientRPC is
    end Stop;
 
    procedure Create_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Piece       : in     Piece.Type_Piece;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Piece       : in     Piece.Type_Piece)
    is
    begin
       if Verbose then
@@ -144,33 +143,25 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Create_Piece_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Piece.Type_Piece'Output (Channel, P_Piece);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Create_Piece_End);
 
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Create_Piece - exit P_Status=" & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Create_Piece - exit" );
       end if;
 
    end Create_Piece;
 
    -- Public procedures offered by Server
    procedure Put_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Piece_Id    : in     Piece.Type_Piece_Id)
    is
    begin
       if Verbose then
@@ -179,31 +170,22 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Put_Piece_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Put_Piece_End);
 
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Put_Piece - exit " & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Put_Piece - exit");
       end if;
    end Put_Piece;
 
    procedure Remove_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece_Id    : in     Piece.Type_Piece_Id)
    is
    begin
       if Verbose then
@@ -212,19 +194,11 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Remove_Piece_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Remove_Piece_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Remove_Piece - exit");
@@ -259,90 +233,33 @@ package body Client.ClientRPC is
    end Get_Pieces_Report;
 
    procedure Perform_Attack
-     (P_Action_Type                             : in     Action.Type_Action_Type;
-      P_Attacking_Piece_Id, P_Attacked_Piece_Id : in     Piece.Type_Piece_Id;
-      P_Attacking_Pos, P_Attacked_Pos           : in     Hexagon.Type_Hexagon_Position;
-      P_Player_Id                               : in     Player.Type_Player_Id;
-      P_Winner                                  :    out Player.Type_Player_Id;
-      P_Status                                  :    out Status.Type_Status)
+     (P_Player_Id                               : in     Player.Type_Player_Id;
+      P_Action_Type                             : in     Action.Type_Action_Type;
+      P_Attacking_Piece_Id, P_Attacked_Piece_Id : in     Piece.Type_Piece_Id)
    is
    begin
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Perform_Attack - enter");
       end if;
 
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_Pos_Start);
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Attacking_Piece_Id);
       Piece.Type_Piece_Id'Output (Channel, P_Attacked_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Attacking_Pos);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Attacked_Pos);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_Pos_End);
-
-      P_Winner := Player.Type_Player_Id'Input (Channel);
-
-      -- TO DO return
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_End);
 
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Attack - exit P_Status=" & P_Status'Img);
-      end if;
-   end Perform_Attack;
-
-   procedure Perform_Attack
-     (P_Action_Type                             : in     Action.Type_Action_Type;
-      P_Attacking_Piece_Id, P_Attacked_Piece_Id : in     Piece.Type_Piece_Id;
-      P_Path                                    : in     Hexagon.Path.Vector;
-      P_Player_Id                               : in     Player.Type_Player_Id;
-      P_Winner                                  :    out Player.Type_Player_Id;
-      P_Status                                  :    out Status.Type_Status)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Attack (path) - enter");
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_Path_Start);
-
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
-      Piece.Type_Piece_Id'Output (Channel, P_Attacking_Piece_Id);
-      Piece.Type_Piece_Id'Output (Channel, P_Attacked_Piece_Id);
-      Hexagon.Path.Vector'Output (Channel, P_Path);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Attack_Path_End);
-
-      P_Winner := Player.Type_Player_Id'Input (Channel);
-
-      -- TO DO return
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
-      if Verbose then
-         Text_IO.Put_Line
-           ("Client.ClientRPC.Perform_Attack (path) - exit P_Status=" & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Attack - exit");
       end if;
    end Perform_Attack;
 
    procedure Perform_Ranged_Attack
-     (P_Action_Type                             : in     Action.Type_Action_Type;
-      P_Attacking_Piece_Id, P_Attacked_Piece_Id : in     Piece.Type_Piece_Id;
-      P_Attacking_Pos, P_Attacked_Pos           : in     Hexagon.Type_Hexagon_Position;
-      P_Player_Id                               : in     Player.Type_Player_Id;
-      P_Winner                                  :    out Player.Type_Player_Id;
-      P_Status                                  :    out Status.Type_Status)
+     (P_Player_Id                               : in     Player.Type_Player_Id;
+      P_Action_Type                             : in     Action.Type_Action_Type;
+      P_Attacking_Piece_Id, P_Attacked_Piece_Id : in     Piece.Type_Piece_Id)
    is
    begin
       if Verbose then
@@ -351,204 +268,115 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Ranged_Attack_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Attacking_Piece_Id);
       Piece.Type_Piece_Id'Output (Channel, P_Attacked_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Attacking_Pos);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Attacked_Pos);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Ranged_Attack_End);
 
-      P_Winner := Player.Type_Player_Id'Input (Channel);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-
-         P_Status := RPC_Status;
-      end;
-
       if Verbose then
          Text_IO.Put_Line
-           ("Client.ClientRPC.Perform_Ranged_Attack - exit P_Status=" & P_Status'Img);
+           ("Client.ClientRPC.Perform_Ranged_Attack - exit");
       end if;
    end Perform_Ranged_Attack;
 
    procedure Perform_Move
-     (P_Action_Type        : in     Action.Type_Action_Type;
-      P_Moving_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Player_Id          : in     Player.Type_Player_Id;
-      P_Status             :    out Status.Type_Status)
+     (P_Player_Id          : in     Player.Type_Player_Id;
+      P_Action_Type        : in     Action.Type_Action_Type;
+      P_Piece_Id    : in     Piece.Type_Piece_Id;
+      P_To_Pos : in     Hexagon.Type_Hexagon_Position)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
            ("Client.ClientRPC.Perform_Move - enter piece.id=" &
-            P_Moving_Piece_Id'Img &
+            P_Piece_Id'Img &
             " player_id=" &
             P_Player_Id'Img);
       end if;
 
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_Pos_Start);
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
-      Piece.Type_Piece_Id'Output (Channel, P_Moving_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_From_Pos);
+      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
       Hexagon.Type_Hexagon_Position'Output (Channel, P_To_Pos);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_Pos_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_End);
 
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Move - exit P_Status=" & P_Status'Img);
-      end if;
-
-   end Perform_Move;
-
-   procedure Perform_Move
-     (P_Action_Type     : in     Action.Type_Action_Type;
-      P_Moving_Piece_Id : in     Piece.Type_Piece_Id;
-      P_Path            : in     Hexagon.Path.Vector;
-      P_Player_Id       : in     Player.Type_Player_Id;
-      P_Status          :    out Status.Type_Status)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line
-           ("Client.ClientRPC.Perform_Move (Path)- enter piece.id=" &
-            P_Moving_Piece_Id'Img &
-            " player_id=" &
-            P_Player_Id'Img);
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_Path_Start);
-
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
-      Piece.Type_Piece_Id'Output (Channel, P_Moving_Piece_Id);
-      Hexagon.Path.Vector'Output (Channel, P_Path);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Move_Path_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Move (Path)- exit P_Status=" & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Move - exit");
       end if;
 
    end Perform_Move;
 
    procedure Perform_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
            ("Client.ClientRPC.Perform_Patch_Effect- enter piece.id=" &
             P_Piece_Id'Img &
-            " P_Pos.A=" &
-            P_Pos.A'Img &
-            " P_Pos.B=" &
-            P_Pos.B'Img &
             " P_Player_Id=" &
             P_Player_Id'Img);
       end if;
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Patch_Effect_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Effect.Type_Effect'Output (Channel, P_Effect);
       Hexagon.Area.Type_Action_Capabilities_A'Output (Channel, P_Area);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Patch_Effect_End);
 
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Patch_Effect - exit P_Status=" & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Patch_Effect - exit");
       end if;
    end Perform_Patch_Effect;
 
    procedure Perform_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
            ("Client.ClientRPC.Perform_Piece_Effect- enter piece.id=" &
             P_Piece_Id'Img &
-            " P_Pos.A=" &
-            P_Pos.A'Img &
-            " P_Pos.B=" &
-            P_Pos.B'Img &
             " P_Player_Id=" &
             P_Player_Id'Img);
       end if;
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Piece_Effect_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Effect.Type_Effect'Output (Channel, P_Effect);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Piece_Effect_End);
 
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
-
       if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Perform_Piece_Effect - exit P_Status=" & P_Status'Img);
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Piece_Effect - exit");
       end if;
    end Perform_Piece_Effect;
 
    procedure Perform_Construction
-     (P_Action_Type           : in     Action.Type_Action_Type;
-      P_Construction_Piece_Id : in     Piece.Type_Piece_Id;
-      P_Piece_Pos             : in     Hexagon.Type_Hexagon_Position;
+     (P_Player_Id             : in     Player.Type_Player_Id;
+      P_Action_Type           : in     Action.Type_Action_Type;
+      P_Piece_Id : in     Piece.Type_Piece_Id;
       P_Construction_Pos      : in     Hexagon.Type_Hexagon_Position;
-      P_Construction          : in     Construction.Type_Construction;
-      P_Player_Id             : in     Player.Type_Player_Id;
-      P_Status                :    out Status.Type_Status)
+      P_Construction          : in     Construction.Type_Construction)
    is
    begin
       if Verbose then
@@ -557,33 +385,51 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Construction_Start);
 
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
       Action.Type_Action_Type'Output (Channel, P_Action_Type);
-      Piece.Type_Piece_Id'Output (Channel, P_Construction_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Piece_Pos);
+      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
       Hexagon.Type_Hexagon_Position'Output (Channel, P_Construction_Pos);
       Construction.Type_Construction'Output (Channel, P_Construction);
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Construction_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Perform_Construction - exit");
       end if;
    end Perform_Construction;
 
+   procedure Perform_Demolition
+     (P_Player_Id             : in     Player.Type_Player_Id;
+      P_Action_Type           : in     Action.Type_Action_Type;
+      P_Piece_Id : in     Piece.Type_Piece_Id;
+      P_Demolition_Pos      : in     Hexagon.Type_Hexagon_Position;
+      P_Construction          : in     Construction.Type_Construction)
+   is
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Demolition - enter");
+      end if;
+
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Demolition_Start);
+
+      Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
+      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
+      Hexagon.Type_Hexagon_Position'Output (Channel, P_Demolition_Pos);
+      Construction.Type_Construction'Output (Channel, P_Construction);
+
+      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Perform_Demolition_End);
+
+      if Verbose then
+         Text_IO.Put_Line ("Client.ClientRPC.Perform_Demolition - exit");
+      end if;
+   end Perform_Demolition;
+
    procedure Grant_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
@@ -592,19 +438,12 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Grant_Piece_Effect_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
       Effect.Type_Effect'Output (Channel, P_Effect);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Grant_Piece_Effect_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Grant_Piece_Effect - exit");
@@ -612,11 +451,10 @@ package body Client.ClientRPC is
    end Grant_Piece_Effect;
 
    procedure Revoke_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
@@ -625,19 +463,12 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Revoke_Piece_Effect_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
       Effect.Type_Effect'Output (Channel, P_Effect);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Revoke_Piece_Effect_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Revoke_Piece_Effect - exit");
@@ -645,13 +476,11 @@ package body Client.ClientRPC is
    end Revoke_Piece_Effect;
 
    procedure Grant_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
@@ -660,21 +489,13 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Grant_Patch_Effect_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Effect.Type_Effect'Output (Channel, P_Effect);
       Hexagon.Area.Type_Action_Capabilities_A'Output (Channel, P_Area);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Grant_Patch_Effect_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Grant_Patch_Effect - exit");
@@ -682,13 +503,11 @@ package body Client.ClientRPC is
    end Grant_Patch_Effect;
 
    procedure Revoke_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece_Id    : in     Piece.Type_Piece_Id;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
@@ -697,21 +516,13 @@ package body Client.ClientRPC is
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Revoke_Patch_Effect_Start);
 
-      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Player.Type_Player_Id'Output (Channel, P_Player_Id);
+      Action.Type_Action_Type'Output (Channel, P_Action_Type);
       Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-      Hexagon.Type_Hexagon_Position'Output (Channel, P_Pos);
       Effect.Type_Effect'Output (Channel, P_Effect);
       Hexagon.Area.Type_Action_Capabilities_A'Output (Channel, P_Area);
 
       Game_RPC.Type_RPC'Output (Channel, Game_RPC.Revoke_Patch_Effect_End);
-
-      declare
-         RPC_Status : Status.Type_Status := Status.Type_Status'Input (Channel);
-
-      begin
-         P_Status := RPC_Status;
-      end;
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Revoke_Patch_Effect - exit");
@@ -877,7 +688,6 @@ package body Client.ClientRPC is
 
    procedure Get_Updates_Summary
      (P_Player_Id         : in     Player.Type_Player_Id;
-      P_Current_Player_Id :    out Player.Type_Player_Id;
       P_Countdown         :    out Positive;
       P_Game_Status       :    out Status.Type_Game_Status;
       P_System_Messages   :    out Observation.Activity.Activity_Report.Vector)
@@ -893,8 +703,6 @@ package body Client.ClientRPC is
          Game_RPC.Type_RPC'Output (Channel, Game_RPC.Get_Updates_Summary_Start);
          Player.Type_Player_Id'Output (Channel, P_Player_Id);
          Game_RPC.Type_RPC'Output (Channel, Game_RPC.Get_Updates_Summary_End);
-
-         P_Current_Player_Id := Player.Type_Player_Id'Input (Channel);
 
          P_Countdown := Positive'Input (Channel);
 
@@ -941,29 +749,6 @@ package body Client.ClientRPC is
       end if;
    end Get_Server_Info;
 
-   function End_Turn (P_Player_Id : in Player.Type_Player_Id) return Boolean is
-      Ret : Boolean;
-
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.End_Turn - enter Player_Id=" & P_Player_Id'Img);
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.End_Turn_Start);
-
-      Player.Type_Player_Id'Output (Channel, P_Player_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.End_Turn_End);
-
-      Ret := Boolean'Input (Channel);
-
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.End_Turn - exit");
-      end if;
-
-      return Ret;
-   end End_Turn;
-
    procedure Client_Stopped (P_Player_Id : in Player.Type_Player_Id) is
 
       use GNAT.Sockets;
@@ -985,95 +770,5 @@ package body Client.ClientRPC is
       end if;
 
    end Client_Stopped;
-
-   -- Information providers.
-   -- When client needs information these RPCs should be used
-   function Observation_Area
-     (P_Piece_Id : in Piece.Type_Piece_Id) return Hexagon.Area.Type_Action_Capabilities
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Observation_Area - enter - exit");
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Observation_Area_Start);
-
-      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Observation_Area_End);
-
-      declare
-         Ret : Hexagon.Area.Type_Action_Capabilities :=
-           Hexagon.Area.Type_Action_Capabilities'Input (Channel);
-      begin
-         -- Free Tmp!!
-         if Verbose then
-            Text_IO.Put_Line
-              ("Client.ClientRPC.Observation_Area - exit - with Movement Capabilities");
-         end if;
-
-         return Ret;
-      end;
-
-   end Observation_Area;
-
-   function Movement_Capability
-     (P_Piece_Id : in Piece.Type_Piece_Id) return Hexagon.Area.Type_Action_Capabilities
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line
-           ("Client.ClientRPC.Movement_Capability - enter piece_id=" & P_Piece_Id'Img);
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Movement_Capability_Start);
-
-      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Movement_Capability_End);
-
-      declare
-         Ret : Hexagon.Area.Type_Action_Capabilities :=
-           Hexagon.Area.Type_Action_Capabilities'Input (Channel);
-      begin
-         -- Free Tmp!!
-         if Verbose then
-            Text_IO.Put_Line
-              ("Client.ClientRPC.Movement_Capability - exit - with Movement Capabilities");
-         end if;
-
-         return Ret;
-      end;
-
-   end Movement_Capability;
-
-   function Attack_Capability
-     (P_Piece_Id : in Piece.Type_Piece_Id) return Hexagon.Area.Type_Action_Capabilities
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Client.ClientRPC.Attack_Capability - enter");
-      end if;
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Attack_Capability_Start);
-
-      Piece.Type_Piece_Id'Output (Channel, P_Piece_Id);
-
-      Game_RPC.Type_RPC'Output (Channel, Game_RPC.Attack_Capability_End);
-
-      declare
-         Ret : Hexagon.Area.Type_Action_Capabilities :=
-           Hexagon.Area.Type_Action_Capabilities'Input (Channel);
-      begin
-         -- Free Tmp!!
-         if Verbose then
-            Text_IO.Put_Line
-              ("Client.ClientRPC.Attack_Capability - exit - with Attack Capabilities");
-         end if;
-
-         return Ret;
-      end;
-
-   end Attack_Capability;
 
 end Client.ClientRPC;

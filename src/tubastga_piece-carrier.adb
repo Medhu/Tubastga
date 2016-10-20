@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -19,8 +19,6 @@
 
 with Text_IO;
 with Goods;
-with Ada.Strings.Bounded;
-with Text_IO.Editing;
 
 package body Tubastga_Piece.Carrier is
    Verbose : constant Boolean := False;

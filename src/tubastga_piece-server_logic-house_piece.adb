@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -83,10 +83,7 @@ package body Tubastga_Piece.Server_Logic.House_Piece is
             if A_Pos.P_Valid then
 
                if Hexagon.Utility.Hexagon_Distance
-                   (A_Pos.A,
-                    A_Pos.B,
-                    P_House_Piece_Pos.A,
-                    P_House_Piece_Pos.B) <
+                   (A_Pos, P_House_Piece_Pos) <
                  P_Distance
                then
                   Found_Tower_Id := A_House.Id;
@@ -142,12 +139,10 @@ package body Tubastga_Piece.Server_Logic.House_Piece is
    end Count_Patches_With_Production;
 
    procedure Farm_House_Production
-     (P_Current_Player_Id : in     Player.Type_Player_Id;
-      P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
+     (P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
       P_House             : in out Server_Logic.Type_My_Tubastga_House)
    is
       A_House    : Server_Logic.Type_My_Tubastga_House;
-      A_Pos      : Hexagon.Type_Hexagon_Position;
       A_House_Id : Piece.Type_Piece_Id := Piece.Undefined_Piece_Id;
 
       The_Goods               : Goods.Type_Goods_Info;
@@ -184,12 +179,10 @@ package body Tubastga_Piece.Server_Logic.House_Piece is
    end Farm_House_Production;
 
    procedure Lumberjack_House_Production
-     (P_Current_Player_Id : in     Player.Type_Player_Id;
-      P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
+     (P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
       P_House             : in out Server_Logic.Type_My_Tubastga_House)
    is
       A_House                 : Server_Logic.Type_My_Tubastga_House;
-      A_Pos                   : Hexagon.Type_Hexagon_Position;
       A_House_Id              : Piece.Type_Piece_Id := Piece.Undefined_Piece_Id;
       Count_Producing_Patches : Natural;
 
@@ -226,12 +219,10 @@ package body Tubastga_Piece.Server_Logic.House_Piece is
    end Lumberjack_House_Production;
 
    procedure Stonecutter_House_Production
-     (P_Current_Player_Id : in     Player.Type_Player_Id;
-      P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
+     (P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
       P_House             : in out Server_Logic.Type_My_Tubastga_House)
    is
       A_House                 : Server_Logic.Type_My_Tubastga_House;
-      A_Pos                   : Hexagon.Type_Hexagon_Position;
       A_House_Id              : Piece.Type_Piece_Id := Piece.Undefined_Piece_Id;
       Count_Producing_Patches : Natural;
 

@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -51,44 +51,9 @@ package Tubastga_Piece.Server_Logic is
 
    type Type_My_Tubastga_House_Access_Class is access all Type_My_Tubastga_House'Class;
 
-   procedure Init_Piece (P_Piece_Class : in out Type_My_Tubastga_Piece);
-
-   procedure Init_Piece (P_Piece_Class : in out Type_My_Tubastga_House);
-
-   function Create_Piece_Name
-     (P_Piece : in Type_My_Tubastga_Piece) return Utilities.RemoteString.Type_String;
-
    function Create_Piece_Name
      (P_Piece : in Type_My_Tubastga_House) return Utilities.RemoteString.Type_String;
 
-   procedure Spend_Resources_On_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
-      P_Piece       : in     Type_My_Tubastga_Piece;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Success     :    out Boolean);
-
-   procedure Spend_Resources_On_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
-      P_Piece       : in     Type_My_Tubastga_House;
-      P_Pos         : in     Hexagon.Type_Hexagon_Position;
-      P_Success     :    out Boolean);
-
-   function Movement_Capability
-     (P_Piece : in Type_My_Tubastga_Piece)
-      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
-
-   function Construction_Capability
-     (P_Piece : in Type_My_Tubastga_House)
-      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
-
-   function Create_Piece_Area
-     (P_Piece : in Type_My_Tubastga_Piece)
-      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access_A;
-
-   function Create_Piece_Area
-     (P_Piece : in Type_My_Tubastga_House)
-      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access_A;
-
    function Observation_Area
      (P_Piece : in Type_My_Tubastga_Piece)
       return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
@@ -97,384 +62,634 @@ package Tubastga_Piece.Server_Logic is
      (P_Piece : in Type_My_Tubastga_House)
       return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
 
-   function Attack_Capability
-     (P_Piece : in Type_My_Tubastga_Piece)
-      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
+   --
+   -- Create Piece
+   -- Piece
+   function Validate_Create_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece) return Boolean;
+
+   procedure Before_Create_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Pos         : in     Hexagon.Type_Hexagon_Position;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Create_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Pos           : in     Hexagon.Type_Hexagon_Position;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Create Piece
+   -- Piece
+   function Validate_Create_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House) return Boolean;
+
+   procedure Before_Create_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Pos         : in     Hexagon.Type_Hexagon_Position;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Create_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Pos           : in     Hexagon.Type_Hexagon_Position;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Put Piece
+   -- Piece
+   function Validate_Put_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece) return Boolean;
+
+   procedure Before_Put_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Pos         : in     Hexagon.Type_Hexagon_Position;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Put_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Pos           : in     Hexagon.Type_Hexagon_Position;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Put Piece
+   -- House
+   function Validate_Put_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House) return Boolean;
+
+   procedure Before_Put_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Pos         : in     Hexagon.Type_Hexagon_Position;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Put_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Pos           : in     Hexagon.Type_Hexagon_Position;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Remove Piece
+   -- Piece
+   function Validate_Remove_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece) return Boolean;
+
+   procedure Before_Remove_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Remove_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Patch         : in out Landscape.Type_Patch;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Remove Piece
+   -- House
+   function Validate_Remove_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House) return Boolean;
+
+   procedure Before_Remove_Piece
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Remove_Piece
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Patch         : in out Landscape.Type_Patch;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Perform Attack
+   --
+   function Validate_Perform_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece)
+      return Boolean;
+
+   procedure Before_Perform_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Result         :    out Status.Type_Result_Status);
 
    procedure Calculate_Attack_Result
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in     Type_My_Tubastga_Piece;
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
+      P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
       P_From_Patch, P_To_Patch            : in     Landscape.Type_Patch;
-      P_Player_Id                         : in     Player.Type_Player_Id;
       P_Winner                            :    out Player.Type_Player_Id);
 
-   function Calculate_Attack_Action_Points
-     (P_Action_Type                       : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch            : in Landscape.Type_Patch;
-      P_Player_Id                         : in Player.Type_Player_Id) return Integer;
+   procedure End_Perform_Attack
+     (P_Player_Id        : in Player.Type_Player_Id;
+      P_Action_Type      : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece   : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Patch,
+      P_To_Patch         : in out Landscape.Type_Patch;
+      P_Winner           : in     Player.Type_Player_Id;
+      P_End_Status       : in     Status.Type_Status;
+      P_Attempts_Remaining          : in out Integer);
 
-   procedure After_Perform_Attack
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in out Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch            : in     Landscape.Type_Patch;
-      P_Winner                            : in     Player.Type_Player_Id;
-      P_Player_Id                         : in     Player.Type_Player_Id);
-
-   function Calculate_Ranged_Attack_Action_Points
-     (P_Action_Type                       : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch            : in Landscape.Type_Patch;
-      P_Player_Id                         : in Player.Type_Player_Id) return Integer;
-
-   procedure After_Perform_Ranged_Attack
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in out Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch            : in     Landscape.Type_Patch;
-      P_Winner                            : in     Player.Type_Player_Id;
-      P_Player_Id                         : in     Player.Type_Player_Id);
-
-   function Calculate_Move_Action_Points
-     (P_Action_Type            : in Action.Type_Action_Type;
-      P_Moving_Piece           : in Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch : in Landscape.Type_Patch;
-      P_Player_Id              : in Player.Type_Player_Id) return Integer;
-
-   procedure After_Perform_Move
-     (P_Action_Type            : in     Action.Type_Action_Type;
-      P_Moving_Piece           : in out Type_My_Tubastga_Piece;
-      P_From_Patch, P_To_Patch : in     Landscape.Type_Patch;
-      P_Player_Id              : in     Player.Type_Player_Id);
-
-   procedure Before_Remove_Piece
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   procedure Before_Remove_Piece
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   function Calculate_Patch_Effect_Action_Points
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in Player.Type_Player_Id) return Integer;
-
-   function Calculate_Patch_Effect_Action_Points
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in Player.Type_Player_Id) return Integer;
-
-   function Calculate_Piece_Effect_Action_Points
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Player_Id   : in Player.Type_Player_Id) return Integer;
-
-   function Calculate_Piece_Effect_Action_Points
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Player_Id   : in Player.Type_Player_Id) return Integer;
-
-   procedure Calculate_Patch_Effect
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   procedure Calculate_Patch_Effect
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   procedure Calculate_Piece_Effect
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   procedure Calculate_Piece_Effect
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Effect      : in Effect.Type_Effect;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   function Validate_Create_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   procedure After_Create_Piece
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Pos                            : in     Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
-
-   function Validate_Create_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   procedure After_Create_Piece
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Pos                            : in     Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
-
-   function Validate_Put_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   function Validate_Put_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   procedure After_Put_Piece
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_Piece;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   procedure After_Put_Piece
-     (P_Action_Type : in Action.Type_Action_Type;
-      P_Piece       : in Type_My_Tubastga_House;
-      P_Patch       : in Landscape.Type_Patch;
-      P_Player_Id   : in Player.Type_Player_Id);
-
-   function Validate_Remove_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   function Validate_Remove_Piece
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
-
-   function Validate_Perform_Attack
-     (P_Action_Type                       : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Attacking_Pos, P_Attacked_Pos     : in Hexagon.Type_Hexagon_Position;
-      P_Current_Player_Id, P_Player_Id    : in Player.Type_Player_Id) return Boolean;
-
-   function Validate_Perform_Attack
-     (P_Action_Type                       : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Path                              : in Hexagon.Path.Vector;
-      P_Current_Player_Id, P_Player_Id    : in Player.Type_Player_Id) return Boolean;
-
+   --
+   -- Perform Ranged Attack
+   --
    function Validate_Perform_Ranged_Attack
-     (P_Action_Type                       : in Action.Type_Action_Type;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece)
+      return Boolean;
+
+   procedure Before_Perform_Ranged_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Result         :    out Status.Type_Result_Status);
+
+   procedure Calculate_Ranged_Attack_Result
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
       P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Attacking_Pos, P_Attacked_Pos     : in Hexagon.Type_Hexagon_Position;
-      P_Current_Player_Id, P_Player_Id    : in Player.Type_Player_Id) return Boolean;
+      P_From_Patch, P_To_Patch            : in     Landscape.Type_Patch;
+      P_Winner                            :    out Player.Type_Player_Id);
 
+   procedure End_Perform_Ranged_Attack
+     (P_Player_Id        : in Player.Type_Player_Id;
+      P_Action_Type      : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece   : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Patch,
+      P_To_Patch         : in out Landscape.Type_Patch;
+      P_Winner           : in     Player.Type_Player_Id;
+      P_End_Status       : in     Status.Type_Status;
+      P_Attempts_Remaining          : in out Integer);
+
+   --
+   -- Perform Move
+   --
    function Validate_Perform_Move
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Moving_Piece                   : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Path                           : in Hexagon.Path.Vector;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id    : in Player.Type_Player_Id;
+      P_Action_Type  : in Action.Type_Action_Type;
+      P_Moving_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_To_Pos       : in Hexagon.Type_Hexagon_Position) return Boolean;
 
-   function Validate_Perform_Move
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Moving_Piece                   : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_From_Pos, P_To_Pos             : in Hexagon.Type_Hexagon_Position;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+   procedure Before_Perform_Move
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_To_Pos       : in     Hexagon.Type_Hexagon_Position;
+      P_Result       :    out Status.Type_Result_Status);
 
+   procedure End_Perform_Move
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Pos,
+      P_To_Pos       : in     Hexagon.Type_Hexagon_Position;
+      P_End_Status   : in     Status.Type_Status;
+      P_Attempts_Remaining      : in out Integer);
+
+   --
+   -- Perform Patch Effect
+   -- Piece
    function Validate_Perform_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Area                           : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in Effect.Type_Effect;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean;
 
+   procedure Before_Perform_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure Perform_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect);
+
+   procedure End_Perform_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect        : in     Effect.Type_Effect;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Perform Patch Effect
+   -- House
    function Validate_Perform_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Area                           : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in Effect.Type_Effect;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean;
 
+   procedure Before_Perform_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure Perform_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect);
+
+   procedure End_Perform_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect        : in     Effect.Type_Effect;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Perform Piece Effect
+   -- Piece
    function Validate_Perform_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
+   procedure Before_Perform_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure Perform_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect);
+
+   procedure End_Perform_Piece_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Perform Piece Effect
+   -- House
    function Validate_Perform_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Pos                            : in Hexagon.Type_Hexagon_Position;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
-   procedure After_Grant_Piece_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Before_Perform_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
 
-   procedure After_Grant_Piece_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Perform_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect);
 
+   procedure End_Perform_Piece_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Grant Piece Effect
+   -- Piece
    function Validate_Grant_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
+   procedure Before_Grant_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Grant_Piece_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Grant Piece Effect
+   -- Housse
    function Validate_Grant_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
+   procedure Before_Grant_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Grant_Piece_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Revoke Piece Effect
+   -- Piece
    function Validate_Revoke_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
-   procedure After_Revoke_Piece_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Before_Revoke_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
 
+   procedure End_Revoke_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      : in     Status.Type_Status;
+      P_Attempts_Remaining     : in out Integer);
+
+   --
+   -- Grant Piece Effect
+   -- House
    function Validate_Revoke_Piece_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
-   procedure After_Revoke_Piece_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Before_Revoke_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
 
+   procedure End_Revoke_Piece_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      : in     Status.Type_Status;
+      P_Attempts_Remaining     : in out Integer);
+
+   --
+   -- Grant Patch Piece
+   -- Piece
    function Validate_Grant_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Patch                          : in Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
-   procedure After_Grant_Patch_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Patch                          : in     Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Before_Grant_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
 
-   procedure After_Grant_Patch_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Patch                          : in     Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure End_Grant_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
 
+   --
+   -- Grant Patch Effect
+   -- House
    function Validate_Grant_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Patch                          : in Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
+   procedure Before_Grant_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Grant_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Revoke Patch Effect
+   -- Piece
    function Validate_Revoke_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Patch                          : in Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
+   procedure Before_Revoke_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
+
+   procedure End_Revoke_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
+
+   --
+   -- Revoke Patch Effect
+   -- House
    function Validate_Revoke_Patch_Effect
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Piece                          : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Patch                          : in Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean;
 
-   procedure After_Revoke_Patch_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
-      P_Patch                          : in     Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure Before_Revoke_Patch_Effect
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in     Effect.Type_Effect;
+      P_Result      :    out Status.Type_Result_Status);
 
-   procedure After_Revoke_Patch_Effect
-     (P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Patch                          : in     Hexagon.Server_Map.Type_Server_Patch;
-      P_Effect                         : in     Effect.Type_Effect;
-      P_Current_Player_Id, P_Player_Id : in     Player.Type_Player_Id);
+   procedure End_Revoke_Patch_Effect
+     (P_Player_Id     : in     Player.Type_Player_Id;
+      P_Action_Type   : in     Action.Type_Action_Type;
+      P_Piece         : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Area          : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect        : in     Effect.Type_Effect;
+      P_End_Status : in     Status.Type_Status;
+      P_Attempts_Remaining       : in out Integer);
 
+   --
+   -- Perform Construction
+   --
    function Validate_Perform_Construction
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Constructing_Piece             : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Piece_Pos                      : in Hexagon.Type_Hexagon_Position;
-      P_Construction_Pos               : in Hexagon.Type_Hexagon_Position;
-      P_Construction                   : in Construction.Type_Construction;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id          : in Player.Type_Player_Id;
+      P_Action_Type        : in Action.Type_Action_Type;
+      P_Construction_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Construction_Pos   : in Hexagon.Type_Hexagon_Position;
+      P_Construction       : in Construction.Type_Construction) return Boolean;
 
-   procedure After_Perform_Construction
-     (P_Action_Type        : in     Action.Type_Action_Type;
-      P_Constructing_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Piece_Patch        : in     Landscape.Type_Patch;
-      P_Construction_Patch : in     Landscape.Type_Patch;
+   procedure Before_Perform_Construction
+     (P_Player_Id          : in     Player.Type_Player_Id;
+      P_Action_Type        : in     Action.Type_Action_Type;
+      P_Construction_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Construction_Pos   : in     Hexagon.Type_Hexagon_Position;
       P_Construction       : in     Construction.Type_Construction;
-      P_Player_Id          : in     Player.Type_Player_Id);
+      P_Result             :    out Status.Type_Result_Status);
 
+   procedure End_Perform_Construction
+     (P_Player_Id          : in     Player.Type_Player_Id;
+      P_Action_Type        : in     Action.Type_Action_Type;
+      P_Construction_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Construction_Pos   : in     Hexagon.Type_Hexagon_Position;
+      P_Construction       : in     Construction.Type_Construction;
+      P_End_Status      : in     Status.Type_Status;
+      P_Attempts_Remaining            : in out Integer);
+
+   --
+   -- Perform Demolition
+   --
    function Validate_Perform_Demolition
-     (P_Action_Type                    : in Action.Type_Action_Type;
-      P_Demolition_Piece               : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
-      P_Piece_Pos                      : in Hexagon.Type_Hexagon_Position;
-      P_Demolition_Pos                 : in Hexagon.Type_Hexagon_Position;
-      P_Construction                   : in Construction.Type_Construction;
-      P_Current_Player_Id, P_Player_Id : in Player.Type_Player_Id) return Boolean;
+     (P_Player_Id        : in Player.Type_Player_Id;
+      P_Action_Type      : in Action.Type_Action_Type;
+      P_Demolition_Piece : in Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Demolition_Pos   : in Hexagon.Type_Hexagon_Position;
+      P_Construction     : in Construction.Type_Construction) return Boolean;
+
+   procedure Before_Perform_Demolition
+     (P_Player_Id        : in     Player.Type_Player_Id;
+      P_Action_Type      : in     Action.Type_Action_Type;
+      P_Demolition_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Demolition_Pos   : in     Hexagon.Type_Hexagon_Position;
+      P_Construction     : in     Construction.Type_Construction;
+      P_Result           :    out Status.Type_Result_Status);
+
+   procedure End_Perform_Demolition
+     (P_Player_Id        : in     Player.Type_Player_Id;
+      P_Action_Type      : in     Action.Type_Action_Type;
+      P_Demolition_Piece : in out Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+      P_Demolition_Pos   : in     Hexagon.Type_Hexagon_Position;
+      P_Construction     : in     Construction.Type_Construction;
+      P_End_Status       : in     Status.Type_Status;
+      P_Attempts_Remaining          : in out Integer);
 
    procedure Upkeep
-     (P_Current_Player_Id : in     Player.Type_Player_Id;
-      P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
-      P_Piece             : in out Type_My_Tubastga_Piece);
+     (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
+      P_Piece : in out Type_My_Tubastga_Piece);
 
    procedure Upkeep
-     (P_Current_Player_Id : in     Player.Type_Player_Id;
-      P_Patch             : in out Hexagon.Server_Map.Type_Server_Patch;
-      P_House             : in out Type_My_Tubastga_House);
+     (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
+      P_House : in out Type_My_Tubastga_House);
 
    Sentry_Piece      : constant Piece.Type_Piece_Type := 1;
    Knight_Piece      : constant Piece.Type_Piece_Type := 2;
@@ -497,13 +712,16 @@ package Tubastga_Piece.Server_Logic is
           (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Grass"), Max_Pieces_Here => 6),
       Landscape_Forest =>
         Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Forest"), Max_Pieces_Here => 6),
+          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Forest"),
+           Max_Pieces_Here => 6),
       Landscape_Mountain =>
         Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Mountain"), Max_Pieces_Here => 6),
+          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Mountain"),
+           Max_Pieces_Here => 6),
       Landscape_Water =>
         Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Water"), Max_Pieces_Here => 6));
+          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Water"),
+           Max_Pieces_Here => 6));
 
    Effect_Action_Point : constant Effect.Type_Effect_Name := 1;
    Effect_Courage      : constant Effect.Type_Effect_Name := 2;
@@ -534,12 +752,10 @@ package Tubastga_Piece.Server_Logic is
      (P_Map_Name      : in Utilities.RemoteString.Type_String;
       P_Scenario_Name : in Utilities.RemoteString.Type_String);
 
-   procedure Tubastga_Joining_Game ;
-   procedure Tubastga_Leaving_Game ;
+   procedure Tubastga_Joining_Game;
+   procedure Tubastga_Leaving_Game;
    procedure Tubastga_Start_Game;
    procedure Tubastga_Upkeep_Game;
-   procedure Tubastga_Start_Turn (P_Player_Id : in Player.Type_Player_Id);
-   procedure Tubastga_End_Turn (P_Player_Id : in Player.Type_Player_Id);
    procedure Tubastga_End_Game (P_Game_Status : out Status.Type_Game_Status);
 
    Land_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
@@ -672,30 +888,6 @@ package Tubastga_Piece.Server_Logic is
       Effect_Path =>
         Effect.Server.Type_Effect_Type_Info'
           (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Path")));
-
-   function Calculate_Construction_Action_Points
-     (P_Action_Type        : in Action.Type_Action_Type;
-      P_Constructing_Piece : in Type_My_Tubastga_House;
-      P_Piece_Patch        : in Landscape.Type_Patch;
-      P_Construction_Patch : in Landscape.Type_Patch;
-      P_Construction       : in Construction.Type_Construction;
-      P_Player_Id          : in Player.Type_Player_Id) return Integer;
-
-   function Calculate_Demolition_Action_Points
-     (P_Action_Type      : in Action.Type_Action_Type;
-      P_Demolition_Piece : in Type_My_Tubastga_House;
-      P_Piece_Patch      : in Landscape.Type_Patch;
-      P_Demolition_Patch : in Landscape.Type_Patch;
-      P_Construction     : in Construction.Type_Construction;
-      P_Player_Id        : in Player.Type_Player_Id) return Integer;
-
-   procedure After_Perform_Demolition
-     (P_Action_Type      : in     Action.Type_Action_Type;
-      P_Demolition_Piece : in out Type_My_Tubastga_House;
-      P_Piece_Patch      : in     Landscape.Type_Patch;
-      P_Demolition_Patch : in     Landscape.Type_Patch;
-      P_Construction     : in     Construction.Type_Construction;
-      P_Player_Id        : in     Player.Type_Player_Id);
 
    function Can_Load
      (P_Piece : in Type_My_Tubastga_Piece;

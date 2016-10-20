@@ -1,7 +1,7 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Tubastga Game - A turn based strategy game.
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -45,7 +45,6 @@ package body Hexagon.Client_Map is
    begin
       if P_Patch.Pos.P_Valid then
          Landscape.Put (Landscape.Type_Patch (P_Patch));
-         Text_IO.Put_Line ("Draw_Action=" & P_Patch.Draw_Action'Img);
          Landscape.Put_Pieces_Here (P_Patch.Pieces_Here);
 
       else
@@ -135,40 +134,6 @@ package body Hexagon.Client_Map is
          end loop;
       end loop;
    end Reset_Visible;
-
-   procedure Reset_Draw_Action (P_Client_Map : in out Type_Client_Map_Info) is
-   begin
-      for ArrayX in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop -- Horisontal
-         for ArrayY in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop -- Vertical
-            P_Client_Map.Map (ArrayX, ArrayY).Draw_Action          := Unselected;
-         end loop;
-      end loop;
-   end Reset_Draw_Action;
-
-   procedure Select_Patch (P_Patch : in out Type_Client_Patch) is
-   begin
-      P_Patch.Draw_Action := Selected;
-   end Select_Patch;
-
-   procedure Select_Patch_Area (P_Patch : in out Type_Client_Patch) is
-   begin
-      P_Patch.Draw_Action := Selected_Area;
-   end Select_Patch_Area;
-
-   procedure Unselect_Patch (P_Patch : in out Type_Client_Patch) is
-   begin
-      P_Patch.Draw_Action := Unselected;
-   end Unselect_Patch;
-
-   procedure Unselect_All_Patches (P_Client_Map : in out Type_Client_Map_Info) is
-   begin
-      for ArrayX in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop -- Horisontal
-         for ArrayY in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop -- Vertical
-            P_Client_Map.Map (ArrayX, ArrayY).Draw_Action := Unselected;
-            --
-         end loop;
-      end loop;
-   end Unselect_All_Patches;
 
    procedure Set_No_Pieces
      (P_Client_Map : in Type_Client_Map;
@@ -549,77 +514,6 @@ package body Hexagon.Client_Map is
 
       return Area_Tiles;
    end Capability_To_Area;
-
-   procedure Set_Reachable
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch_Area : in out Type_Client_Patch_Area)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Hexagon.Client_Map.Set_Reachable - enter");
-      end if;
-
-      for Trav_X in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
-         for Trav_Y in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
-            if P_Client_Map.Map (Trav_X, Trav_Y).Draw_Action = Reachable then
-               P_Client_Map.Map (Trav_X, Trav_Y).Draw_Action := Unselected;
-            end if;
-         end loop;
-      end loop;
-
-      for Trav in P_Patch_Area'First .. P_Patch_Area'Last loop
-
-         if P_Patch_Area (Trav) /= null then
-            P_Patch_Area (Trav).Draw_Action := Reachable;
-         else
-            if Verbose then
-               Text_IO.Put_Line
-                 ("Hexagon.Client_Map.Set_Reachable - Trav=" &
-                  Trav'Img &
-                  " probably  outside map");
-            end if;
-         end if;
-      end loop;
-
-      if Verbose then
-         Text_IO.Put_Line ("Hexagon.Client_Map.Set_Reachable - exit");
-      end if;
-   end Set_Reachable;
-
-   procedure Set_Attackable
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch_Area : in out Type_Client_Patch_Area)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Hexagon.Client_Map.Set_Attackable - enter");
-      end if;
-
-      for Trav_X in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
-         for Trav_Y in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
-            if P_Client_Map.Map (Trav_X, Trav_Y).Draw_Action = Attackable then
-               P_Client_Map.Map (Trav_X, Trav_Y).Draw_Action := Unselected;
-            end if;
-         end loop;
-      end loop;
-
-      for Trav in P_Patch_Area'First .. P_Patch_Area'Last loop
-
-         if P_Patch_Area (Trav) /= null then
-            P_Patch_Area (Trav).Draw_Action := Attackable;
-         else
-            if Verbose then
-               Text_IO.Put_Line
-                 ("Hexagon.Client_Map.Set_Attackable - Trav=" &
-                  Trav'Img &
-                  " probably  outside map");
-            end if;
-         end if;
-      end loop;
-      if Verbose then
-         Text_IO.Put_Line ("Hexagon.Client_Map.Set_Attackable - exit");
-      end if;
-   end Set_Attackable;
 
    procedure Save_Map
      (P_Filename   : in Ada.Strings.Unbounded.Unbounded_String;

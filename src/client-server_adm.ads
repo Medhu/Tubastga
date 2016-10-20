@@ -1,7 +1,8 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
---      Copyright (C) 2015  Frank J Jorgensen
+--
+--      Tubastga Game - A turn based strategy game.
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@ with Landscape;
 with Utilities;
 
 package Client.Server_Adm is
-   Verbose : Boolean := True;
+   Verbose : Boolean := False;
 
    procedure Init;
    procedure Connect
@@ -70,13 +71,9 @@ package Client.Server_Adm is
    procedure Get_Updates_Summary
      (P_Player_Id : in Player.Type_Player_Id;  -- The player of this
    --client
-      P_Current_Player_Id : out Player.Type_Player_Id; -- The player that as
-   --turn now
       P_Countdown       : out Positive;  -- The countdown of this turn
       P_Game_Status     : out Status.Type_Game_Status;
       P_System_Messages : out Observation.Activity.Activity_Report.Vector);
-
-   function End_Turn (P_Player_Id : in Player.Type_Player_Id) return Boolean;
 
    procedure Client_Stopped (P_Player_Id : in Player.Type_Player_Id);
 end Client.Server_Adm;

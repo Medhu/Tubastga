@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga a Turn based strategy game.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ with Tubastga_Window_Pkg.Callbacks; use Tubastga_Window_Pkg.Callbacks;
 with Tubastga_Window_Pkg;           use Tubastga_Window_Pkg;
 with Client.Server_Adm;
 with Glib.Main;
-with Text_IO;
 with Ada.Command_Line;
 with Ada.Strings.Fixed;
 with Ada.Strings.Maps.Constants;
@@ -59,7 +58,6 @@ begin
            8 .. Ada.Command_Line.Argument (Arguments_Index)'Length));
 
          Tubastga_UI_Aux.Set_My_Player_Name (My_Playername);
-         Text_IO.Put_Line ("Player Name:" & Utilities.RemoteString.To_String (My_Playername));
       end if;
 
    end loop;

@@ -1,0 +1,88 @@
+
+Carrier
+1. Log in as both Yulia and Frank
+2. Observe that Omojevar(Carrier) is moving back and forth
+3. Tower 1 starts with 10 stones, 20 wood.
+   Tower 2 starts with 30 stones, 40 wood.
+4. All wood shall be transported to Tower 1.
+   All stones shall be transported to Tower 2.
+
+Place a piece
+1. Log in as both Yulia and Frank
+2. As Yulia Place a Sentry at (17,17).
+3. Observe that visibly area increase
+4. Observe that a red Sentry piece is placed on the map.
+
+
+Attack
+1. Log in as both Yulia and Frank
+2. As Yulia place a knight on (19,19).
+3. Target Franks Sentry on (20,20).
+4. Attack 
+5. Observe that the game reports that the attacked piece is out of range.
+6. Move to (20,19)
+7. Attack again
+8. Observe that Yulias piece looses and disappears.
+   Observe that Franks GUI is informed about this
+   Observe that Frank piece remains.
+
+
+Ranged Attack
+1. Log in as both Yulia and Frank
+2. As Yulia place a Sentry on (19,19).
+3. Target Franks Sentry on (20,20).
+4. Ranged Attack 
+5. Observe that the game reports that the attacked piece is out of range.
+6. Move to (20,19)
+7. Attack again
+8. Observe that Yulias piece looses and disappears.
+   Observe that Franks GUI is informed about this
+   Observe that Frank piece remains.
+
+
+Search
+1. Log in as both Yulia and Frank
+2. As Yulia place a Sentry on (18,21).
+3. Target Yulias Sentry on (18,21).
+4. Search
+5. Observe feedback from the game, that a search has been performed.
+
+
+Promote / Demote
+1. Log in as both Yulia and Frank
+2. As Yulia place a Sentry on (17,19).
+3. Target Yulias Sentry on (17,19).
+4. Promote
+5. Observe feedback from the game, that a promotion has been performed.
+6. Demote
+7. Observe feedback from the game, that a demotion has been performed.
+
+
+
+Carrier and Paths
+1. Log in as both Yulia and Frank
+2. As Yulia place a Carrier on (17,19).
+3. Select the carrier
+3. Select patches: (16,19), (15, 20), (14, 21), (14, 22) in that order
+4. Press Create Patch
+5. Observe the carrier walk back and fort along this path.
+
+
+Constructing Walls
+1. Log in as both Yulia and Frank
+2. As Yulia select the tower at (16, 20)- using Left Mouse Button
+3. Select the patch (17, 19).
+4. Press "Wall 1"
+5. Observe the result.
+6. Select the patch (16, 22).
+7. Press "Wall 4"
+8. Observe the result.
+9. Select (Left Mouse Button) the patch (17, 19)
+10. Press "Wall 5"
+11. Observe the result.
+
+Tab throught all pieces
+1. Log in as both Yulia and Frank
+2. Press tab several times
+3. Observe that every piece gets selected
+

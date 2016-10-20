@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -17,10 +17,6 @@
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 --
-
-with Effect;
-with Piece;
-with Observation;
 
 package Tubastga_Window_Pkg.Effects is
    procedure Format_Piece_Effects (P_Buffer : in out Gtk_Text_Buffer;

@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -19,15 +19,12 @@
 
 with Piece;
 with Hexagon;
-with Ada.Containers.Vectors;
 with Utilities;
 
 package Tubastga_UI_Aux is
    UI_Problem : exception;
 
    type Type_UI_State is (
---     Attack,
---     Move,
      Done,
      Scroll,
      Place_Sentry,
@@ -39,9 +36,6 @@ package Tubastga_UI_Aux is
      Place_Lumberjack,
      Place_Farm,
      Place_Stonecutter,
---     Promote,
---     Demote,
---     Search,
      Place_Wall1,
      Place_Wall2,
      Place_Wall3,
@@ -64,13 +58,6 @@ package Tubastga_UI_Aux is
       Actual_Pos      : Hexagon.Type_Hexagon_Position;
       Group_Id        : Natural;
    end record;
-
-   package TAB_For_Pieces_List is new Ada.Containers.Vectors (
-      Piece.Type_Piece_Id,
-      Type_Piece_Position,
-      "=");
-
-   TAB_For_Pieces : TAB_For_Pieces_List.Vector;
 
    procedure Set_My_Player_Name(P_Playername : in Utilities.RemoteString.Type_String);
    function Get_My_Player_Name return Utilities.RemoteString.Type_String;

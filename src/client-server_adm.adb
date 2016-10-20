@@ -1,7 +1,7 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Tubastga Game - A turn based strategy game.
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -235,8 +235,6 @@ package body Client.Server_Adm is
    procedure Get_Updates_Summary
      (P_Player_Id         : in Player.Type_Player_Id;  -- The player of this
       --client
-      P_Current_Player_Id : out Player.Type_Player_Id; -- The player that as
-      --turn now
       P_Countdown         : out Positive;  -- The countdown of this turn
       P_Game_Status       : out Status.Type_Game_Status;
       P_System_Messages   : out Observation.Activity.Activity_Report.Vector)
@@ -248,7 +246,6 @@ package body Client.Server_Adm is
 
       Client.ClientRPC.Get_Updates_Summary
         (P_Player_Id,
-         P_Current_Player_Id,
          P_Countdown,
          P_Game_Status,
          P_System_Messages);
@@ -262,20 +259,6 @@ package body Client.Server_Adm is
          Text_IO.Put_Line ("Client.Server_Adm.Get_Updates_Summary - Server not available");
          raise;
    end Get_Updates_Summary;
-
-   function End_Turn (P_Player_Id : in Player.Type_Player_Id) return Boolean is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Client.Server_Adm.End_Turn - enter - exit");
-      end if;
-
-      return Client.ClientRPC.End_Turn (P_Player_Id);
-
-   exception
-      when Server.Game_Engine_Doesnt_Exists =>
-         Text_IO.Put_Line ("Client.Server_Adm.End_Turn - Server not available");
-         raise;
-   end End_Turn;
 
    procedure Client_Stopped (P_Player_Id : in Player.Type_Player_Id) is
    begin

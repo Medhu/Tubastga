@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -19,12 +19,10 @@
 
 with Text_IO;
 with Goods;
-with Ada.Strings.Bounded;
-with Text_IO.Editing;
 with Server.ServerAPI;
 
 package body Tubastga_Piece.Server_Logic.Carrier is
-   Verbose : constant Boolean := True;
+   Verbose : constant Boolean := False;
 
    function Get_Tower_Code
      (P_Tower_Id1, P_Tower_Id2, P_Tower_Id3 : in Piece.Type_Piece_Id) return Integer
@@ -246,7 +244,7 @@ package body Tubastga_Piece.Server_Logic.Carrier is
       Current_Carriers_Path                 : Hexagon.Type_Path;
       Current_Path_Cursor, Next_Path_Cursor : Hexagon.Path.Cursor;
       Path_This_Piece                       : Server_Logic.Carrier_Paths_List.Cursor;
-      Ret_Status1                           : Status.Type_Status;
+      Ret_Status                            : Status.Type_Status;
 
       use Player;
    begin
@@ -260,9 +258,7 @@ package body Tubastga_Piece.Server_Logic.Carrier is
 
       if P_Piece.Player_Id = P_Player_Id and Server_Logic.Carrier_Paths_List.Has_Element (Path_This_Piece) then
 
-         if P_Piece.Action_Points > 0 then
             -- get the path that this piece is following at the moment.
-
             Current_Carriers_Path := Server_Logic.Carrier_Paths_List.Element (Server_Logic.All_Paths, P_Piece.Id);
 
             -- based on current position, find where on the path the piece is at the moment
@@ -295,16 +291,13 @@ package body Tubastga_Piece.Server_Logic.Carrier is
             end if;
 
             Server.ServerAPI.Perform_Move
-              (Action.Type_Action_Type(1),
+              (P_Piece.Player_Id,
+               Action.Type_Action_Type(1),
                P_Piece.Id,
-               Hexagon.Path.Element (Current_Path_Cursor),
                Hexagon.Path.Element (Next_Path_Cursor),
-               P_Piece.Player_Id,
-               P_Piece.Player_Id,
-               Ret_Status1);
+               Ret_Status);
 
-         end if;
-      end if;
+     end if;
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Piece.Server_Logic.Carrier.Carrier_Move- exit");
@@ -582,9 +575,8 @@ package body Tubastga_Piece.Server_Logic.Carrier is
 
       Patch_In_Progress : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
-      Cursor_Any_Patch, Cursor_Check_With_Patch_List : Patch_List.Cursor;
+      Cursor_Any_Patch : Patch_List.Cursor;
       The_Path                                       : Hexagon.Path.Vector;
-      Cursor_Pos_In_Progress                         : Hexagon.Path.Cursor;
 
       use Hexagon.Server_Map;
    begin

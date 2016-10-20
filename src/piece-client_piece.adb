@@ -1,7 +1,7 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Tubastga Game - A turn based strategy game.
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -43,13 +43,12 @@ package body Piece.Client_Piece is
    end Init;
 
    procedure Create_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Type_Piece;
       P_Piece_Type  : in     Type_Piece_Type;
       P_Category    : in     Type_Category;
-      P_Patch       : in out Landscape.Type_Patch;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Patch       : in out Landscape.Type_Patch)
    is
 
    begin
@@ -67,11 +66,10 @@ package body Piece.Client_Piece is
       P_Piece.Category      := P_Category;
 
       Client.ClientRPC.Create_Piece
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Patch.Pos,
-         P_Piece,
-         P_Player_Id,
-         P_Status);
+         P_Piece);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Create_Piece - exit");
@@ -188,83 +186,11 @@ package body Piece.Client_Piece is
       return Ret;
    end Validate_Target_Piece;
 
-   function Movement_Capability
-     (P_Piece : in Type_Piece)
-      return Hexagon.Area.Client_Area.Type_Action_Capabilities_Access
-   is
-      Ret : Hexagon.Area.Client_Area.Type_Action_Capabilities_Access;
-
-      use Hexagon.Area;
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Movement_Capability - enter");
-      end if;
-
-      Ret :=
-        new Hexagon.Area.Type_Action_Capabilities'
-          (Client.ClientRPC.Movement_Capability (P_Piece.Id));
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Movement_Capability - exit");
-      end if;
-
-      return Ret;
-
-   end Movement_Capability;
-
-   function Attack_Capability
-     (P_Piece : in Type_Piece)
-      return Hexagon.Area.Client_Area.Type_Action_Capabilities_Access
-   is
-      Ret : Hexagon.Area.Client_Area.Type_Action_Capabilities_Access;
-
-      use Hexagon.Area;
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Attack_Capability - enter");
-      end if;
-
-      Ret :=
-        new Hexagon.Area.Type_Action_Capabilities'
-          (Client.ClientRPC.Attack_Capability (P_Piece.Id));
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Attack_Capability - exit");
-      end if;
-
-      return Ret;
-
-   end Attack_Capability;
-
-   function Observation_Area
-     (P_Piece : in Type_Piece)
-      return Hexagon.Area.Client_Area.Type_Action_Capabilities_Access
-   is
-      Ret : Hexagon.Area.Client_Area.Type_Action_Capabilities_Access;
-      use Hexagon.Area;
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Observation_Area - enter");
-      end if;
-
-      Ret :=
-        new Hexagon.Area.Type_Action_Capabilities'
-          (Client.ClientRPC.Observation_Area (P_Piece.Id));
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Observation_Area - exit");
-      end if;
-
-      return Ret;
-
-   end Observation_Area;
-
    procedure Put_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Type_Piece;
-      P_Patch       : in out Landscape.Type_Patch;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Patch       : in out Landscape.Type_Patch)
    is
    begin
       if Verbose then
@@ -272,11 +198,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Put_Piece
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Patch.Pos,
-         P_Piece.Id,
-         P_Player_Id,
-         P_Status);
+         P_Piece.Id);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Put_Piece - exit");
@@ -285,11 +210,10 @@ package body Piece.Client_Piece is
    end Put_Piece;
 
    procedure Remove_Piece
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Type_Piece;
-      P_Patch       : in out Landscape.Type_Patch;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Patch       : in out Landscape.Type_Patch)
    is
    begin
       if Verbose then
@@ -297,11 +221,9 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Remove_Piece
-        (P_Action_Type,
-         P_Patch.Pos,
-         P_Piece.Id,
-         P_Player_Id,
-         P_Status);
+        (P_Player_Id,
+         P_Action_Type,
+         P_Piece.Id);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Remove_Piece - exit");
@@ -310,12 +232,9 @@ package body Piece.Client_Piece is
    end Remove_Piece;
 
    procedure Perform_Attack
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in out Type_Piece;
-      P_Attacking_Patch, P_Attacked_Patch : in out Landscape.Type_Patch;
-      P_Player_Id                         : in     Player.Type_Player_Id;
-      P_Winner                            :    out Player.Type_Player_Id;
-      P_Status                            :    out Status.Type_Status)
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
+      P_Attacking_Piece, P_Attacked_Piece : in out Type_Piece)
    is
    begin
       if Verbose then
@@ -323,44 +242,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Attack
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Attacking_Piece.Id,
-         P_Attacked_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (True, P_Attacking_Patch.Pos.A, P_Attacking_Patch.Pos.B),
-         Hexagon.Type_Hexagon_Position'
-           (True, P_Attacked_Patch.Pos.A, P_Attacked_Patch.Pos.B),
-         P_Player_Id,
-         P_Winner,
-         P_Status);
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Attack - exit");
-      end if;
-
-   end Perform_Attack;
-
-   procedure Perform_Attack
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in out Type_Piece;
-      P_Path                              : in     Hexagon.Path.Vector;
-      P_Player_Id                         : in     Player.Type_Player_Id;
-      P_Winner                            :    out Player.Type_Player_Id;
-      P_Status                            :    out Status.Type_Status)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Attack - enter");
-      end if;
-
-      Client.ClientRPC.Perform_Attack
-        (P_Action_Type,
-         P_Attacking_Piece.Id,
-         P_Attacked_Piece.Id,
-         P_Path,
-         P_Player_Id,
-         P_Winner,
-         P_Status);
+         P_Attacked_Piece.Id);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Attack - exit");
@@ -369,12 +254,9 @@ package body Piece.Client_Piece is
    end Perform_Attack;
 
    procedure Perform_Ranged_Attack
-     (P_Action_Type                       : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in out Type_Piece;
-      P_Attacking_Patch, P_Attacked_Patch : in out Landscape.Type_Patch;
-      P_Player_Id                         : in     Player.Type_Player_Id;
-      P_Winner                            :    out Player.Type_Player_Id;
-      P_Status                            :    out Status.Type_Status)
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
+      P_Attacking_Piece, P_Attacked_Piece : in out Type_Piece)
    is
    begin
       if Verbose then
@@ -382,16 +264,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Ranged_Attack
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Attacking_Piece.Id,
-         P_Attacked_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (True, P_Attacking_Patch.Pos.A, P_Attacking_Patch.Pos.B),
-         Hexagon.Type_Hexagon_Position'
-           (True, P_Attacked_Patch.Pos.A, P_Attacked_Patch.Pos.B),
-         P_Player_Id,
-         P_Winner,
-         P_Status);
+         P_Attacked_Piece.Id);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Ranged_Attack - exit");
@@ -400,11 +276,10 @@ package body Piece.Client_Piece is
    end Perform_Ranged_Attack;
 
    procedure Perform_Move
-     (P_Action_Type            : in     Action.Type_Action_Type;
+     (P_Player_Id              : in     Player.Type_Player_Id;
+      P_Action_Type            : in     Action.Type_Action_Type;
       P_Moving_Piece           : in out Type_Piece;
-      P_From_Patch, P_To_Patch : in out Landscape.Type_Patch;
-      P_Player_Id              : in     Player.Type_Player_Id;
-      P_Status                 :    out Status.Type_Status)
+      P_To_Patch : in out Landscape.Type_Patch)
    is
    begin
       if Verbose then
@@ -412,14 +287,11 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Move
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Moving_Piece.Id,
          Hexagon.Type_Hexagon_Position'
-           (True, P_From_Patch.Pos.A, P_From_Patch.Pos.B),
-         Hexagon.Type_Hexagon_Position'
-           (True, P_To_Patch.Pos.A, P_To_Patch.Pos.B),
-         P_Player_Id,
-         P_Status);
+           (True, P_To_Patch.Pos.A, P_To_Patch.Pos.B));
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Move - exit");
@@ -427,38 +299,12 @@ package body Piece.Client_Piece is
 
    end Perform_Move;
 
-   procedure Perform_Move
-     (P_Action_Type  : in     Action.Type_Action_Type;
-      P_Moving_Piece : in out Type_Piece;
-      P_Path         : in     Hexagon.Path.Vector;
-      P_Player_Id    : in     Player.Type_Player_Id;
-      P_Status       :    out Status.Type_Status)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Move (Path) - enter");
-      end if;
-
-      Client.ClientRPC.Perform_Move
-        (P_Action_Type,
-         P_Moving_Piece.Id,
-         P_Path,
-         P_Player_Id,
-         P_Status);
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Move (Path) - exit");
-      end if;
-   end Perform_Move;
-
    procedure Perform_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Type_Piece;
-      P_Patch       : in     Landscape.Type_Patch;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
@@ -466,13 +312,11 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Patch_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         Hexagon.Type_Hexagon_Position'(True, P_Patch.Pos.A, P_Patch.Pos.B),
          P_Effect,
-         P_Area,
-         P_Player_Id,
-         P_Status);
+         P_Area);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Patch_Effect - exit");
@@ -481,12 +325,11 @@ package body Piece.Client_Piece is
    end Perform_Patch_Effect;
 
    procedure Perform_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Type_Piece;
       P_Patch       : in     Landscape.Type_Patch;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
@@ -494,12 +337,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Piece_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         Hexagon.Type_Hexagon_Position'(True, P_Patch.Pos.A, P_Patch.Pos.B),
-         P_Effect,
-         P_Player_Id,
-         P_Status);
+         P_Effect);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Piece_Effect - exit");
@@ -526,11 +367,10 @@ package body Piece.Client_Piece is
    end Get_Pieces_Report;
 
    procedure Grant_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (      P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
@@ -538,11 +378,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Grant_Piece_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         P_Effect,
-         P_Player_Id,
-         P_Status);
+         P_Effect);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Grant_Effect - exit");
@@ -550,11 +389,10 @@ package body Piece.Client_Piece is
    end Grant_Piece_Effect;
 
    procedure Revoke_Piece_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Effect      : in     Effect.Type_Effect;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Effect      : in     Effect.Type_Effect)
    is
    begin
       if Verbose then
@@ -562,11 +400,10 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Revoke_Piece_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         P_Effect,
-         P_Player_Id,
-         P_Status);
+         P_Effect);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Revoke_Piece_Effect - exit");
@@ -574,13 +411,11 @@ package body Piece.Client_Piece is
    end Revoke_Piece_Effect;
 
    procedure Grant_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Patch       : in     Landscape.Type_Patch;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
@@ -588,14 +423,11 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Grant_Patch_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (P_Valid => True, A => P_Patch.Pos.A, B => P_Patch.Pos.B),
          P_Effect,
-         P_Area,
-         P_Player_Id,
-         P_Status);
+         P_Area);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Grant_Patch_Effect - exit");
@@ -603,13 +435,11 @@ package body Piece.Client_Piece is
    end Grant_Patch_Effect;
 
    procedure Revoke_Patch_Effect
-     (P_Action_Type : in     Action.Type_Action_Type;
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Patch       : in     Landscape.Type_Patch;
       P_Effect      : in     Effect.Type_Effect;
-      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Player_Id   : in     Player.Type_Player_Id;
-      P_Status      :    out Status.Type_Status)
+      P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
       if Verbose then
@@ -617,14 +447,11 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Revoke_Patch_Effect
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (P_Valid => True, A => P_Patch.Pos.A, B => P_Patch.Pos.B),
          P_Effect,
-         P_Area,
-         P_Player_Id,
-         P_Status);
+         P_Area);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Revoke_Patch_Effect - exit");
@@ -632,13 +459,11 @@ package body Piece.Client_Piece is
    end Revoke_Patch_Effect;
 
    procedure Perform_Construction
-     (P_Action_Type        : in     Action.Type_Action_Type;
+     (P_Player_Id          : in     Player.Type_Player_Id;
+      P_Action_Type        : in     Action.Type_Action_Type;
       P_Construction_Piece : in     Type_Piece;
-      P_Piece_Pos          : in     Landscape.Type_Patch;
       P_Construction_Patch : in     Landscape.Type_Patch;
-      P_Construction       : in     Construction.Type_Construction;
-      P_Player_Id          : in     Player.Type_Player_Id;
-      P_Status             :    out Status.Type_Status)
+      P_Construction       : in     Construction.Type_Construction)
    is
    begin
       if Verbose then
@@ -646,28 +471,51 @@ package body Piece.Client_Piece is
       end if;
 
       Client.ClientRPC.Perform_Construction
-        (P_Action_Type,
+        (P_Player_Id,
+         P_Action_Type,
          P_Construction_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (P_Valid => True, A => P_Piece_Pos.Pos.A, B => P_Piece_Pos.Pos.B),
          Hexagon.Type_Hexagon_Position'
            (P_Valid => True,
             A       => P_Construction_Patch.Pos.A,
             B       => P_Construction_Patch.Pos.B),
-         P_Construction,
-         P_Player_Id,
-         P_Status);
+         P_Construction);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Construction - exit");
       end if;
    end Perform_Construction;
 
+   procedure Perform_Demolition
+     (P_Player_Id          : in     Player.Type_Player_Id;
+      P_Action_Type        : in     Action.Type_Action_Type;
+      P_Demolition_Piece   : in     Type_Piece;
+      P_Demolition_Patch   : in     Landscape.Type_Patch;
+      P_Construction       : in     Construction.Type_Construction)
+   is
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Demolition - enter");
+      end if;
+
+      Client.ClientRPC.Perform_Demolition
+        (P_Player_Id,
+         P_Action_Type,
+         P_Demolition_Piece.Id,
+         Hexagon.Type_Hexagon_Position'
+           (P_Valid => True,
+            A       => P_Demolition_Patch.Pos.A,
+            B       => P_Demolition_Patch.Pos.B),
+         P_Construction);
+
+      if Verbose then
+         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Demolition - exit");
+      end if;
+   end Perform_Demolition;
+
    function Find_Effect
      (P_Piece_Id    : in Piece.Type_Piece_Id;
       P_Effect_Name :    Effect.Type_Effect_Name) return Natural
    is
-      Trav_Piece   : Piece.Client_Piece.Pieces_Client_List.Cursor;
       Trav_Effects : Effect.Effect_List.Cursor;
       An_Effect    : Effect.Type_Effect;
 

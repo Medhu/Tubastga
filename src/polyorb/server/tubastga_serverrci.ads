@@ -1,6 +1,6 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
+--      Tubastga Game - A turn based strategy game.
 --      Copyright (C) 2015  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify

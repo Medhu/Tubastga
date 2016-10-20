@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -69,8 +69,8 @@ package Tubastga_Window_Pkg is
       Inside_View_Invisible_On_Minimap,
       Inside_View_Visible_On_Minimap,
       Invisible,
-      Reachable,
-      Attackable,
+      Selected_Patch_LB,
+      Selected_Patch_RB,
       Selected_Patch,
       Selected_Area,
       Grass,
@@ -127,7 +127,6 @@ package Tubastga_Window_Pkg is
 
    type Type_Images is array (Type_Image_Names) of Type_Graphic_Data;
    type Type_Colors is (Black, White, Grey, Red, Blue, Green, Orange, Yellow);
-   type Type_All_Gdk_GC is array (Type_Colors) of Gdk.Gdk_GC;
 
    type Dlg_MainMenu_Record is new Gtk.Dialog.Gtk_Dialog_Record with record
       Layout_Table : Gtk.Table.Gtk_Table;
@@ -158,8 +157,8 @@ package Tubastga_Window_Pkg is
       Box_Create_Game                                              : Gtk.Box.Gtk_Hbox;
       Lbl_Create_Game_Player_Name_1, Lbl_Create_Game_Player_Name_2, Lbl_Create_Game_Player_Name_3 : Gtk.Label.Gtk_Label;
       En_Create_Game_Player_Name_1, En_Create_Game_Player_Name_2, En_Create_Game_Player_Name_3   : Gtk.GEntry.Gtk_Entry;
-      Lbl_Create_Game_Chose_Map                                    : Gtk.Label.Gtk_Label;
-      Cmb_Create_Game_Chose_Map : Gtk.Combo_Box_Text.Gtk_Combo_Box_Text;
+      Lbl_Create_Game_Chose_Scenario                                    : Gtk.Label.Gtk_Label;
+      Cmb_Create_Game_Chose_Scenario : Gtk.Combo_Box_Text.Gtk_Combo_Box_Text;
       --
       Box_Save_Game      : Gtk.Box.Gtk_Hbox;
       Lbl_Save_Game_Name : Gtk.Label.Gtk_Label;
@@ -199,7 +198,7 @@ package Tubastga_Window_Pkg is
       -- Production Center
       Btn_Wall1, Btn_Wall2, Btn_Wall3, Btn_Wall4, Btn_Wall5, Btn_Wall6 : Gtk_Button;
       -- Fighting_Piece
-      Btn_Attack, Btn_Move, Btn_Search, Btn_Promote, Btn_Demote : Gtk_Button;
+      Btn_Attack, Btn_Ranged_Attack, Btn_Move, Btn_Search, Btn_Promote, Btn_Demote : Gtk_Button;
       --
       Selected_Piece : Piece.Client_Piece.Type_Client_Piece_Class_Access;
       Selected_Patch : Hexagon.Client_Map.Type_Client_Patch_Adress;
@@ -257,7 +256,6 @@ package Tubastga_Window_Pkg is
       View_Resources_Info   : Gtk_Text_View;
       Buffer_Resources_Info : Gtk_Text_Buffer;
 
-      Btn_End_Turn          : Gtk_Tool_Button;
       Btn_Place_Sentry      : Gtk_Tool_Button;
       Btn_Place_Ship        : Gtk_Tool_Button;
       Btn_Place_Farm        : Gtk_Tool_Button;
@@ -273,7 +271,7 @@ package Tubastga_Window_Pkg is
       --
       Map_Image  : Type_Graphic_Data;
       All_Images : Type_Images;
-      All_GC     : Type_All_Gdk_GC;
+--      All_GC     : Type_All_Gdk_GC;
       --
       Wnd_Performing_Piece : Wnd_Piece_Access;
       Wnd_Target           : Wnd_Target_Access;

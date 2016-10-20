@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@ with Cairo;
 with Gtk.Spin_Button; use Gtk.Spin_Button;
 
 package Tubastga_Window_Pkg.Callbacks is
+   type Type_Scroll_Direction is (Up, Down, Left, Right);
+
    function Periodic_Updates_Summary return Boolean;
 
    procedure On_Map_Area_Show (Object : access Gtk_Drawing_Area_Record'Class);
@@ -57,8 +59,6 @@ package Tubastga_Window_Pkg.Callbacks is
      (Object : access Gtk_Widget_Record'Class;
       Params : Gtk.Arguments.Gtk_Args) return Boolean;
 
-   procedure On_Button_End_Turn (Object : access Gtk_Tool_Button_Record'Class);
-
    procedure On_Button_Place_Sentry (Object : access Gtk_Tool_Button_Record'Class);
 
    procedure On_Button_Place_Bowman (Object : access Gtk_Tool_Button_Record'Class);
@@ -86,6 +86,7 @@ package Tubastga_Window_Pkg.Callbacks is
 
    procedure On_Button_Move (Object : access Gtk_Button_Record'Class);
    procedure On_Button_Attack (Object : access Gtk_Button_Record'Class);
+   procedure On_Button_Ranged_Attack (Object : access Gtk_Button_Record'Class);
    procedure On_Button_Search (Object : access Gtk_Button_Record'Class);
    procedure On_Button_Promote (Object : access Gtk_Button_Record'Class);
    procedure On_Button_Demote (Object : access Gtk_Button_Record'Class);
@@ -116,6 +117,10 @@ package Tubastga_Window_Pkg.Callbacks is
    procedure On_Button_Close (Object : access Gtk_Button_Record'Class);
 
    function On_Keyboard_Key_Press
+     (Object : access Gtk_Widget_Record'Class;
+      Params : Gtk.Arguments.Gtk_Args) return Boolean;
+
+   function On_Keyboard_Key_Release
      (Object : access Gtk_Widget_Record'Class;
       Params : Gtk.Arguments.Gtk_Args) return Boolean;
 

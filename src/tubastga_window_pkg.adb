@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -200,12 +200,12 @@ package body Tubastga_Window_Pkg is
       Gtk.GEntry.Set_Max_Length (dlg_MainMenu.all.En_Create_Game_Player_Name_3, Gint (10));
       Gtk.GEntry.Set_Width_Chars (dlg_MainMenu.all.En_Create_Game_Player_Name_3, Gint (11));
 
-      Gtk.Label.Gtk_New (dlg_MainMenu.all.Lbl_Create_Game_Chose_Map, "Chose map:");
-      Gtk.Combo_Box_Text.Gtk_New (dlg_MainMenu.all.Cmb_Create_Game_Chose_Map);
+      Gtk.Label.Gtk_New (dlg_MainMenu.all.Lbl_Create_Game_Chose_Scenario, "Chose scenario:");
+      Gtk.Combo_Box_Text.Gtk_New (dlg_MainMenu.all.Cmb_Create_Game_Chose_Scenario);
       Gtk.Combo_Box_Text.Append_Text
-        (dlg_MainMenu.all.Cmb_Create_Game_Chose_Map,
+        (dlg_MainMenu.all.Cmb_Create_Game_Chose_Scenario,
          "Not connected to server yet");
-      Gtk.Combo_Box_Text.Set_Active (dlg_MainMenu.all.Cmb_Create_Game_Chose_Map, 0);
+      Gtk.Combo_Box_Text.Set_Active (dlg_MainMenu.all.Cmb_Create_Game_Chose_Scenario, 0);
       Gtk.Box.Pack_Start
         (dlg_MainMenu.all.Box_Create_Game,
          dlg_MainMenu.all.Lbl_Create_Game_Player_Name_1,
@@ -247,13 +247,13 @@ package body Tubastga_Window_Pkg is
 
       Gtk.Box.Pack_Start
         (dlg_MainMenu.all.Box_Create_Game,
-         dlg_MainMenu.all.Lbl_Create_Game_Chose_Map,
+         dlg_MainMenu.all.Lbl_Create_Game_Chose_Scenario,
          False,
          False,
          2);
       Gtk.Box.Pack_Start
         (dlg_MainMenu.all.Box_Create_Game,
-         dlg_MainMenu.all.Cmb_Create_Game_Chose_Map,
+         dlg_MainMenu.all.Cmb_Create_Game_Chose_Scenario,
          False,
          False,
          2);
@@ -268,8 +268,8 @@ package body Tubastga_Window_Pkg is
       Gtk.Label.Show (dlg_MainMenu.all.Lbl_Create_Game_Player_Name_3);
       Gtk.GEntry.Show (dlg_MainMenu.all.En_Create_Game_Player_Name_3);
 
-      Gtk.Combo_Box_Text.Show (dlg_MainMenu.all.Cmb_Create_Game_Chose_Map);
-      Gtk.Label.Show (dlg_MainMenu.all.Lbl_Create_Game_Chose_Map);
+      Gtk.Combo_Box_Text.Show (dlg_MainMenu.all.Cmb_Create_Game_Chose_Scenario);
+      Gtk.Label.Show (dlg_MainMenu.all.Lbl_Create_Game_Chose_Scenario);
 
       Gtk.GEntry.Set_Text
         (dlg_MainMenu.all.En_Create_Game_Player_Name_1,
@@ -687,13 +687,6 @@ package body Tubastga_Window_Pkg is
       --
       --  Buttons
       --
-      Gtk.Tool_Button.Gtk_New (wndMain.Btn_End_Turn);
-      Gtk.Tool_Button.Set_Icon_Widget
-        (wndMain.Btn_End_Turn,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\end_turn.png"));
-      Gtk.Tool_Button.Set_Label (wndMain.Btn_End_Turn, "End Turn");
-      Gtk.Toolbar.Insert (wndMain.Toolbar_Main, wndMain.Btn_End_Turn);
-
       Gtk.Tool_Button.Gtk_New (wndMain.Btn_Place_Sentry);
       Gtk.Tool_Button.Set_Icon_Widget
         (wndMain.Btn_Place_Sentry,
@@ -834,11 +827,6 @@ package body Tubastga_Window_Pkg is
          False);
 
       Tool_Button_Callback.Connect
-        (wndMain.Btn_End_Turn,
-         "clicked",
-         Tool_Button_Callback.To_Marshaller (On_Button_End_Turn'Access),
-         False);
-      Tool_Button_Callback.Connect
         (wndMain.Btn_Place_Sentry,
          "clicked",
          Tool_Button_Callback.To_Marshaller (On_Button_Place_Sentry'Access),
@@ -893,12 +881,15 @@ package body Tubastga_Window_Pkg is
 
       Return_Callback.Connect (wndMain, "key_press_event", On_Keyboard_Key_Press'Access);
 
+      Return_Callback.Connect (wndMain, "key_release_event", On_Keyboard_Key_Release'Access);
+
       Add_Events
         (wndMain.Area_Map,
          Button_Press_Mask or
          Button_Release_Mask or
          Button_Motion_Mask or
-         Key_Press_Mask or
+               Key_Press_Mask or
+                 Key_Release_Mask or
          Scroll_Mask);
 
       --
@@ -1180,19 +1171,15 @@ package body Tubastga_Window_Pkg is
 
       Gtk.Button.Gtk_New (Wnd_Performing_Piece.Btn_Move);
       Gtk.Button.Set_Label (Wnd_Performing_Piece.Btn_Move, "Move");
-      Gtk.Button.Set_Image
-        (Wnd_Performing_Piece.Btn_Move,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
+
       Gtk.Button.Gtk_New (Wnd_Performing_Piece.Btn_Attack);
       Gtk.Button.Set_Label (Wnd_Performing_Piece.Btn_Attack, "Attack");
-      Gtk.Button.Set_Image
-        (Wnd_Performing_Piece.Btn_Attack,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
+
+      Gtk.Button.Gtk_New (Wnd_Performing_Piece.Btn_Ranged_Attack);
+      Gtk.Button.Set_Label (Wnd_Performing_Piece.Btn_Ranged_Attack, "Range Attack");
+
       Gtk.Button.Gtk_New (Wnd_Performing_Piece.Btn_Search);
       Gtk.Button.Set_Label (Wnd_Performing_Piece.Btn_Search, "Search");
-      Gtk.Button.Set_Image
-        (Wnd_Performing_Piece.Btn_Search,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
 
       Gtk.Button.Gtk_New (Wnd_Performing_Piece.Btn_Promote);
       Gtk.Button.Set_Label (Wnd_Performing_Piece.Btn_Promote, "Promote");
@@ -1219,6 +1206,7 @@ package body Tubastga_Window_Pkg is
 
       Gtk.Box.Pack_Start (Wnd_Performing_Piece.Fighting_Piece_Box, Wnd_Performing_Piece.Btn_Move);
       Gtk.Box.Pack_Start (Wnd_Performing_Piece.Fighting_Piece_Box, Wnd_Performing_Piece.Btn_Attack);
+      Gtk.Box.Pack_Start (Wnd_Performing_Piece.Fighting_Piece_Box, Wnd_Performing_Piece.Btn_Ranged_Attack);
       Gtk.Box.Pack_Start (Wnd_Performing_Piece.Fighting_Piece_Box, Wnd_Performing_Piece.Btn_Search);
       Gtk.Box.Pack_Start
         (Wnd_Performing_Piece.Fighting_Piece_Box,
@@ -1316,6 +1304,11 @@ package body Tubastga_Window_Pkg is
         (Wnd_Performing_Piece.Btn_Attack,
          "clicked",
          Button_Cb.To_Marshaller (On_Button_Attack'Access),
+         False);
+      Button_Cb.Connect
+        (Wnd_Performing_Piece.Btn_Ranged_Attack,
+         "clicked",
+         Button_Cb.To_Marshaller (On_Button_Ranged_Attack'Access),
          False);
       Button_Cb.Connect
         (Wnd_Performing_Piece.Btn_Search,

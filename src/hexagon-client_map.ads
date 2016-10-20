@@ -1,7 +1,7 @@
 --
 --
---      Sisyfos Client/Server logic. This logic is a part of both server and client of Sisyfos.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Tubastga Game - A turn based strategy game.
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -30,8 +30,6 @@ package Hexagon.Client_Map is
    Not_Existing_Patch : exception;
    Slot_Not_Found_For_Piece : exception;
 
-   type Type_Draw_Action is (Unselected, Selected, Selected_Area, Reachable, Attackable);
-
    type Type_Client_Patch;
    type Type_Client_Patch_Adress is access all Type_Client_Patch;
    type Type_Neighbour_List is array (1 .. 6) of Type_Client_Patch_Adress;
@@ -39,7 +37,6 @@ package Hexagon.Client_Map is
    type Type_Client_Patch is new Landscape.Type_Patch with record
       Neighbours : Type_Neighbour_List;
       Visible              : Boolean;
-      Draw_Action          : Type_Draw_Action;
    end record;
 
    type Type_Client_Patch_Area is array (Positive range <>) of Type_Client_Patch_Adress;
@@ -95,25 +92,11 @@ package Hexagon.Client_Map is
      (P_Player_Id  : in Player.Type_Player_Id;
       P_Client_Map : in out Type_Client_Map_Info);
 
-   -- Used to be able to communicate with the drawing procedure which tile is
-   --chosen and so on.
-   procedure Select_Patch (P_Patch : in out Type_Client_Patch);
-   procedure Select_Patch_Area (P_Patch : in out Type_Client_Patch);
-   procedure Unselect_Patch (P_Patch : in out Type_Client_Patch);
-   procedure Unselect_All_Patches (P_Client_Map : in out Type_Client_Map_Info);
-
    function Capability_To_Area
      (P_Client_Map : in Type_Client_Map_Info;
       P_Patch      : in Type_Client_Patch;
       P_Capability : in Hexagon.Area.Client_Area.Type_Action_Capabilities_Access)
       return         Type_Client_Patch_Area_Access;
-
-   procedure Set_Reachable
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch_Area : in out Type_Client_Patch_Area);
-   procedure Set_Attackable
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch_Area : in out Type_Client_Patch_Area);
 
    procedure Set_Reports_On_Map
      (P_Client_Map                  : in Type_Client_Map_Info;
@@ -139,7 +122,6 @@ package Hexagon.Client_Map is
 
    procedure Reset_Visit;
    procedure Reset_Visible (P_Client_Map : in out Type_Client_Map_Info);
-   procedure Reset_Draw_Action (P_Client_Map : in out Type_Client_Map_Info);
 
    procedure Traverse
      (P_Client_Map : in out Type_Client_Map_Info;
@@ -168,8 +150,7 @@ package Hexagon.Client_Map is
                           Type_Client_Patch_Adress'(null),
                           Type_Client_Patch_Adress'(null),
           Type_Client_Patch_Adress'(null)),
-      Visible => False,
-      Draw_Action          => Unselected);
+      Visible => False);
 
    Unknown : constant Type_Client_Patch :=
      Type_Client_Patch'
@@ -183,8 +164,7 @@ package Hexagon.Client_Map is
                           Type_Client_Patch_Adress'(null),
                           Type_Client_Patch_Adress'(null),
           Type_Client_Patch_Adress'(null)),
-      Visible => False,
-      Draw_Action          => Unselected);
+      Visible => False);
 
    procedure Init_Client_Map (P_Client_Map : in out Type_Client_Map_Info);
 

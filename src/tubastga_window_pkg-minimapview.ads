@@ -1,6 +1,6 @@
 --
 --
---      Tubastga - a turn based strategy game
+--      Tubastga Game - A turn based strategy game.
 --      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,17 @@
 --      You should have received a copy of the GNU General Public License
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
-package Tubastga_Window_Intl is
 
-   function "-" (Msg : String) return String;
-   --  Convenient shortcut to the Gettext function.
+with Hexagon.Client_Map;
+with Gdk.Pixbuf;
+with Tubastga_Window_Pkg;
 
-end Tubastga_Window_Intl;
+package Tubastga_Window_Pkg.MinimapView is
+
+   procedure Draw_Minimap
+     (P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
+      P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
+      P_Minimapview : in out Gdk.Pixbuf.Gdk_Pixbuf);
+
+end Tubastga_Window_Pkg.MinimapView;

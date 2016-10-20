@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A Turn based strategy game. This is the main starter for server
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2016  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -33,13 +33,12 @@ with Player;
 procedure Tubastga_Server_Starter is
 
    Command_Line  : Utilities.RemoteString.Type_Command_Parameters;
-   Map_File_Name : Utilities.RemoteString.Type_String;
 
    Tubastga_Class1 : Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
    Tubastga_Class2 : Tubastga_Piece.Server_Logic.Type_My_Tubastga_House_Access_Class;
 
 begin
-   Text_IO.Put_Line ("Tubast'ga - v0.2. Copyright (C) 2015  Frank J Jorgensen");
+   Text_IO.Put_Line ("Tubast'ga - v0.3. Copyright (C) 2015-2016  Frank J Jorgensen");
    Text_IO.Put_Line
      ("This program comes with ABSOLUTELY NO WARRANTY; for details see attached gpl.txt");
    Text_IO.Put_Line ("or <http://www.gnu.org/licenses/>");
@@ -114,8 +113,6 @@ begin
       --
       Tubastga_Piece.Server_Logic.Tubastga_Start_Game'Access,
       Tubastga_Piece.Server_Logic.Tubastga_Upkeep_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_Start_Turn'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_End_Turn'Access,
       Tubastga_Piece.Server_Logic.Tubastga_End_Game'Access);
 
    Tubastga_Piece.Server_Logic.Lua_State := Lua.New_State;
