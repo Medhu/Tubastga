@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga - a turn based strategy game
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by

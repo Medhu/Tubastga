@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A Turn based strategy game. This is the main starter for server
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ with Ada.Strings.Maps.Constants;
 with Utilities;
 with Text_IO;
 with Tubastga_ServerRCI;
-with Tubastga_Piece.Server_Logic;
+with Tubastga_Game.Server_Logic;
 with Piece;
 with Server.ServerAPI;
 with Server.Lua_Interface;
@@ -34,11 +34,11 @@ procedure Tubastga_Server_Starter is
 
    Command_Line  : Utilities.RemoteString.Type_Command_Parameters;
 
-   Tubastga_Class1 : Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
-   Tubastga_Class2 : Tubastga_Piece.Server_Logic.Type_My_Tubastga_House_Access_Class;
+   Tubastga_Class1 : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
+   Tubastga_Class2 : Tubastga_Game.Server_Logic.Type_My_Tubastga_House_Access_Class;
 
 begin
-   Text_IO.Put_Line ("Tubast'ga - v0.3. Copyright (C) 2015-2016  Frank J Jorgensen");
+   Text_IO.Put_Line ("Tubast'ga - v0.4. Copyright (C) 2015-2017  Frank J Jorgensen");
    Text_IO.Put_Line
      ("This program comes with ABSOLUTELY NO WARRANTY; for details see attached gpl.txt");
    Text_IO.Put_Line ("or <http://www.gnu.org/licenses/>");
@@ -84,12 +84,12 @@ begin
 
    Tubastga_ServerRCI.Init (Command_Line);
 
-   Tubastga_Class1               := new Tubastga_Piece.Server_Logic.Type_My_Tubastga_Piece;
+   Tubastga_Class1               := new Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
    Tubastga_Class1.Id            := Piece.Undefined_Piece_Id;
    Tubastga_Class1.Type_Of_Piece := Piece.Undefined_Piece_Type;
    Tubastga_Class1.Player_Id     := Player.Undefined_Player_Id;
 
-   Tubastga_Class2               := new Tubastga_Piece.Server_Logic.Type_My_Tubastga_House;
+   Tubastga_Class2               := new Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
    Tubastga_Class2.Id            := Piece.Undefined_Piece_Id;
    Tubastga_Class2.Type_Of_Piece := Piece.Undefined_Piece_Type;
    Tubastga_Class2.Player_Id     := Player.Undefined_Player_Id;
@@ -98,26 +98,26 @@ begin
      (Tubastga_Class1.all,
       Tubastga_Class2.all,
       --
-      Tubastga_Piece.Landscapes_Type_Info_List,
-      Tubastga_Piece.Pieces_Type_Info_List,
-      Tubastga_Piece.Houses_Type_Info_List,
-      Tubastga_Piece.Construction_Type_Info_List,
-      Tubastga_Piece.Effect_Type_Info_List,
+      Tubastga_Game.Landscapes_Type_Info_List,
+      Tubastga_Game.Pieces_Type_Info_List,
+      Tubastga_Game.Houses_Type_Info_List,
+      Tubastga_Game.Construction_Type_Info_List,
+      Tubastga_Game.Effect_Type_Info_List,
       --
-      Tubastga_Piece.Server_Logic.Tubastga_Creating_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_Saving_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_Loading_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Creating_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Saving_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Loading_Game'Access,
       --
-      Tubastga_Piece.Server_Logic.Tubastga_Joining_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_Leaving_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Joining_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Leaving_Game'Access,
       --
-      Tubastga_Piece.Server_Logic.Tubastga_Start_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_Upkeep_Game'Access,
-      Tubastga_Piece.Server_Logic.Tubastga_End_Game'Access);
+      Tubastga_Game.Server_Logic.Tubastga_Start_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_Upkeep_Game'Access,
+      Tubastga_Game.Server_Logic.Tubastga_End_Game'Access);
 
-   Tubastga_Piece.Server_Logic.Lua_State := Lua.New_State;
-   Lua.Open_Libs (Tubastga_Piece.Server_Logic.Lua_State);
-   Server.Lua_Interface.Init(Tubastga_Piece.Server_Logic.Lua_State);
+   Tubastga_Game.Server_Logic.Lua_State := Lua.New_State;
+   Lua.Open_Libs (Tubastga_Game.Server_Logic.Lua_State);
+   Server.Lua_Interface.Init(Tubastga_Game.Server_Logic.Lua_State);
 
    Server.ServerAPI.Start;
 

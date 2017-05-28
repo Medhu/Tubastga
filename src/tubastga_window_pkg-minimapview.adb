@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -18,22 +18,24 @@
 --
 
 with Tubastga_Window_Pkg.FullsizeView;
-with Tubastga_Piece;
+with Tubastga_Game;
 with Landscape;
+with Text_IO;
+with Glib;
 
 package body Tubastga_Window_Pkg.MinimapView is
 
    Minimap_Scale   : constant Positive := 30;
-   Minimap_Origo_Y : constant Integer  := 350;
+   Minimap_Origo_Y : constant Integer  := 370;
 
    procedure Draw_Minimap
-     (P_All_Images  : in     Tubastga_Window_Pkg.Type_Images;
+     (
       P_Client_Map  : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch       : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Minimapview : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       Minimap_X, Minimap_Y : Glib.Gint;
-      Landscape_Image      : Tubastga_Window_Pkg.Type_Image_Names;
+      Landscape_Image      : Tubastga_UI_Resources.Type_Image_Names;
 
       use Landscape;
    begin
@@ -46,14 +48,14 @@ package body Tubastga_Window_Pkg.MinimapView is
 
       -- minimap
 
-      if P_Patch.Landscape_Here = Tubastga_Piece.Landscape_Grass then
-         Landscape_Image := Minimap_Grass;
-      elsif P_Patch.Landscape_Here = Tubastga_Piece.Landscape_Forest then
-         Landscape_Image := Minimap_Forest;
-      elsif P_Patch.Landscape_Here = Tubastga_Piece.Landscape_Mountain then
-         Landscape_Image := Minimap_Mountain;
-      elsif P_Patch.Landscape_Here = Tubastga_Piece.Landscape_Water then
-         Landscape_Image := Minimap_Water;
+      if P_Patch.Landscape_Here = Tubastga_Game.Landscape_Grass then
+         Landscape_Image :=Tubastga_UI_Resources.Minimap_Grass;
+      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Forest then
+         Landscape_Image := Tubastga_UI_Resources.Minimap_Forest;
+      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Mountain then
+         Landscape_Image := Tubastga_UI_Resources.Minimap_Mountain;
+      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Water then
+         Landscape_Image := Tubastga_UI_Resources.Minimap_Water;
       end if;
 
       if
@@ -71,12 +73,13 @@ package body Tubastga_Window_Pkg.MinimapView is
          (Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
             0 .. 820))
       then
-         Landscape_Image := Outside_View_Invisible_On_Minimap;
+         Landscape_Image := Tubastga_UI_Resources.Minimap_Outside_View;
       end if;
 
-     -- minimap
+
+      -- minimap
       Gdk.Pixbuf.Composite
-        (P_All_Images (Landscape_Image).Image_Data,
+        (Tubastga_UI_Resources.All_Images (Landscape_Image).Image_Data,
          P_Minimapview,
          Glib.Gint (Minimap_X),
          Glib.Gint (Minimap_Y),
@@ -88,6 +91,7 @@ package body Tubastga_Window_Pkg.MinimapView is
          1.0,
          Gdk.Pixbuf.Interp_Nearest,
          255);
+
    end Draw_Minimap;
 
 end Tubastga_Window_Pkg.MinimapView;

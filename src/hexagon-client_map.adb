@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -345,7 +345,7 @@ package body Hexagon.Client_Map is
    function Get_Absolute_X_From_AB (P_Patch : in Type_Client_Patch) return Integer is
    begin
       if P_Patch.Pos.P_Valid then
-         return (Integer (Float (P_Patch.Pos.A - 1) * 0.866 * 42.0) + 20);
+         return (Integer (Float (P_Patch.Pos.A - 1) * 0.866 * 61.0) + 36);
       else
          return 0;
       end if;
@@ -354,9 +354,9 @@ package body Hexagon.Client_Map is
    function Get_Absolute_Y_From_AB (P_Patch : in Type_Client_Patch) return Integer is
    begin
       if P_Patch.Pos.P_Valid then
-         return (Integer (Float (P_Patch.Pos.A - 1) * 0.5 * 42.0 +
-                          Float (P_Patch.Pos.B - 1) * 42.0) +
-                 18);
+         return (Integer (Float (P_Patch.Pos.A - 1) * 0.5 * 72.0 +
+                          Float (P_Patch.Pos.B - 1) * 72.0) +
+                 36);
       else
          return 0;
       end if;

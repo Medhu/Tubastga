@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -23,23 +23,23 @@ package body Tubastga_Window_Pkg.ScrolledView is
 
    procedure Scroll_Map
      (P_Client_Map       : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Scroll_Direction : in     Tubastga_Window_Pkg.Callbacks.Type_Scroll_Direction)
+      P_Scroll_Direction : in     Tubastga_Window_Pkg.Callbacks.Main_Window.Type_Scroll_Direction)
    is
       A, B : Hexagon.Type_Hexagon_Numbers;
 
-      use Tubastga_Window_Pkg.Callbacks;
+      use Tubastga_Window_Pkg.Callbacks.Main_Window;
       use Hexagon;
    begin
       A := P_Client_Map.Origo_Patch.Pos.A;
       B := P_Client_Map.Origo_Patch.Pos.B;
       --
-      if P_Scroll_Direction = Up and P_Client_Map.Origo_Patch.Pos.B < 100 then
+      if P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Up and P_Client_Map.Origo_Patch.Pos.B < 100 then
          B := P_Client_Map.Origo_Patch.Pos.B + 1;
-      elsif P_Scroll_Direction = Down and P_Client_Map.Origo_Patch.Pos.B > 1 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Down and P_Client_Map.Origo_Patch.Pos.B > 1 then
          B := P_Client_Map.Origo_Patch.Pos.B - 1;
-      elsif P_Scroll_Direction = Right and P_Client_Map.Origo_Patch.Pos.A < 100 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Right and P_Client_Map.Origo_Patch.Pos.A < 100 then
          A := P_Client_Map.Origo_Patch.Pos.A + 1;
-      elsif P_Scroll_Direction = Left and P_Client_Map.Origo_Patch.Pos.A > 1 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Left and P_Client_Map.Origo_Patch.Pos.A > 1 then
          A := P_Client_Map.Origo_Patch.Pos.A - 1;
       end if;
 
@@ -59,17 +59,6 @@ package body Tubastga_Window_Pkg.ScrolledView is
            P_Scrolledsizeview_X,
            P_Scrolledsizeview_Y);
    end Selected_Patch;
-
-   function Selected_Piece
-     (P_Client_Map                               : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Scrolledsizeview_X, P_Scrolledsizeview_Y :    Glib.Gdouble) return Integer
-   is
-   begin
-      return Tubastga_Window_Pkg.FullsizeView.Selected_Piece
-          (P_Client_Map,
-           P_Scrolledsizeview_X,
-           P_Scrolledsizeview_Y);
-   end Selected_Piece;
 
    procedure Scroll_To_Patch
      (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;

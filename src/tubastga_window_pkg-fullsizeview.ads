@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2016  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -27,6 +27,9 @@ with Landscape;
 with Tubastga_Window_Pkg.Lists;
 
 package Tubastga_Window_Pkg.FullsizeView is
+   Patch_Zoom_Width  : constant Glib.Gint := Glib.Gint (300);
+   Patch_Zoom_Height : constant Glib.Gint := Glib.Gint (150);
+
    function Get_All_Pix_Patch_X_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint;
@@ -37,13 +40,11 @@ package Tubastga_Window_Pkg.FullsizeView is
 
    function Get_All_Pix_Player_X_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint;
 
    function Get_All_Pix_Player_Y_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint;
 
    function Get_All_Pix_Piece_X_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
@@ -56,19 +57,16 @@ package Tubastga_Window_Pkg.FullsizeView is
       P_Trav_Draw  : in Natural) return Glib.Gint;
 
    procedure Draw_Effects
-     (P_All_Images  : in     Tubastga_Window_Pkg.Type_Images;
-      P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
+     (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Effect_List : in     Effect.Effect_List.Map);
 
    procedure Draw_Constructions
-     (P_All_Images        : in     Tubastga_Window_Pkg.Type_Images;
-      P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
+     (P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Construction_List : in     Construction.Construction_List.Set);
 
    procedure Draw_Landscapes
-     (P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
-      P_Pixbuf     : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Landscape  : in     Landscape.Type_Landscape);
+     (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Landscape : in     Landscape.Type_Landscape);
 
    procedure Draw_All_Patch
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
@@ -79,23 +77,23 @@ package Tubastga_Window_Pkg.FullsizeView is
       P_All_Effects_On_Patch : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_Players
-     (P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
-      P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector);
 
-   procedure Draw_Players_Selections
-     (P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
-      P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+   procedure Draw_Houses
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector;
-      P_LB_Selected_Piece, P_RB_Selected_Piece : in Tubastga_Window_Pkg.Lists.Piece_List_Pkg.Vector);
+      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector);
+
+   function Find_Piece_Image
+     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece)
+      return Tubastga_UI_Resources.Type_Image_Names;
 
    procedure Draw_Pieces
-     (P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
-      P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector);
@@ -103,24 +101,17 @@ package Tubastga_Window_Pkg.FullsizeView is
    procedure Draw_Invisible
      (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch      : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_All_Images : in     Tubastga_Window_Pkg.Type_Images;
       P_Pixbuf     : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
-      procedure Draw_Patch_Selections
-     (P_All_Images   : in Tubastga_Window_Pkg.Type_Images;
-      P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
-         P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch;
-         P_LB_Selected_Pos, P_RB_Selected_Pos : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector);
+   procedure Draw_Patch_Selections
+     (P_Pixbuf                             : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Patch                              : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector);
 
-   function Selected_Patch (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-                            P_Fullsizeview_X,
-                            P_Fullsizeview_Y : Glib.Gdouble)
-                            return Hexagon.Client_Map.Type_Client_Patch_Adress;
-
-   function Selected_Piece
+   function Selected_Patch
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
       P_Fullsizeview_X,
       P_Fullsizeview_Y : Glib.Gdouble)
-      return Integer;
+      return Hexagon.Client_Map.Type_Client_Patch_Adress;
 
 end Tubastga_Window_Pkg.FullsizeView;

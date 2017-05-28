@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2017  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -22,12 +22,10 @@ with Hexagon;
 with Piece;
 with Text_IO;
 with Utilities;
-with Ada.Strings.Unbounded;
 with Status;
 with GNAT.Sockets;
 with Game_RPC;
 with GNAT.Sockets;
-with Ada.Strings.Fixed;
 
 -- socket version
 package body Client.ClientRPC is
