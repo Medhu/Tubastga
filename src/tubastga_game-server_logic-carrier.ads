@@ -71,7 +71,7 @@ package Tubastga_Game.Server_Logic.Carrier is
 
    function Create_From_Path_Patch_List
      (P_Player_Id  : in     Player.Type_Player_Id;
-      P_Patch_List : in out Patch_List.Vector) return Hexagon.Path.Vector;
+      P_Patch_List : in out Patch_List.Vector) return Hexagon.Navigation.Path_Pkg.Vector;
 
    procedure Clear_Path_Effects (P_Player_Id : in Player.Type_Player_Id);
 

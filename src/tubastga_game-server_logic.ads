@@ -35,6 +35,7 @@ with Construction.Server;
 with Effect.Server;
 with Lua;
 with Action;
+with Hexagon.Navigation;
 
 package Tubastga_Game.Server_Logic is
    Not_Implementet : exception;
@@ -918,9 +919,9 @@ package Tubastga_Game.Server_Logic is
 
    package Carrier_Paths_List is new Ada.Containers.Ordered_Maps
      (Piece.Type_Piece_Id,
-      Hexagon.Type_Path,
+      Hexagon.Navigation.Type_Path,
       Piece."<",
-      Hexagon."=");
+      Hexagon.Navigation."=");
 
    All_Paths : Carrier_Paths_List.Map;
 

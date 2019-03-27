@@ -19,7 +19,7 @@
 
 with Text_IO;
 with Goods;
-with Hexagon.Utility;
+--with Hexagon.Utility;
 
 package body Tubastga_Game.Server_Logic.House_Piece is
    Verbose : constant Boolean := False;
@@ -82,7 +82,7 @@ package body Tubastga_Game.Server_Logic.House_Piece is
             A_Pos := Piece.Server.Pieces_Server_List.Element (Trav_Tower).Actual_Pos;
             if A_Pos.P_Valid then
 
-               if Hexagon.Utility.Hexagon_Distance
+               if Hexagon.Navigation.Hexagon_Distance
                    (A_Pos, P_House_Piece_Pos) <
                  P_Distance
                then

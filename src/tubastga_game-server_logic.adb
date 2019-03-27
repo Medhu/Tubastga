@@ -25,7 +25,7 @@ with Text_IO;
 with Hexagon;
 with Hexagon.Area;
 with Hexagon.Area.Server_Area;
-with Hexagon.Utility;
+--with Hexagon.Utility;
 with Ada.Numerics.Discrete_Random;
 with Status;
 with Effect.Server;
@@ -808,7 +808,7 @@ package body Tubastga_Game.Server_Logic is
               ("You entered an Attack Piece command (Piece)"));
       end if;
 
-      if Hexagon.Utility.Hexagon_Distance (P_From_Pos, P_To_Pos) /= 1 then
+      if Hexagon.Navigation.Hexagon_Distance (P_From_Pos, P_To_Pos) /= 1 then
          Server.ServerAPI.Player_Activity_Report_Append
            (1,
             P_Player_Id,
@@ -944,7 +944,7 @@ package body Tubastga_Game.Server_Logic is
          Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
          Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-         if Hexagon.Utility.Hexagon_Distance (Attacker_Pos, Attacked_Pos) /= 1 then
+         if Hexagon.Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) /= 1 then
             P_Attempts_Remaining := 0;
          else
             P_Attempts_Remaining := P_Attempts_Remaining - 1;
@@ -997,7 +997,7 @@ package body Tubastga_Game.Server_Logic is
       Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
       Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-      if Hexagon.Utility.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
+      if Hexagon.Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
          Server.ServerAPI.Player_Activity_Report_Append
            (1,
             P_Player_Id,
@@ -1109,7 +1109,7 @@ package body Tubastga_Game.Server_Logic is
          Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
          Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-         if Hexagon.Utility.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
+         if Hexagon.Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
             P_Attempts_Remaining := 0;
          else
             P_Attempts_Remaining := P_Attempts_Remaining - 1;
@@ -2630,7 +2630,7 @@ package body Tubastga_Game.Server_Logic is
 
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
-      Worker_Path : Hexagon.Type_Path;
+      Worker_Path : Hexagon.Navigation.Type_Path;
 
       Lua_Status : Lua.Lua_Return_Code;
 
@@ -2804,11 +2804,26 @@ package body Tubastga_Game.Server_Logic is
             Ret_Status,
             True);
 
-         Hexagon.Path.Append (Worker_Path.This_Path, Hexagon.Type_Hexagon_Position'(True, 16, 19));
-         Hexagon.Path.Append (Worker_Path.This_Path, Hexagon.Type_Hexagon_Position'(True, 15, 19));
-         Hexagon.Path.Append (Worker_Path.This_Path, Hexagon.Type_Hexagon_Position'(True, 15, 18));
-         Hexagon.Path.Append (Worker_Path.This_Path, Hexagon.Type_Hexagon_Position'(True, 14, 18));
-         Hexagon.Path.Append (Worker_Path.This_Path, Hexagon.Type_Hexagon_Position'(True, 13, 18));
+         Hexagon.Navigation.Path_Pkg.Append (Worker_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation,
+                                                Hexagon.Type_Hexagon_Position'(True, 16, 19)));
+         Hexagon.Navigation.Path_Pkg.Append (Worker_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation,
+                                             Hexagon.Type_Hexagon_Position'(True, 15, 19)));
+         Hexagon.Navigation.Path_Pkg.Append (Worker_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation,
+                                                Hexagon.Type_Hexagon_Position'(True, 15, 18)));
+         Hexagon.Navigation.Path_Pkg.Append (Worker_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation,
+                                                Hexagon.Type_Hexagon_Position'(True, 14, 18)));
+         Hexagon.Navigation.Path_Pkg.Append (Worker_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation,
+                                                Hexagon.Type_Hexagon_Position'(True, 13, 18)));
 
          Carrier_Paths_List.Insert (All_Paths, A_Piece.Id, Worker_Path);
 

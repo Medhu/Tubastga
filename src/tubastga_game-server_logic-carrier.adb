@@ -241,8 +241,8 @@ package body Tubastga_Game.Server_Logic.Carrier is
       P_Piece     : in out Server_Logic.Type_My_Tubastga_Piece)
    is
       Current_Piece_Pos                     : Hexagon.Type_Hexagon_Position;
-      Current_Carriers_Path                 : Hexagon.Type_Path;
-      Current_Path_Cursor, Next_Path_Cursor : Hexagon.Path.Cursor;
+      Current_Carriers_Path                 : Hexagon.Navigation.Type_Path;
+      Current_Path_Cursor, Next_Path_Cursor : Hexagon.Navigation.Path_Pkg.Cursor;
       Path_This_Piece                       : Server_Logic.Carrier_Paths_List.Cursor;
       Ret_Status                            : Status.Type_Status;
 
@@ -263,25 +263,27 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
             -- based on current position, find where on the path the piece is at the moment
             Current_Path_Cursor :=
-              Hexagon.Path.Find (Current_Carriers_Path.This_Path, Current_Piece_Pos);
+           Hexagon.Navigation.Path_Pkg.Find (Current_Carriers_Path.This_Path,
+                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                               (Hexagon.Server_Map.A_Navigation, Current_Piece_Pos) );
 
             if Current_Carriers_Path.Direction = 1 then
 
-               Next_Path_Cursor := Hexagon.Path.Next (Current_Path_Cursor);
+               Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Next (Current_Path_Cursor);
             else
 
-               Next_Path_Cursor := Hexagon.Path.Previous (Current_Path_Cursor);
+               Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Previous (Current_Path_Cursor);
             end if;
 
-            if not Hexagon.Path.Has_Element (Next_Path_Cursor) then
+            if not Hexagon.Navigation.Path_Pkg.Has_Element (Next_Path_Cursor) then
 
                if Current_Carriers_Path.Direction = 1 then
-                  Next_Path_Cursor := Hexagon.Path.Last (Current_Carriers_Path.This_Path);
-                  Next_Path_Cursor                := Hexagon.Path.Previous (Next_Path_Cursor);
+                  Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Last (Current_Carriers_Path.This_Path);
+                  Next_Path_Cursor                := Hexagon.Navigation.Path_Pkg.Previous (Next_Path_Cursor);
                   Current_Carriers_Path.Direction := -1;
                else
-                  Next_Path_Cursor := Hexagon.Path.First (Current_Carriers_Path.This_Path);
-                  Next_Path_Cursor                := Hexagon.Path.Next (Next_Path_Cursor);
+                  Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.First (Current_Carriers_Path.This_Path);
+                  Next_Path_Cursor                := Hexagon.Navigation.Path_Pkg.Next (Next_Path_Cursor);
                   Current_Carriers_Path.Direction := 1;
                end if;
                Server_Logic.Carrier_Paths_List.Replace_Element
@@ -294,7 +296,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
               (P_Piece.Player_Id,
                Action.Type_Action_Type(1),
                P_Piece.Id,
-               Hexagon.Path.Element (Next_Path_Cursor),
+               Hexagon.Navigation.Path_Pkg.Element (Next_Path_Cursor).all.Center,
                Ret_Status);
 
      end if;
@@ -529,14 +531,14 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
    function Create_From_Path_Patch_List
      (P_Player_Id  : in     Player.Type_Player_Id;
-      P_Patch_List : in out Patch_List.Vector) return Hexagon.Path.Vector
+      P_Patch_List : in out Patch_List.Vector) return Hexagon.Navigation.Path_Pkg.Vector
    is
 
       type Type_Direction is (To_Left, To_Right);
 
       procedure Traverse
         (P_Patch      : in     Hexagon.Server_Map.Type_Server_Patch_Adress;
-         P_Path       : in out Hexagon.Path.Vector;
+         P_Path       : in out Hexagon.Navigation.Path_Pkg.Vector;
          P_Patch_List : in out Patch_List.Vector;
          P_Direction  : in     Type_Direction)
       is
@@ -561,11 +563,17 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
          if Neighbour_Found then
             if P_Direction = To_Left then
-               Hexagon.Path.Prepend (P_Path, Patch_To_Check.all.Pos);
+               Hexagon.Navigation.Path_Pkg.Prepend (P_Path,
+                                                    Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                                      (Hexagon.Server_Map.A_Navigation,
+                                                       Patch_To_Check.all.Pos) );
                Patch_List.Delete (P_Patch_List, Cursor_Check_With_Patch_List);
                Traverse (Patch_To_Check, P_Path, P_Patch_List, P_Direction);
             else
-               Hexagon.Path.Append (P_Path, Patch_To_Check.all.Pos);
+               Hexagon.Navigation.Path_Pkg.Append (P_Path,
+                                                   Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                                     (Hexagon.Server_Map.A_Navigation,
+                                                      Patch_To_Check.all.Pos) );
                Patch_List.Delete (P_Patch_List, Cursor_Check_With_Patch_List);
                Traverse (Patch_To_Check, P_Path, P_Patch_List, P_Direction);
             end if;
@@ -576,7 +584,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Patch_In_Progress : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
       Cursor_Any_Patch : Patch_List.Cursor;
-      The_Path                                       : Hexagon.Path.Vector;
+      The_Path                                       : Hexagon.Navigation.Path_Pkg.Vector;
 
       use Hexagon.Server_Map;
    begin
@@ -590,7 +598,9 @@ package body Tubastga_Game.Server_Logic.Carrier is
         Hexagon.Server_Map.Get_Patch_Adress_From_AB
           (Patch_List.Element (Cursor_Any_Patch).all.Pos.A,
            Patch_List.Element (Cursor_Any_Patch).all.Pos.B);
-      Hexagon.Path.Append (The_Path, Patch_In_Progress.all.Pos);
+      Hexagon.Navigation.Path_Pkg.Append (The_Path,
+                                          Hexagon.Navigation.Get_Navigation_Node_By_Position
+                                            (Hexagon.Server_Map.A_Navigation, Patch_In_Progress.all.Pos) );
 
       Patch_List.Delete (P_Patch_List, Cursor_Any_Patch);
 
@@ -638,7 +648,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
    end Clear_Path_Effects;
 
    procedure Create_Workers_Path (P_Player_Id : in Player.Type_Player_Id) is
-      New_Path, Prev_Path : Hexagon.Path.Vector;
+      New_Path, Prev_Path : Hexagon.Navigation.Path_Pkg.Vector;
       A_Patch_List        : Type_Patch_List;
       Cursor_Prev_Path    : Server_Logic.Carrier_Paths_List.Cursor;
 
@@ -659,14 +669,14 @@ package body Tubastga_Game.Server_Logic.Carrier is
          Cursor_Prev_Path := Server_Logic.Carrier_Paths_List.Find (Server_Logic.All_Paths, A_Patch_List.Piece_Id);
          if Server_Logic.Carrier_Paths_List.Has_Element (Cursor_Prev_Path) then
             Prev_Path := Server_Logic.Carrier_Paths_List.Element (Cursor_Prev_Path).This_Path;
-            Hexagon.Path.Clear (Prev_Path);
+            Hexagon.Navigation.Path_Pkg.Clear (Prev_Path);
             Server_Logic.Carrier_Paths_List.Exclude (Server_Logic.All_Paths, A_Patch_List.Piece_Id);
          end if;
 
          Server_Logic.Carrier_Paths_List.Include
            (Server_Logic.All_Paths,
             A_Patch_List.Piece_Id,
-            Hexagon.Type_Path'(New_Path, 1));
+            Hexagon.Navigation.Type_Path'(New_Path, 1));
          Tubastga_Game.Server_Logic.Carrier.Clear_Path_Effects (P_Player_Id);
       end if;
 
