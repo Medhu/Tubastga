@@ -174,37 +174,37 @@ package body Tubastga_UI_Resources is
              (Ada.Strings.Unbounded.To_Unbounded_String ("resources\box.png"), null, 0, 0),
          Wall1 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall1.png"),
               null,
               0,
               0),
          Wall2 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall2.png"),
               null,
               0,
               0),
          Wall3 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall3.png"),
               null,
               0,
               0),
          Wall4 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall4.png"),
               null,
               0,
               0),
          Wall5 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall5.png"),
               null,
               0,
               0),
          Wall6 =>
            Type_Graphic_Data'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"),
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall6.png"),
               null,
               0,
               0),

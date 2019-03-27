@@ -399,7 +399,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Constructions
               (All_Constructions_On_Patch,
-               P_Patch.all.Constructions_Here);
+               P_Patch.all.Effects_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_All_Patch
               (A_Client_Map,
@@ -676,9 +676,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Patches,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Pieces,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor)
-                 .Patches_Effects_Info,
-               Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor)
-                 .Constructions_Info);
+                 .Patches_Effects_Info);
 
             Tubastga_Window_Pkg.Effects.Update_Client_Piece;
 

@@ -133,10 +133,23 @@ package Tubastga_Window_Pkg is
       Perform_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
 
       Fighting_Piece_Action_VBox : Gtk.Box.Gtk_Vbox;
-      House_Piece_Action_VBox    : Gtk.Box.Gtk_Vbox;
+      House_Piece_Action1_VBox    : Gtk.Box.Gtk_Vbox;
+      House_Piece_Action2_VBox    : Gtk.Box.Gtk_Vbox;
 
       -- Production Center
-      Btn_Wall1, Btn_Wall2, Btn_Wall3, Btn_Wall4, Btn_Wall5, Btn_Wall6 : Gtk.Button.Gtk_Button;
+      Btn_Place_Wall1,
+      Btn_Place_Wall2,
+      Btn_Place_Wall3,
+      Btn_Place_Wall4,
+      Btn_Place_Wall5,
+      Btn_Place_Wall6,
+      --
+      Btn_Remove_Wall1,
+      Btn_Remove_Wall2,
+      Btn_Remove_Wall3,
+      Btn_Remove_Wall4,
+      Btn_Remove_Wall5,
+      Btn_Remove_Wall6 : Gtk.Button.Gtk_Button;
       -- Fighting_Piece
       Btn_Attack, Btn_Ranged_Attack, Btn_Move, Btn_Search, Btn_Promote, Btn_Demote : Gtk.Button.Gtk_Button;
       --

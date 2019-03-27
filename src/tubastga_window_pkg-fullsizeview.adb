@@ -122,15 +122,15 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
    procedure Draw_Constructions
      (P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Construction_List : in     Construction.Construction_List.Set)
+      P_Construction_List : in     Effect.Effect_List.Map)
    is
-      Trav : Construction.Construction_List.Cursor;
+      Trav : Effect.Effect_List.Cursor;
 
-      use Construction;
+      use Effect;
    begin
-      Trav := Construction.Construction_List.First (P_Construction_List);
-      while Construction.Construction_List.Has_Element (Trav) loop
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall1 then
+      Trav := Effect.Effect_List.First (P_Construction_List);
+      while Effect.Effect_List.Has_Element (Trav) loop
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall1 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall1).Image_Data,
@@ -147,7 +147,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                255);
          end if;
 
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall2 then
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall2 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall2).Image_Data,
@@ -164,7 +164,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                255);
          end if;
 
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall3 then
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall3 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall3).Image_Data,
@@ -181,7 +181,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                255);
          end if;
 
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall4 then
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall4 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall4).Image_Data,
@@ -198,7 +198,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                255);
          end if;
 
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall5 then
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall5 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall5).Image_Data,
@@ -215,7 +215,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                255);
          end if;
 
-         if Construction.Construction_List.Element (Trav) = Tubastga_Game.Construction_Wall6 then
+         if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall6 then
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall6).Image_Data,
@@ -231,7 +231,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                Gdk.Pixbuf.Interp_Nearest,
                255);
          end if;
-         Trav := Construction.Construction_List.Next (Trav);
+         Trav := Effect.Effect_List.Next (Trav);
       end loop;
    end Draw_Constructions;
 

@@ -22,10 +22,8 @@ with Piece;
 with Piece.Server.Fighting_Piece;
 with Piece.Server.House_Piece;
 with Utilities;
-with Construction;
 with Effect;
 with Landscape.Server;
-with Construction.Server;
 with Effect.Server;
 
 package Tubastga_Game is
@@ -72,14 +70,13 @@ package Tubastga_Game is
    Effect_Slot_2       : constant Effect.Type_Effect_Name := 9;
    Effect_Slot_3       : constant Effect.Type_Effect_Name := 10;
    Effect_Path         : constant Effect.Type_Effect_Name := 11;
-
-   Construction_Wall1 : constant Construction.Type_Construction := 1;
-   Construction_Wall2 : constant Construction.Type_Construction := 2;
-   Construction_Wall3 : constant Construction.Type_Construction := 3;
-   Construction_Wall4 : constant Construction.Type_Construction := 4;
-   Construction_Wall5 : constant Construction.Type_Construction := 5;
-   Construction_Wall6 : constant Construction.Type_Construction := 6;
-
+   --
+   Effect_Wall1        : constant Effect.Type_Effect_Name := 12;
+   Effect_Wall2        : constant Effect.Type_Effect_Name := 13;
+   Effect_Wall3        : constant Effect.Type_Effect_Name := 14;
+   Effect_Wall4        : constant Effect.Type_Effect_Name := 15;
+   Effect_Wall5        : constant Effect.Type_Effect_Name := 16;
+   Effect_Wall6        : constant Effect.Type_Effect_Name := 17;
 
    Land_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
      new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
@@ -151,32 +148,6 @@ package Tubastga_Game is
            Category            => Piece.House_Piece,
            Construct_Landscape => House_Construct_Landscape_Array));
 
-   Construction_Type_Info_List : Construction.Server.Type_Construction_Type_Info_List :=
-     (Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall1"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(True, False, False, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall2"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, True, False, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall3"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, True, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall4"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, True, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall5"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, False, True, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall6"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, False, False, True)));
-
    Effect_Type_Info_List : Effect.Server.Type_Effect_Type_Info_List :=
      (Effect_Action_Point =>
         Effect.Server.Type_Effect_Type_Info'
@@ -210,7 +181,28 @@ package Tubastga_Game is
           (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Slot 3")),
       Effect_Path =>
         Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Path")));
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Path")),
+
+      --
+      Effect_Wall1 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall1")),
+      Effect_Wall2 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall2")),
+      Effect_Wall3 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall3")),
+      Effect_Wall4 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall4")),
+      Effect_Wall5 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall5")),
+      Effect_Wall6 =>
+        Effect.Server.Type_Effect_Type_Info'
+          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Wall6"))
+     );
 
 
 end Tubastga_Game;

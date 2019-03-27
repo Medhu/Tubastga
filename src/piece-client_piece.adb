@@ -458,60 +458,6 @@ package body Piece.Client_Piece is
       end if;
    end Revoke_Patch_Effect;
 
-   procedure Perform_Construction
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Construction_Piece : in     Type_Piece;
-      P_Construction_Patch : in     Landscape.Type_Patch;
-      P_Construction       : in     Construction.Type_Construction)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Construction - enter");
-      end if;
-
-      Client.ClientRPC.Perform_Construction
-        (P_Player_Id,
-         P_Action_Type,
-         P_Construction_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (P_Valid => True,
-            A       => P_Construction_Patch.Pos.A,
-            B       => P_Construction_Patch.Pos.B),
-         P_Construction);
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Construction - exit");
-      end if;
-   end Perform_Construction;
-
-   procedure Perform_Demolition
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Demolition_Piece   : in     Type_Piece;
-      P_Demolition_Patch   : in     Landscape.Type_Patch;
-      P_Construction       : in     Construction.Type_Construction)
-   is
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Demolition - enter");
-      end if;
-
-      Client.ClientRPC.Perform_Demolition
-        (P_Player_Id,
-         P_Action_Type,
-         P_Demolition_Piece.Id,
-         Hexagon.Type_Hexagon_Position'
-           (P_Valid => True,
-            A       => P_Demolition_Patch.Pos.A,
-            B       => P_Demolition_Patch.Pos.B),
-         P_Construction);
-
-      if Verbose then
-         Text_IO.Put_Line ("Piece.Client_Piece.Perform_Demolition - exit");
-      end if;
-   end Perform_Demolition;
-
    function Find_Effect
      (P_Piece_Id    : in Piece.Type_Piece_Id;
       P_Effect_Name :    Effect.Type_Effect_Name) return Natural

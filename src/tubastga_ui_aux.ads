@@ -41,8 +41,15 @@ package Tubastga_UI_Aux is
      Place_Wall3,
      Place_Wall4,
      Place_Wall5,
-     Place_Wall6
-     );
+     Place_Wall6,
+     --
+     Remove_Wall1,
+     Remove_Wall2,
+     Remove_Wall3,
+     Remove_Wall4,
+     Remove_Wall5,
+     Remove_Wall6
+);
 
    UI_State : Type_UI_State;
 

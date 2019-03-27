@@ -35,27 +35,29 @@ package body Tubastga_Game.Server_Logic.Carrier is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Code - enter " & P_Tower_Id1'Img & "-" & P_Tower_Id2'Img & "-" & P_Tower_Id3'Img & "-");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Code - enter " & P_Tower_Id1'Img & "-" &
+            P_Tower_Id2'Img & "-" & P_Tower_Id3'Img & "-");
       end if;
 
-      if P_Tower_Id1 /= Piece.Undefined_Piece_Id and P_Tower_Id1 in 1..99 then
-         Tower_Id := Integer(P_Tower_Id1) + 1000;
+      if P_Tower_Id1 /= Piece.Undefined_Piece_Id and P_Tower_Id1 in 1 .. 99 then
+         Tower_Id := Integer (P_Tower_Id1) + 1000;
 
          Tmp1 := Tower_Id'Img;
       else
          Tmp1 := "99999";
       end if;
 
-      if P_Tower_Id2 /= Piece.Undefined_Piece_Id and P_Tower_Id2 in 1..99  then
-         Tower_Id := Integer(P_Tower_Id2) + 1000;
+      if P_Tower_Id2 /= Piece.Undefined_Piece_Id and P_Tower_Id2 in 1 .. 99 then
+         Tower_Id := Integer (P_Tower_Id2) + 1000;
 
          Tmp2 := Tower_Id'Img;
       else
          Tmp2 := "99999";
       end if;
 
-      if P_Tower_Id3 /= Piece.Undefined_Piece_Id and P_Tower_Id3 in 1..99  then
-         Tower_Id := Integer(P_Tower_Id3) + 1000;
+      if P_Tower_Id3 /= Piece.Undefined_Piece_Id and P_Tower_Id3 in 1 .. 99 then
+         Tower_Id := Integer (P_Tower_Id3) + 1000;
 
          Tmp3 := Tower_Id'Img;
       else
@@ -75,7 +77,9 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Ret : Integer;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Id - enter P_Tower_Code=" & P_Tower_Code'Img);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Id - enter P_Tower_Code=" &
+            P_Tower_Code'Img);
       end if;
 
       Tmp := P_Tower_Code'Img;
@@ -88,7 +92,8 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Id - enter Ret=" & Ret'Img);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Id - enter Ret=" & Ret'Img);
       end if;
 
       return Ret;
@@ -101,7 +106,10 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Tmp1, Tmp2, Tmp3 : String (1 .. 3);
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Goods_Code - enter P_Goods_Id1=" & P_Goods_Id1'Img & " P_Goods_Id2=" & P_Goods_Id2'Img & " P_Goods_Id3=" & P_Goods_Id3'Img);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Goods_Code - enter P_Goods_Id1=" &
+            P_Goods_Id1'Img & " P_Goods_Id2=" & P_Goods_Id2'Img & " P_Goods_Id3=" &
+            P_Goods_Id3'Img);
       end if;
 
       Tmp1 := Goods.Encode_Goods (P_Goods_Id1)'Img;
@@ -111,14 +119,13 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Tmp := " 1" & Tmp1 (2 .. 3) & Tmp2 (2 .. 3) & Tmp3 (2 .. 3);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Goods_Code - enter Tmp=" & Tmp);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Tower_Goods_Code - enter Tmp=" & Tmp);
       end if;
       return Integer'Value (Tmp);
    end Get_Tower_Goods_Code;
 
-   function Get_Tower_Goods_Id
-     (P_No         : in Integer;
-      P_Goods_Code :    Integer) return Goods.Type_Goods
+   function Get_Tower_Goods_Id (P_No : in Integer; P_Goods_Code : Integer) return Goods.Type_Goods
    is
       Tmp : String (1 .. 8);
       Ret : Integer;
@@ -136,9 +143,8 @@ package body Tubastga_Game.Server_Logic.Carrier is
       return Goods.Decode_Goods (Ret);
    end Get_Tower_Goods_Id;
 
-   function Carrier_Tower_Stops
-     (P_Piece        : in Server_Logic.Type_My_Tubastga_Piece;
-      P_Tower_Number : in Integer) return Integer
+   function Carrier_Tower_Stops (P_Piece : in Server_Logic.Type_My_Tubastga_Piece;
+      P_Tower_Number                     : in Integer) return Integer
    is
       Cursor_Stops : Effect.Effect_List.Cursor;
 
@@ -149,9 +155,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
 
       Cursor_Stops :=
-        Effect.Effect_List.Find
-          (P_Piece.Effects_On_Piece,
-           Tubastga_Game.Effect_Stops);
+        Effect.Effect_List.Find (P_Piece.Effects_On_Piece, Tubastga_Game.Effect_Stops);
 
       if Effect.Effect_List.Has_Element (Cursor_Stops) then
          To_Tower_Id :=
@@ -162,15 +166,15 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Stops - exit To_Tower_Id=" & To_Tower_Id'Img);
+           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Stops - exit To_Tower_Id=" &
+            To_Tower_Id'Img);
       end if;
 
       return To_Tower_Id;
    end Carrier_Tower_Stops;
 
-   function Carrier_Tower_Load
-     (P_Piece        : in Server_Logic.Type_My_Tubastga_Piece;
-      P_Tower_Number : in Integer) return Goods.Type_Goods
+   function Carrier_Tower_Load (P_Piece : in Server_Logic.Type_My_Tubastga_Piece;
+      P_Tower_Number                    : in Integer) return Goods.Type_Goods
    is
       Cursor_Load : Effect.Effect_List.Cursor;
 
@@ -180,71 +184,69 @@ package body Tubastga_Game.Server_Logic.Carrier is
          Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Load - enter");
       end if;
 
-      Cursor_Load :=
-        Effect.Effect_List.Find
-          (P_Piece.Effects_On_Piece,
-           Tubastga_Game.Effect_Load);
+      Cursor_Load := Effect.Effect_List.Find (P_Piece.Effects_On_Piece, Tubastga_Game.Effect_Load);
 
       if Effect.Effect_List.Has_Element (Cursor_Load) then
          To_Goods_Id :=
            Carrier.Get_Tower_Goods_Id
-             (P_Tower_Number,
-              Effect.Effect_List.Element (Cursor_Load).Aux);
+             (P_Tower_Number, Effect.Effect_List.Element (Cursor_Load).Aux);
       else
          To_Goods_Id := Goods.None;
       end if;
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Load - exit To_Goods_Id=" & To_Goods_Id'Img);
+           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Load - exit To_Goods_Id=" &
+            To_Goods_Id'Img);
       end if;
 
       return To_Goods_Id;
    end Carrier_Tower_Load;
 
-   function Carrier_Tower_Unload
-     (P_Piece        : in Server_Logic.Type_My_Tubastga_Piece;
-      P_Tower_Number : in Integer) return Goods.Type_Goods
+   function Carrier_Tower_Unload (P_Piece : in Server_Logic.Type_My_Tubastga_Piece;
+      P_Tower_Number                      : in Integer) return Goods.Type_Goods
    is
       Cursor_Unload : Effect.Effect_List.Cursor;
 
       To_Goods_Id : Goods.Type_Goods;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload - enter P_Tower_Number=" & P_Tower_Number'Img);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload - enter P_Tower_Number=" &
+            P_Tower_Number'Img);
       end if;
 
       Cursor_Unload :=
-        Effect.Effect_List.Find
-          (P_Piece.Effects_On_Piece,
-           Tubastga_Game.Effect_Unload);
+        Effect.Effect_List.Find (P_Piece.Effects_On_Piece, Tubastga_Game.Effect_Unload);
 
       if Effect.Effect_List.Has_Element (Cursor_Unload) then
          To_Goods_Id :=
            Carrier.Get_Tower_Goods_Id
-             (P_Tower_Number,
-              Effect.Effect_List.Element (Cursor_Unload).Aux);
+             (P_Tower_Number, Effect.Effect_List.Element (Cursor_Unload).Aux);
       else
          To_Goods_Id := Goods.None;
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload - exit To_Goods_Id=" & To_Goods_Id'Img);
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload - exit To_Goods_Id=" &
+            To_Goods_Id'Img);
       end if;
 
       return To_Goods_Id;
    end Carrier_Tower_Unload;
 
-   procedure Carrier_Move
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Patch     : in out Hexagon.Server_Map.Type_Server_Patch;
-      P_Piece     : in out Server_Logic.Type_My_Tubastga_Piece)
+   procedure Carrier_Move (P_Player_Id : in     Player.Type_Player_Id;
+      P_Patch                          : in out Hexagon.Server_Map.Type_Server_Patch;
+      P_Piece                          : in out Server_Logic.Type_My_Tubastga_Piece)
    is
       Current_Piece_Pos                     : Hexagon.Type_Hexagon_Position;
-      Current_Carriers_Path                 : Hexagon.Navigation.Type_Path;
-      Current_Path_Cursor, Next_Path_Cursor : Hexagon.Navigation.Path_Pkg.Cursor;
+      Current_Carriers_Path                 : Hexagon.Server_Navigation.Type_Path;
+      Current_Path_Cursor, Next_Path_Cursor : Hexagon.Server_Navigation.Path_Pkg.Cursor;
       Path_This_Piece                       : Server_Logic.Carrier_Paths_List.Cursor;
       Ret_Status                            : Status.Type_Status;
+      A_Navigation_Access                   : Hexagon.Server_Navigation.Type_Navigation_Access;
+      A_Navigation_Node_Access              : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
 
       use Player;
    begin
@@ -256,61 +258,63 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
       Path_This_Piece := Server_Logic.Carrier_Paths_List.Find (Server_Logic.All_Paths, P_Piece.Id);
 
-      if P_Piece.Player_Id = P_Player_Id and Server_Logic.Carrier_Paths_List.Has_Element (Path_This_Piece) then
+      if P_Piece.Player_Id = P_Player_Id and
+        Server_Logic.Carrier_Paths_List.Has_Element (Path_This_Piece) then
 
-            -- get the path that this piece is following at the moment.
-            Current_Carriers_Path := Server_Logic.Carrier_Paths_List.Element (Server_Logic.All_Paths, P_Piece.Id);
+         -- get the path that this piece is following at the moment.
+         Current_Carriers_Path :=
+           Server_Logic.Carrier_Paths_List.Element (Server_Logic.All_Paths, P_Piece.Id);
 
-            -- based on current position, find where on the path the piece is at the moment
-            Current_Path_Cursor :=
-           Hexagon.Navigation.Path_Pkg.Find (Current_Carriers_Path.This_Path,
-                                             Hexagon.Navigation.Get_Navigation_Node_By_Position
-                                               (Hexagon.Server_Map.A_Navigation, Current_Piece_Pos) );
+         -- based on current position, find where on the path the piece is at the moment
+         A_Navigation_Access :=
+           Hexagon.Server_Navigation.Get_Navigation
+             (Hexagon.Server_Navigation.A_Navigation_List, 1);
+         A_Navigation_Node_Access :=
+           Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+             (A_Navigation_Access.all, Current_Piece_Pos);
+
+         Current_Path_Cursor :=
+           Hexagon.Server_Navigation.Path_Pkg.Find
+             (Current_Carriers_Path.This_Path, A_Navigation_Node_Access);
+
+         if Current_Carriers_Path.Direction = 1 then
+
+            Next_Path_Cursor := Hexagon.Server_Navigation.Path_Pkg.Next (Current_Path_Cursor);
+         else
+
+            Next_Path_Cursor := Hexagon.Server_Navigation.Path_Pkg.Previous (Current_Path_Cursor);
+         end if;
+
+         if not Hexagon.Server_Navigation.Path_Pkg.Has_Element (Next_Path_Cursor) then
 
             if Current_Carriers_Path.Direction = 1 then
-
-               Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Next (Current_Path_Cursor);
+               Next_Path_Cursor :=
+                 Hexagon.Server_Navigation.Path_Pkg.Last (Current_Carriers_Path.This_Path);
+               Next_Path_Cursor := Hexagon.Server_Navigation.Path_Pkg.Previous (Next_Path_Cursor);
+               Current_Carriers_Path.Direction := -1;
             else
-
-               Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Previous (Current_Path_Cursor);
+               Next_Path_Cursor :=
+                 Hexagon.Server_Navigation.Path_Pkg.First (Current_Carriers_Path.This_Path);
+               Next_Path_Cursor := Hexagon.Server_Navigation.Path_Pkg.Next (Next_Path_Cursor);
+               Current_Carriers_Path.Direction := 1;
             end if;
+            Server_Logic.Carrier_Paths_List.Replace_Element
+              (Server_Logic.All_Paths, Path_This_Piece, Current_Carriers_Path);
+         end if;
 
-            if not Hexagon.Navigation.Path_Pkg.Has_Element (Next_Path_Cursor) then
-
-               if Current_Carriers_Path.Direction = 1 then
-                  Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.Last (Current_Carriers_Path.This_Path);
-                  Next_Path_Cursor                := Hexagon.Navigation.Path_Pkg.Previous (Next_Path_Cursor);
-                  Current_Carriers_Path.Direction := -1;
-               else
-                  Next_Path_Cursor := Hexagon.Navigation.Path_Pkg.First (Current_Carriers_Path.This_Path);
-                  Next_Path_Cursor                := Hexagon.Navigation.Path_Pkg.Next (Next_Path_Cursor);
-                  Current_Carriers_Path.Direction := 1;
-               end if;
-               Server_Logic.Carrier_Paths_List.Replace_Element
-                 (Server_Logic.All_Paths,
-                  Path_This_Piece,
-                  Current_Carriers_Path);
-            end if;
-
-            Server.ServerAPI.Perform_Move
-              (P_Piece.Player_Id,
-               Action.Type_Action_Type(1),
-               P_Piece.Id,
-               Hexagon.Navigation.Path_Pkg.Element (Next_Path_Cursor).all.Center,
-               Ret_Status);
-
-     end if;
+         Server.ServerAPI.Perform_Move
+           (P_Piece.Player_Id, Action.Type_Action_Type (1), P_Piece.Id,
+            Hexagon.Server_Navigation.Path_Pkg.Element (Next_Path_Cursor).all.Pos, Ret_Status);
+      end if;
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Carrier_Move- exit");
       end if;
    end Carrier_Move;
 
-   procedure Carrier_Tower_Transaction
-     (P_Tower  : in out Server_Logic.Type_My_Tubastga_House;
-      P_Piece  : in out Server_Logic.Type_My_Tubastga_Piece;
-      P_Load   : in     Goods.Type_Goods;
-      P_Unload : in     Goods.Type_Goods)
+   procedure Carrier_Tower_Transaction (P_Tower : in out Server_Logic.Type_My_Tubastga_House;
+      P_Piece : in out Server_Logic.Type_My_Tubastga_Piece; P_Load : in Goods.Type_Goods;
+      P_Unload                                  : in     Goods.Type_Goods)
    is
       Ret_Goods     : Goods.Type_Goods_Info;
       Ret           : Boolean;
@@ -334,9 +338,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
 
       Goods.From_Storage
-        (P_Piece.Storage.all,
-         Goods.Type_Goods_Info'(P_Unload, Ask_For_Qty),
-         Ret_Goods);
+        (P_Piece.Storage.all, Goods.Type_Goods_Info'(P_Unload, Ask_For_Qty), Ret_Goods);
       Goods.Into_Storage (P_Tower.Storage.all, Ret_Goods, Ret);
 
       -- is there something this tower has that carrier should pick up?
@@ -348,9 +350,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
 
       Goods.From_Storage
-        (P_Tower.Storage.all,
-         Goods.Type_Goods_Info'(P_Load, Ask_For_Qty),
-         Ret_Goods);
+        (P_Tower.Storage.all, Goods.Type_Goods_Info'(P_Load, Ask_For_Qty), Ret_Goods);
       Goods.Into_Storage (P_Piece.Storage.all, Ret_Goods, Ret);
 
       if Verbose then
@@ -358,11 +358,9 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
    end Carrier_Tower_Transaction;
 
-   procedure Find_Path_Effect
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Patch     : in     Landscape.Type_Patch;
-      P_Found     :    out Boolean;
-      P_Piece_Id  :    out Piece.Type_Piece_Id)
+   procedure Find_Path_Effect (P_Player_Id : in     Player.Type_Player_Id;
+      P_Patch                              : in     Landscape.Type_Patch; P_Found : out Boolean;
+      P_Piece_Id                           :    out Piece.Type_Piece_Id)
    is
       Cursor_Path : Effect.Effect_List.Cursor;
       Player_Id   : Player.Type_Player_Id;
@@ -371,10 +369,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
       use Player;
    begin
-      Cursor_Path :=
-        Effect.Effect_List.Find
-          (P_Patch.Effects_Here,
-           Tubastga_Game.Effect_Path);
+      Cursor_Path := Effect.Effect_List.Find (P_Patch.Effects_Here, Tubastga_Game.Effect_Path);
 
       P_Found := Effect.Effect_List.Has_Element (Cursor_Path);
       if P_Found
@@ -400,11 +395,9 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
    end Find_Path_Effect;
 
-   procedure Find_Un_Path_Effect
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Patch     : in     Landscape.Type_Patch;
-      P_Found     :    out Boolean;
-      P_Piece_Id  :    out Piece.Type_Piece_Id)
+   procedure Find_Un_Path_Effect (P_Player_Id : in     Player.Type_Player_Id;
+      P_Patch                                 : in     Landscape.Type_Patch; P_Found : out Boolean;
+      P_Piece_Id                              :    out Piece.Type_Piece_Id)
    is
       Cursor_Path : Effect.Effect_List.Cursor;
       Player_Id   : Player.Type_Player_Id;
@@ -413,10 +406,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
       use Player;
    begin
-      Cursor_Path :=
-        Effect.Effect_List.Find
-          (P_Patch.Effects_Here,
-           Tubastga_Game.Effect_Path);
+      Cursor_Path := Effect.Effect_List.Find (P_Patch.Effects_Here, Tubastga_Game.Effect_Path);
 
       P_Found := Effect.Effect_List.Has_Element (Cursor_Path);
       if P_Found
@@ -441,8 +431,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
    end Find_Un_Path_Effect;
 
-   function Get_Create_Path_Patches
-     (P_Player_Id : in Player.Type_Player_Id) return Type_Patch_List
+   function Get_Create_Path_Patches (P_Player_Id : in Player.Type_Player_Id) return Type_Patch_List
    is
       A_Patch        : Hexagon.Server_Map.Type_Server_Patch_Adress;
       Trav_A, Trav_B : Positive;
@@ -464,8 +453,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
          loop
             A_Patch :=
               Hexagon.Server_Map.Get_Patch_Adress_From_AB
-                (Hexagon.Type_Hexagon_Numbers (Trav_A),
-                 Hexagon.Type_Hexagon_Numbers (Trav_B));
+                (Hexagon.Type_Hexagon_Numbers (Trav_A), Hexagon.Type_Hexagon_Numbers (Trav_B));
 
             Find_Path_Effect (P_Player_Id, Landscape.Type_Patch (A_Patch.all), Ret, Piece_Id);
 
@@ -495,7 +483,8 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Ret            : Boolean;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier- enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier- enter");
       end if;
 
       Piece_Id := Piece.Undefined_Piece_Id;
@@ -511,8 +500,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
          loop
             A_Patch :=
               Hexagon.Server_Map.Get_Patch_Adress_From_AB
-                (Hexagon.Type_Hexagon_Numbers (Trav_A),
-                 Hexagon.Type_Hexagon_Numbers (Trav_B));
+                (Hexagon.Type_Hexagon_Numbers (Trav_A), Hexagon.Type_Hexagon_Numbers (Trav_B));
 
             Find_Un_Path_Effect (P_Player_Id, Landscape.Type_Patch (A_Patch.all), Ret, Piece_Id);
 
@@ -523,24 +511,22 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier- exit Piece_Id=" & Piece_Id'Img);
+           ("Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier- exit Piece_Id=" &
+            Piece_Id'Img);
       end if;
 
       return Piece_Id;
    end Get_Remove_Path_From_Carrier;
 
-   function Create_From_Path_Patch_List
-     (P_Player_Id  : in     Player.Type_Player_Id;
-      P_Patch_List : in out Patch_List.Vector) return Hexagon.Navigation.Path_Pkg.Vector
+   function Create_From_Path_Patch_List (P_Player_Id : in     Player.Type_Player_Id;
+      P_Patch_List : in out Patch_List.Vector) return Hexagon.Server_Navigation.Path_Pkg.Vector
    is
 
       type Type_Direction is (To_Left, To_Right);
 
-      procedure Traverse
-        (P_Patch      : in     Hexagon.Server_Map.Type_Server_Patch_Adress;
-         P_Path       : in out Hexagon.Navigation.Path_Pkg.Vector;
-         P_Patch_List : in out Patch_List.Vector;
-         P_Direction  : in     Type_Direction)
+      procedure Traverse (P_Patch : in     Hexagon.Server_Map.Type_Server_Patch_Adress;
+         P_Path                   : in out Hexagon.Server_Navigation.Path_Pkg.Vector;
+         P_Patch_List             : in out Patch_List.Vector; P_Direction : in Type_Direction)
       is
          Cursor_Check_With_Patch_List : Patch_List.Cursor;
          Patch_To_Check               : Hexagon.Server_Map.Type_Server_Patch_Adress;
@@ -563,17 +549,21 @@ package body Tubastga_Game.Server_Logic.Carrier is
 
          if Neighbour_Found then
             if P_Direction = To_Left then
-               Hexagon.Navigation.Path_Pkg.Prepend (P_Path,
-                                                    Hexagon.Navigation.Get_Navigation_Node_By_Position
-                                                      (Hexagon.Server_Map.A_Navigation,
-                                                       Patch_To_Check.all.Pos) );
+               Hexagon.Server_Navigation.Path_Pkg.Prepend
+                 (P_Path,
+                  Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                    (Hexagon.Server_Navigation.Get_Navigation
+                       (Hexagon.Server_Navigation.A_Navigation_List, 1).all,
+                     Patch_To_Check.all.Pos));
                Patch_List.Delete (P_Patch_List, Cursor_Check_With_Patch_List);
                Traverse (Patch_To_Check, P_Path, P_Patch_List, P_Direction);
             else
-               Hexagon.Navigation.Path_Pkg.Append (P_Path,
-                                                   Hexagon.Navigation.Get_Navigation_Node_By_Position
-                                                     (Hexagon.Server_Map.A_Navigation,
-                                                      Patch_To_Check.all.Pos) );
+               Hexagon.Server_Navigation.Path_Pkg.Append
+                 (P_Path,
+                  Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                    (Hexagon.Server_Navigation.Get_Navigation
+                       (Hexagon.Server_Navigation.A_Navigation_List, 1).all,
+                     Patch_To_Check.all.Pos));
                Patch_List.Delete (P_Patch_List, Cursor_Check_With_Patch_List);
                Traverse (Patch_To_Check, P_Path, P_Patch_List, P_Direction);
             end if;
@@ -584,7 +574,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
       Patch_In_Progress : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
       Cursor_Any_Patch : Patch_List.Cursor;
-      The_Path                                       : Hexagon.Navigation.Path_Pkg.Vector;
+      The_Path         : Hexagon.Server_Navigation.Path_Pkg.Vector;
 
       use Hexagon.Server_Map;
    begin
@@ -598,9 +588,12 @@ package body Tubastga_Game.Server_Logic.Carrier is
         Hexagon.Server_Map.Get_Patch_Adress_From_AB
           (Patch_List.Element (Cursor_Any_Patch).all.Pos.A,
            Patch_List.Element (Cursor_Any_Patch).all.Pos.B);
-      Hexagon.Navigation.Path_Pkg.Append (The_Path,
-                                          Hexagon.Navigation.Get_Navigation_Node_By_Position
-                                            (Hexagon.Server_Map.A_Navigation, Patch_In_Progress.all.Pos) );
+      Hexagon.Server_Navigation.Path_Pkg.Append
+        (The_Path,
+         Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+           (Hexagon.Server_Navigation.Get_Navigation
+              (Hexagon.Server_Navigation.A_Navigation_List, 1).all,
+            Patch_In_Progress.all.Pos));
 
       Patch_List.Delete (P_Patch_List, Cursor_Any_Patch);
 
@@ -629,12 +622,10 @@ package body Tubastga_Game.Server_Logic.Carrier is
          loop
             A_Patch :=
               Hexagon.Server_Map.Get_Patch_Adress_From_AB
-                (Hexagon.Type_Hexagon_Numbers (Trav_A),
-                 Hexagon.Type_Hexagon_Numbers (Trav_B));
+                (Hexagon.Type_Hexagon_Numbers (Trav_A), Hexagon.Type_Hexagon_Numbers (Trav_B));
 
             Effect.Effect_List.Exclude
-              (Landscape.Type_Patch (A_Patch.all).Effects_Here,
-               Tubastga_Game.Effect_Path);
+              (Landscape.Type_Patch (A_Patch.all).Effects_Here, Tubastga_Game.Effect_Path);
 
             Trav_B := Trav_B + 1;
          end loop;
@@ -648,7 +639,7 @@ package body Tubastga_Game.Server_Logic.Carrier is
    end Clear_Path_Effects;
 
    procedure Create_Workers_Path (P_Player_Id : in Player.Type_Player_Id) is
-      New_Path, Prev_Path : Hexagon.Navigation.Path_Pkg.Vector;
+      New_Path, Prev_Path : Hexagon.Server_Navigation.Path_Pkg.Vector;
       A_Patch_List        : Type_Patch_List;
       Cursor_Prev_Path    : Server_Logic.Carrier_Paths_List.Cursor;
 
@@ -663,20 +654,19 @@ package body Tubastga_Game.Server_Logic.Carrier is
       if A_Patch_List.Piece_Id /= Piece.Undefined_Piece_Id then
          New_Path :=
            Tubastga_Game.Server_Logic.Carrier.Create_From_Path_Patch_List
-             (P_Player_Id,
-              A_Patch_List.List_Of_Patches);
+             (P_Player_Id, A_Patch_List.List_Of_Patches);
 
-         Cursor_Prev_Path := Server_Logic.Carrier_Paths_List.Find (Server_Logic.All_Paths, A_Patch_List.Piece_Id);
+         Cursor_Prev_Path :=
+           Server_Logic.Carrier_Paths_List.Find (Server_Logic.All_Paths, A_Patch_List.Piece_Id);
          if Server_Logic.Carrier_Paths_List.Has_Element (Cursor_Prev_Path) then
             Prev_Path := Server_Logic.Carrier_Paths_List.Element (Cursor_Prev_Path).This_Path;
-            Hexagon.Navigation.Path_Pkg.Clear (Prev_Path);
+            Hexagon.Server_Navigation.Path_Pkg.Clear (Prev_Path);
             Server_Logic.Carrier_Paths_List.Exclude (Server_Logic.All_Paths, A_Patch_List.Piece_Id);
          end if;
 
          Server_Logic.Carrier_Paths_List.Include
-           (Server_Logic.All_Paths,
-            A_Patch_List.Piece_Id,
-            Hexagon.Navigation.Type_Path'(New_Path, 1));
+           (Server_Logic.All_Paths, A_Patch_List.Piece_Id,
+            Hexagon.Server_Navigation.Type_Path'(New_Path, 1));
          Tubastga_Game.Server_Logic.Carrier.Clear_Path_Effects (P_Player_Id);
       end if;
 
@@ -694,7 +684,8 @@ package body Tubastga_Game.Server_Logic.Carrier is
          Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Remove_Workers_Path- enter");
       end if;
 
-      Remove_Piece_Id := Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier (P_Player_Id);
+      Remove_Piece_Id :=
+        Tubastga_Game.Server_Logic.Carrier.Get_Remove_Path_From_Carrier (P_Player_Id);
 
       if Remove_Piece_Id /= Piece.Undefined_Piece_Id then
          Server_Logic.Carrier_Paths_List.Exclude (Server_Logic.All_Paths, Remove_Piece_Id);
@@ -706,6 +697,57 @@ package body Tubastga_Game.Server_Logic.Carrier is
       end if;
    end Remove_Workers_Path;
 
+   procedure Print_Workers_Path is
+      Trav       : Tubastga_Game.Server_Logic.Carrier_Paths_List.Cursor;
+      An_Element : Hexagon.Server_Navigation.Type_Path;
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Print_Workers_Path- enter");
+      end if;
+
+      Text_IO.Put_Line ("Print Workers Path:");
+      Trav :=
+        Tubastga_Game.Server_Logic.Carrier_Paths_List.First (Tubastga_Game.Server_Logic.All_Paths);
+      while Tubastga_Game.Server_Logic.Carrier_Paths_List.Has_Element (Trav) loop
+         Text_IO.Put_Line ("Path:");
+         An_Element := Tubastga_Game.Server_Logic.Carrier_Paths_List.Element (Trav);
+         Hexagon.Server_Navigation.Print_Path (An_Element.This_Path);
+         Text_IO.Put_Line ("Direction:" & An_Element.Direction'Img);
+
+         Trav := Tubastga_Game.Server_Logic.Carrier_Paths_List.Next (Trav);
+      end loop;
+
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Print_Workers_Path- exit");
+      end if;
+   end Print_Workers_Path;
+
+   procedure Save_Workers_Path (P_Stream : in out Ada.Streams.Stream_IO.Stream_Access) is
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Save_Workers_Path- enter");
+      end if;
+
+      Tubastga_Game.Server_Logic.Carrier_Paths_List.Map'Write (P_Stream,
+         Tubastga_Game.Server_Logic.All_Paths);
+
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Save_Workers_Path- exit");
+      end if;
+   end Save_Workers_Path;
+
+   procedure Load_Workers_Path (P_Stream : in out Ada.Streams.Stream_IO.Stream_Access) is
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Load_Workers_Path- enter");
+      end if;
+
+      Tubastga_Game.Server_Logic.Carrier_Paths_List.Map'Read (P_Stream,
+         Tubastga_Game.Server_Logic.All_Paths);
+
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Carrier.Load_Workers_Path- exit");
+      end if;
+   end Load_Workers_Path;
+
 end Tubastga_Game.Server_Logic.Carrier;
-
-

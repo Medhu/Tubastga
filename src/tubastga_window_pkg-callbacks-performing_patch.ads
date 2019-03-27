@@ -19,13 +19,23 @@
 --
 package Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
-   procedure On_Button_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
-   procedure On_Button_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class);
-   procedure On_Button_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class);
-   procedure On_Button_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class);
-   procedure On_Button_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class);
-   procedure On_Button_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   -- Place WallN
+   procedure On_Button_Place_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Place_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Place_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Place_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Place_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Place_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class);
 
+   -- Remove WallN
+   procedure On_Button_Remove_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Remove_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Remove_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Remove_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Remove_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Remove_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+
+   --
    procedure On_Button_Move (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Ranged_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class);

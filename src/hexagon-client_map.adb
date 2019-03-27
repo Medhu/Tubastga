@@ -148,8 +148,7 @@ package body Hexagon.Client_Map is
       P_Player_Observations_List    : in
         Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
       P_Player_Observed_Pieces_List : in Observation.Observation_Of_Pieces.Changes_To_Pieces.Vector;
-      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector;
-      P_Player_Observed_Constructions : in Observation.Observation_Of_Construction.Changes_To_Construction.Vector)
+      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector)
    is
       Trav_P_P               : Observation.Observation_Of_Patches.Changes_To_Patches.Cursor;
       Trav_P_Pieces          : Observation.Observation_Of_Pieces.Changes_To_Pieces.Cursor;
@@ -159,7 +158,6 @@ package body Hexagon.Client_Map is
       A_Patch                : Type_Client_Patch_Adress;
 
       Trav_Patches_Effect : Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Cursor;
-      Trav_Construction : Observation.Observation_Of_Construction.Changes_To_Construction.Cursor;
 
       use Observation.Observation_Of_Patches.Changes_To_Patches;
       use Observation.Observation_Of_Pieces.Changes_To_Pieces;
@@ -264,32 +262,6 @@ package body Hexagon.Client_Map is
 
          Trav_Patches_Effect := Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Next (Trav_Patches_Effect);
       end loop;
-
-      -- remove invisible
-      Trav_Construction := Observation.Observation_Of_Construction.Changes_To_Construction.First (P_Player_Observed_Constructions);
-
-      while Observation.Observation_Of_Construction.Changes_To_Construction.Has_Element (Trav_Construction) loop
-         if not Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Valid then
-            A_Patch := Hexagon.Client_Map.Get_Patch_Adress_From_AB(P_Client_Map,
-                                                                   Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Pos.A,
-                                                                   Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Pos.B);
-
-            Construction.Construction_List.Exclude
-              (A_Patch.all.Constructions_Here,
-               Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Construction_Info);
-         else
-            A_Patch := Hexagon.Client_Map.Get_Patch_Adress_From_AB(P_Client_Map,
-                                                                   Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Pos.A,
-                                                                   Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Pos.B);
-
-            Construction.Construction_List.Include
-              (A_Patch.all.Constructions_Here,
-               Observation.Observation_Of_Construction.Changes_To_Construction.Element (Trav_Construction).Construction_Info);
-         end if;
-
-         Trav_Construction := Observation.Observation_Of_Construction.Changes_To_Construction.Next (Trav_Construction);
-      end loop;
-
 
       if Verbose then
          Text_IO.Put_Line ("Hexagon.Client.Map.Set_Reports_On_Map - exit");

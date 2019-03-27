@@ -22,7 +22,6 @@ with Observation;
 with Hexagon.Client_Map;
 with Effect;
 with Ada.Containers.Vectors;
-with Construction;
 with Action;
 with Hexagon.Area;
 
@@ -127,20 +126,6 @@ package Piece.Client_Piece is
       P_Piece       : in     Type_Piece;
       P_Patch       : in     Landscape.Type_Patch;
       P_Effect      : in     Effect.Type_Effect);
-
-   procedure Perform_Construction
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Construction_Piece : in     Type_Piece;
-      P_Construction_Patch : in     Landscape.Type_Patch;
-      P_Construction       : in     Construction.Type_Construction);
-
-   procedure Perform_Demolition
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Demolition_Piece   : in     Type_Piece;
-      P_Demolition_Patch   : in     Landscape.Type_Patch;
-      P_Construction       : in     Construction.Type_Construction);
 
    function Find_Effect
      (P_Piece_Id    : in Piece.Type_Piece_Id;

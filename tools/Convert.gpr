@@ -1,0 +1,6 @@
+project Convert is
+    for Source_Dirs use ("src","D:\Ada\Git\Sisyfos\src");
+	for Exec_Dir use ".";
+    for Object_Dir use "obj";
+    for Main use ("convert.adb");
+end Convert;

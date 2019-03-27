@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A Turn based strategy game. This is the main starter for server
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2019  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ procedure Tubastga_Server_Starter is
    Tubastga_Class2 : Tubastga_Game.Server_Logic.Type_My_Tubastga_House_Access_Class;
 
 begin
-   Text_IO.Put_Line ("Tubast'ga - v0.4. Copyright (C) 2015-2017  Frank J Jorgensen");
+   Text_IO.Put_Line ("Tubast'ga - v0.5. Copyright (C) 2015-2019  Frank J Jorgensen");
    Text_IO.Put_Line
      ("This program comes with ABSOLUTELY NO WARRANTY; for details see attached gpl.txt");
    Text_IO.Put_Line ("or <http://www.gnu.org/licenses/>");
@@ -101,7 +101,6 @@ begin
       Tubastga_Game.Landscapes_Type_Info_List,
       Tubastga_Game.Pieces_Type_Info_List,
       Tubastga_Game.Houses_Type_Info_List,
-      Tubastga_Game.Construction_Type_Info_List,
       Tubastga_Game.Effect_Type_Info_List,
       --
       Tubastga_Game.Server_Logic.Tubastga_Creating_Game'Access,

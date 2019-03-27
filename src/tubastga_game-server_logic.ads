@@ -26,16 +26,14 @@ with Hexagon.Area.Server_Area;
 with Hexagon.Server_Map;
 with Utilities;
 with Status;
-with Construction;
 with Effect;
 with Goods;
 with Ada.Containers.Ordered_Maps;
 with Landscape.Server;
-with Construction.Server;
 with Effect.Server;
 with Lua;
 with Action;
-with Hexagon.Navigation;
+with Hexagon.Server_Navigation;
 
 package Tubastga_Game.Server_Logic is
    Not_Implementet : exception;
@@ -636,63 +634,16 @@ package Tubastga_Game.Server_Logic is
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
-   --
-   -- Perform Construction
-   --
-   function Validate_Perform_Construction
-     (P_Player_Id          : in Player.Type_Player_Id;
-      P_Action_Type        : in Action.Type_Action_Type;
-      P_Construction_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Construction_Pos   : in Hexagon.Type_Hexagon_Position;
-      P_Construction       : in Construction.Type_Construction) return Boolean;
-
-   procedure Before_Perform_Construction
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Construction_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Construction_Pos   : in     Hexagon.Type_Hexagon_Position;
-      P_Construction       : in     Construction.Type_Construction;
-      P_Result             :    out Status.Type_Result_Status);
-
-   procedure End_Perform_Construction
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Construction_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Construction_Pos   : in     Hexagon.Type_Hexagon_Position;
-      P_Construction       : in     Construction.Type_Construction;
-      P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
-
-   --
-   -- Perform Demolition
-   --
-   function Validate_Perform_Demolition
-     (P_Player_Id        : in Player.Type_Player_Id;
-      P_Action_Type      : in Action.Type_Action_Type;
-      P_Demolition_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Demolition_Pos   : in Hexagon.Type_Hexagon_Position;
-      P_Construction     : in Construction.Type_Construction) return Boolean;
-
-   procedure Before_Perform_Demolition
-     (P_Player_Id        : in     Player.Type_Player_Id;
-      P_Action_Type      : in     Action.Type_Action_Type;
-      P_Demolition_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Demolition_Pos   : in     Hexagon.Type_Hexagon_Position;
-      P_Construction     : in     Construction.Type_Construction;
-      P_Result           :    out Status.Type_Result_Status);
-
-   procedure End_Perform_Demolition
-     (P_Player_Id          : in     Player.Type_Player_Id;
-      P_Action_Type        : in     Action.Type_Action_Type;
-      P_Demolition_Piece   : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Demolition_Pos     : in     Hexagon.Type_Hexagon_Position;
-      P_Construction       : in     Construction.Type_Construction;
-      P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
-
    procedure Upkeep
      (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
       P_Piece : in out Type_My_Tubastga_Piece);
+
+   function Movement_Cost
+     (P_Player_Id   : in     Player.Type_Player_Id;
+      P_Action_Type : in     Action.Type_Action_Type;
+      P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Patch  : in out Landscape.Type_Patch;
+      P_To_Patch    : in out Landscape.Type_Patch) return Integer;
 
    procedure Upkeep
      (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
@@ -742,13 +693,6 @@ package Tubastga_Game.Server_Logic is
    Effect_Slot_3       : constant Effect.Type_Effect_Name := 10;
    Effect_Path         : constant Effect.Type_Effect_Name := 11;
 
-   Construction_Wall1 : constant Construction.Type_Construction := 1;
-   Construction_Wall2 : constant Construction.Type_Construction := 2;
-   Construction_Wall3 : constant Construction.Type_Construction := 3;
-   Construction_Wall4 : constant Construction.Type_Construction := 4;
-   Construction_Wall5 : constant Construction.Type_Construction := 5;
-   Construction_Wall6 : constant Construction.Type_Construction := 6;
-
    procedure Tubastga_Creating_Game
      (P_Map_Name      : in Utilities.RemoteString.Type_String;
       P_Scenario_Name : in Utilities.RemoteString.Type_String);
@@ -764,76 +708,6 @@ package Tubastga_Game.Server_Logic is
    procedure Tubastga_Start_Game;
    procedure Tubastga_Upkeep_Game;
    procedure Tubastga_End_Game (P_Game_Status : out Status.Type_Game_Status);
-
-   Land_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
-   Land_Piece_Attack_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
-
-   Sea_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => False, 101 => False, 102 => False, 103 => True);
-   Sea_Piece_Attack_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => False, 101 => False, 102 => False, 103 => True);
-
-   House_Construct_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
-   House_Non_Construct_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
-     new Landscape.Type_List_Landscape'(100 => False, 101 => False, 102 => False, 103 => False);
-
-   Pieces_Type_Info_List : Piece.Server.Fighting_Piece.Type_Piece_Type_Info_List :=
-     (Sentry_Piece =>
-        Piece.Server.Fighting_Piece.Type_Piece_Type_Info'
-          (Utilities.RemoteString.To_Unbounded_String ("Sentry"),
-           Piece.Fighting_Piece,
-           Land_Piece_Move_Landscape_Array,
-           Land_Piece_Attack_Landscape_Array),
-      Knight_Piece =>
-        Piece.Server.Fighting_Piece.Type_Piece_Type_Info'
-          (Utilities.RemoteString.To_Unbounded_String ("Knight"),
-           Piece.Fighting_Piece,
-           Land_Piece_Move_Landscape_Array,
-           Land_Piece_Attack_Landscape_Array),
-      Bowman_Piece =>
-        Piece.Server.Fighting_Piece.Type_Piece_Type_Info'
-          (Utilities.RemoteString.To_Unbounded_String ("Bowman"),
-           Piece.Fighting_Piece,
-           Land_Piece_Move_Landscape_Array,
-           Land_Piece_Attack_Landscape_Array),
-
-      Ship_Piece =>
-        Piece.Server.Fighting_Piece.Type_Piece_Type_Info'
-          (Utilities.RemoteString.To_Unbounded_String ("Ship"),
-           Piece.Fighting_Piece,
-           Sea_Piece_Move_Landscape_Array,
-           Sea_Piece_Attack_Landscape_Array),
-      Carrier_Piece =>
-        Piece.Server.Fighting_Piece.Type_Piece_Type_Info'
-          (Utilities.RemoteString.To_Unbounded_String ("Carrier"),
-           Piece.Fighting_Piece,
-           Land_Piece_Move_Landscape_Array,
-           Land_Piece_Attack_Landscape_Array));
-
-   Houses_Type_Info_List : Piece.Server.House_Piece.Type_House_Type_Info_List :=
-     (Farm_House =>
-        Piece.Server.House_Piece.Type_House_Type_Info'
-          (Type_Name           => Utilities.RemoteString.To_Unbounded_String ("Farm"),
-           Category            => Piece.House_Piece,
-           Construct_Landscape => House_Construct_Landscape_Array),
-      Lumberjack_House =>
-        Piece.Server.House_Piece.Type_House_Type_Info'
-          (Type_Name           => Utilities.RemoteString.To_Unbounded_String ("Lumberjack"),
-           Category            => Piece.House_Piece,
-           Construct_Landscape => House_Construct_Landscape_Array),
-      Stonecutter_House =>
-        Piece.Server.House_Piece.Type_House_Type_Info'
-          (Type_Name           => Utilities.RemoteString.To_Unbounded_String ("Stonecutter"),
-           Category            => Piece.House_Piece,
-           Construct_Landscape => House_Construct_Landscape_Array),
-      Tower_House =>
-        Piece.Server.House_Piece.Type_House_Type_Info'
-          (Type_Name           => Utilities.RemoteString.To_Unbounded_String ("Tower"),
-           Category            => Piece.House_Piece,
-           Construct_Landscape => House_Construct_Landscape_Array));
 
    -- Attack_Defence Table
    type Type_Attack_Defence_Record is record
@@ -852,31 +726,6 @@ package Tubastga_Game.Server_Logic is
 
    type Type_Attack_Defence_Types is (Attacking_Wins, Attacked_Wins);
    --
-   Construction_Type_Info_List : Construction.Server.Type_Construction_Type_Info_List :=
-     (Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall1"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(True, False, False, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall2"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, True, False, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall3"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, True, False, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall4"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, True, False, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall5"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, False, True, False)),
-      Construction.Server.Type_Construction_Type_Info'
-        (Type_Name                 => Utilities.RemoteString.To_Unbounded_String ("Wall6"),
-         Blocking_Neighbour_Number =>
-           Construction.Server.Type_Way_List'(False, False, False, False, False, True)));
 
    Effect_Type_Info_List : Effect.Server.Type_Effect_Type_Info_List :=
      (Effect_Action_Point =>
@@ -919,9 +768,9 @@ package Tubastga_Game.Server_Logic is
 
    package Carrier_Paths_List is new Ada.Containers.Ordered_Maps
      (Piece.Type_Piece_Id,
-      Hexagon.Navigation.Type_Path,
+      Hexagon.Server_Navigation.Type_Path,
       Piece."<",
-      Hexagon.Navigation."=");
+      Hexagon.Server_Navigation."=");
 
    All_Paths : Carrier_Paths_List.Map;
 

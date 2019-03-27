@@ -82,7 +82,7 @@ package body Tubastga_Game.Server_Logic.House_Piece is
             A_Pos := Piece.Server.Pieces_Server_List.Element (Trav_Tower).Actual_Pos;
             if A_Pos.P_Valid then
 
-               if Hexagon.Navigation.Hexagon_Distance
+               if Hexagon.Server_Navigation.Hexagon_Distance
                    (A_Pos, P_House_Piece_Pos) <
                  P_Distance
                then

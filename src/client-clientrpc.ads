@@ -26,7 +26,6 @@ with Landscape;
 with Status;
 with Observation;
 with Effect;
-with Construction;
 with Action;
 
 package Client.ClientRPC is
@@ -155,20 +154,6 @@ package Client.ClientRPC is
       P_Piece_Id    : in Piece.Type_Piece_Id;
       P_Effect      : in Effect.Type_Effect;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A);
-
-   procedure Perform_Construction
-     (P_Player_Id        : in Player.Type_Player_Id;
-      P_Action_Type      : in Action.Type_Action_Type;
-      P_Piece_Id         : in Piece.Type_Piece_Id;
-      P_Construction_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Construction     : in Construction.Type_Construction);
-
-   procedure Perform_Demolition
-     (P_Player_Id      : in Player.Type_Player_Id;
-      P_Action_Type    : in Action.Type_Action_Type;
-      P_Piece_Id       : in Piece.Type_Piece_Id;
-      P_Demolition_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Construction   : in Construction.Type_Construction);
 
    procedure Client_Stopped (P_Player_Id : in Player.Type_Player_Id);
 

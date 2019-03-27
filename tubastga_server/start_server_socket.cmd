@@ -2,7 +2,7 @@
 rem
 rem
 rem      Tubastga Server is the core part of the server infrastructure of the Tubastga Game.
-rem      Copyright (C) 2015-2019  Frank J Jorgensen
+rem      Copyright (C) 2015  Frank J Jorgensen
 rem
 rem      This program is free software: you can redistribute it and/or modify
 rem      it under the terms of the GNU General Public License as published by
@@ -20,6 +20,5 @@ rem
 
 call ..\setup
 
-rem tubastga_client player:Yulia 1> res_yulia.txt
-tubastga_client player:Yulia 
+tubastga_server ip:10.0.1.15 port:4000 1> res_server.txt
 

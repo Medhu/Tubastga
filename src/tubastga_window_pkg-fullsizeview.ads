@@ -22,7 +22,7 @@ with Glib;
 with Gdk.Pixbuf;
 with Tubastga_Window_Pkg;
 with Effect;
-with Construction;
+--with Construction;
 with Landscape;
 with Tubastga_Window_Pkg.Lists;
 
@@ -62,7 +62,7 @@ package Tubastga_Window_Pkg.FullsizeView is
 
    procedure Draw_Constructions
      (P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Construction_List : in     Construction.Construction_List.Set);
+      P_Construction_List : in     Effect.Effect_List.Map);
 
    procedure Draw_Landscapes
      (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;

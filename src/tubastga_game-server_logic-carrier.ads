@@ -19,6 +19,7 @@
 
 with Goods;
 with Ada.Containers.Vectors;
+with Ada.Streams.Stream_IO;
 with Tubastga_Game.Server_Logic;
 
 package Tubastga_Game.Server_Logic.Carrier is
@@ -71,11 +72,15 @@ package Tubastga_Game.Server_Logic.Carrier is
 
    function Create_From_Path_Patch_List
      (P_Player_Id  : in     Player.Type_Player_Id;
-      P_Patch_List : in out Patch_List.Vector) return Hexagon.Navigation.Path_Pkg.Vector;
+      P_Patch_List : in out Patch_List.Vector) return Hexagon.Server_Navigation.Path_Pkg.Vector;
 
    procedure Clear_Path_Effects (P_Player_Id : in Player.Type_Player_Id);
 
    procedure Create_Workers_Path (P_Player_Id : in Player.Type_Player_Id);
    procedure Remove_Workers_Path (P_Player_Id : in Player.Type_Player_Id);
+
+   procedure Save_Workers_Path (P_Stream : in out Ada.Streams.Stream_IO.Stream_Access);
+   procedure Load_Workers_Path (P_Stream : in out Ada.Streams.Stream_IO.Stream_Access);
+   procedure Print_Workers_Path;
 
 end Tubastga_Game.Server_Logic.Carrier;
