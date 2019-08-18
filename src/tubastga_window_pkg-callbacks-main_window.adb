@@ -58,6 +58,7 @@ with Server;
 with Tubastga_Window_Pkg.Lists;
 with Tubastga_Window_Pkg.Callbacks.Performing_Patch;
 with Tubastga_Window_Pkg.Callbacks.Target_Patch;
+with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    Verbose : constant Boolean := False;

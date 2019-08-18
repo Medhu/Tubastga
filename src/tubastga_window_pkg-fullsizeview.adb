@@ -22,6 +22,8 @@ with Piece.Client_Piece;
 with Tubastga_Game;
 with Player;
 with Text_IO;
+with Tubastga_Window_Pkg.Images;
+
 
 package body Tubastga_Window_Pkg.FullsizeView is
    Verbose : constant Boolean := False;
@@ -577,6 +579,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
       Piece_Image : Tubastga_UI_Resources.Type_Image_Names;
       A_Piece     : Piece.Client_Piece.Type_Client_Piece_Class_Access;
       Piece_No    : Integer;
+      A_Frame     : Tubastga_Window_Pkg.Images.Type_Frame_Access;
 
       use Piece;
       use Player;
@@ -610,19 +613,23 @@ package body Tubastga_Window_Pkg.FullsizeView is
                  Piece_No);
 
             if Piece_Image /= Tubastga_UI_Resources.None then
+                  A_Frame := Tubastga_Window_Pkg.Images.Get_Image
+                    (Tubastga_Window_Pkg.Images.All_Creatures, Piece_Image);
+Text_IO.Put_Line("AAAA");
                Gdk.Pixbuf.Composite
-                 (Tubastga_UI_Resources.All_Images (Piece_Image).Image_Data,
+                 (A_Frame.all.Image_Data,
                   P_Fullsizeview,
-                  Glib.Gint (x),
-                  Glib.Gint (y),
-                  Png_Width,--  + 150,
-                  Png_Height,-- + 150,
-                  Glib.Gdouble (x),
-                  Glib.Gdouble (y),
+                  Glib.Gint (x + A_Frame.all.Dest_X),
+                  Glib.Gint (y + A_Frame.all.Dest_Y),
+                  A_Frame.all.Image_Width,--  + 150,
+                  A_Frame.all.Image_Height,-- + 150,
+                  Glib.Gdouble (x + A_Frame.all.Offset_X),
+                  Glib.Gdouble (y + A_Frame.all.Offset_Y),
                   1.0,
                   1.0,
                   Gdk.Pixbuf.Interp_Nearest,
                   255);
+
             end if;
 
          end;
