@@ -105,6 +105,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Iter : Gtk.Text_Iter.Gtk_Text_Iter;
 
+   Pieces_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
    All_Pix, Scale_Pix, All_Minimap_Pix, Scale_Minimap_Pix, Patch_Zoom_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
 
    All_Constructions_On_Patch,
@@ -269,6 +270,11 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
           (Has_Alpha => True,
            Width     => 1400,
            Height    => Glib.Gint (Game_Area_Origo_Y) + 80);
+      Pieces_Pix :=
+        Gdk.Pixbuf.Gdk_New
+          (Has_Alpha => True,
+           Width     => 1400,
+           Height    => Glib.Gint (Game_Area_Origo_Y) + 80);
       Scale_Pix       := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
       All_Minimap_Pix :=
         Gdk.Pixbuf.Gdk_New
@@ -425,7 +431,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Tubastga_Window_Pkg.FullsizeView.Draw_Pieces
               (A_Client_Map,
                P_Patch.all,
-               All_Pix,
+               Pieces_Pix,
                P_Patch.all.Pieces_Here);
             --
             --
@@ -665,6 +671,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
             -- remove picture from previous frame
             Gdk.Pixbuf.Fill (All_Pix, Glib.Guint32 (0));
+            Gdk.Pixbuf.Fill (Pieces_Pix, Glib.Guint32 (0));
 
             Piece.Client_Piece.Set_Reports_On_Pieces
               (Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Pieces_Info,
@@ -733,6 +740,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Hexagon.Client_Map.Reset_Visit;
 
          Gdk.Pixbuf.Fill (All_Pix, Glib.Guint32 (0));
+         Gdk.Pixbuf.Fill (Pieces_Pix, Glib.Guint32(0));
 
          Hexagon.Client_Map.Traverse (A_Client_Map, A_Client_Map.Origo_Patch, -- current origo for
          --this client.
@@ -829,6 +837,19 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       Gdk.Pixbuf.Fill (Scale_Pix, Glib.Guint32 (0));
       Gdk.Pixbuf.Composite
         (All_Pix,
+         Scale_Pix,
+         Glib.Gint (0.0),
+         Glib.Gint (0.0),
+         Glib.Gint (700.0),
+         Glib.Gint (730.0),
+         Glib.Gdouble (0),
+         Glib.Gdouble (0),
+         Glib.Gdouble (Map_Scale),
+         Glib.Gdouble (Map_Scale),
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+      Gdk.Pixbuf.Composite
+        (Pieces_Pix,
          Scale_Pix,
          Glib.Gint (0.0),
          Glib.Gint (0.0),
