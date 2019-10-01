@@ -19,7 +19,6 @@
 
 with Gdk.Pixbuf;
 with Glib;
---with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;
 
 package Tubastga_Window_Pkg.Images is
@@ -56,6 +55,17 @@ package Tubastga_Window_Pkg.Images is
    package Creatures_List_Pkg is new Ada.Containers.Vectors
      (Positive, Type_Creature_Access);
 
+   type Type_Race is
+      record
+         Folder    : Ada.Strings.Unbounded.Unbounded_String;
+         Race_Name : Ada.Strings.Unbounded.Unbounded_String;
+         Creatures : Creatures_List_Pkg.Vector;
+      end record;
+   type Type_Race_Access is access all Type_Race;
+
+   package Races_List_Pkg is new Ada.Containers.Vectors
+     (Positive, Type_Race_Access);
+
    procedure Initialize (P_Creatures : in out Creatures_List_Pkg.Vector);
 
    function Get_Image (P_Creatures_List : in out Creatures_List_Pkg.Vector;
@@ -63,6 +73,8 @@ package Tubastga_Window_Pkg.Images is
                        return Type_Frame_Access;
 
    All_Creatures : Creatures_List_Pkg.Vector;
+
+   All_Races : Races_List_Pkg.Vector;
 
    procedure Print_Frame_List (P_Frame_List : in Frames_List_Pkg.Vector);
 

@@ -19,6 +19,7 @@
 
 with Text_IO;
 with Glib.Error;
+with Ada.Directories;
 
 package body Tubastga_Window_Pkg.Images is
 
@@ -88,6 +89,59 @@ package body Tubastga_Window_Pkg.Images is
       end loop;
    end Load_Images;
 
+   procedure Creatures (P_Creatures_List : in out Creatures_List_Pkg.Vector) is
+   begin
+      null;
+   end Creatures;
+
+   procedure Race (P_Races : in out Type_Race_Access) is
+      A_Search          : Ada.Directories.Search_Type;
+      A_Directory_Entry : Ada.Directories.Directory_Entry_Type;
+
+   begin
+      Ada.Directories.Start_Search
+        (A_Search, Ada.Strings.Unbounded.To_String(P_Races.all.Folder), "*");
+      while Ada.Directories.More_Entries (A_Search) loop
+         Ada.Directories.Get_Next_Entry (A_Search, A_Directory_Entry);
+
+         Text_IO.Put_Line
+           ("Races:" & Ada.Directories.Full_Name (A_Directory_Entry) & "=" &
+            Ada.Directories.Simple_Name (A_Directory_Entry));
+
+      end loop;
+   end Race;
+
+   procedure Traverse (P_Races_List : in out Races_List_Pkg.Vector) is
+      A_Search          : Ada.Directories.Search_Type;
+      A_Directory_Entry : Ada.Directories.Directory_Entry_Type;
+
+      A_Race : Type_Race_Access;
+   begin
+      Text_IO.Put_Line ("Directory:");
+--      Ada.Directories.Set_Directory ("D:\Ada\Git\Tubastga\tubastga_client\resources\ny");
+      Ada.Directories.Start_Search
+        (A_Search, "D:\Ada\Git\Tubastga\tubastga_client\resources\ny", "*");
+      while Ada.Directories.More_Entries (A_Search) loop
+         Ada.Directories.Get_Next_Entry (A_Search, A_Directory_Entry);
+
+         Text_IO.Put_Line
+           ("Folder:" & Ada.Directories.Full_Name (A_Directory_Entry) & "=" &
+            Ada.Directories.Simple_Name (A_Directory_Entry));
+
+         A_Race :=
+           new Type_Race'
+             (Ada.Strings.Unbounded.To_Unbounded_String
+                (Ada.Directories.Full_Name (A_Directory_Entry)),
+              Ada.Strings.Unbounded.To_Unbounded_String
+                (Ada.Directories.Simple_Name (A_Directory_Entry)),
+              Creatures_List_Pkg.Empty_Vector);
+
+         Races_List_Pkg.Append (P_Races_List, A_Race);
+         Race (A_Race);
+
+      end loop;
+   end Traverse;
+
    procedure Initialize (P_Creatures : in out Creatures_List_Pkg.Vector) is
       A_Creature     : Type_Creature_Access;
       Creatures_List : Creatures_List_Pkg.Vector;
@@ -98,6 +152,29 @@ package body Tubastga_Window_Pkg.Images is
 
       use Glib;
    begin
+      --
+      --
+      Traverse(All_Races);
+--      declare
+--         A_Search          : Ada.Directories.Search_Type;
+--         A_Directory_Entry : Ada.Directories.Directory_Entry_Type;
+--      begin
+--         Text_IO.Put_Line ("Directory:");
+--         Ada.Directories.Set_Directory ("D:\Ada\wesnoth\wesnoth-master\data\core\images\units");
+--         Ada.Directories.Start_Search
+--           (A_Search, "D:\Ada\wesnoth\wesnoth-master\data\core\images\units", "*");
+--         while Ada.Directories.More_Entries (A_Search) loop
+--            Ada.Directories.Get_Next_Entry (A_Search, A_Directory_Entry);
+
+--            Text_IO.Put_Line
+--              ("=" & Ada.Directories.Full_Name (A_Directory_Entry) & "=" &
+--               Ada.Directories.Simple_Name (A_Directory_Entry));
+--         end loop;
+
+--      end;
+      --
+      --
+
       -- Units in wesnoth.
       -- https://units.wesnoth.org/1.14/mainline/en_US/mainline.html
       -- ...\wesnoth-master\data\core\images\units
@@ -255,13 +332,13 @@ package body Tubastga_Window_Pkg.Images is
       Frames_List_Pkg.Append (Frames_List, A_Frame);
 
       An_Action :=
-        new Type_Action'
-          (Ada.Strings.Unbounded.To_Unbounded_String ("Passive"), Frames_List);
+        new Type_Action'(Ada.Strings.Unbounded.To_Unbounded_String ("Passive"), Frames_List);
 
       Actions_List_Pkg.Append (Actions_List, An_Action);
 
       A_Creature :=
-        new Type_Creature'(Ada.Strings.Unbounded.To_Unbounded_String ("human-loyalist"), Actions_List);
+        new Type_Creature'
+          (Ada.Strings.Unbounded.To_Unbounded_String ("human-loyalist"), Actions_List);
 
       Creatures_List_Pkg.Append (P_Creatures, A_Creature);
 
