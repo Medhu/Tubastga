@@ -614,7 +614,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
             if Piece_Image /= Tubastga_UI_Resources.None then
                   A_Frame := Tubastga_Window_Pkg.Images.Get_Image
-                    (Tubastga_Window_Pkg.Images.All_Creatures, Piece_Image);
+                 (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.None_2);
 Text_IO.Put_Line("AAAA");
                Gdk.Pixbuf.Composite
                  (A_Frame.all.Image_Data,
@@ -648,6 +648,7 @@ Text_IO.Put_Line("AAAA");
       P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
    is
       Trav  : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
+      A_Frame : Tubastga_Window_Pkg.Images.Type_Frame_Access;
       A_Pos : Hexagon.Type_Hexagon_Position;
 
       use Hexagon;
@@ -661,6 +662,9 @@ Text_IO.Put_Line("AAAA");
          A_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
 
          if A_Pos = P_Patch.Pos then
+
+            A_Frame := Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.Selected_Patch_LB_2);
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Selected_Patch_LB)
@@ -686,6 +690,9 @@ Text_IO.Put_Line("AAAA");
          A_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
 
          if A_Pos = P_Patch.Pos then
+
+            A_Frame := Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.Selected_Patch_RB_2);
 
             Gdk.Pixbuf.Composite
               (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Selected_Patch_RB)

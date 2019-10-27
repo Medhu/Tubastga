@@ -20,6 +20,7 @@
 with Gdk.Pixbuf;
 with Glib;
 with Ada.Strings.Unbounded;
+with Ada.Containers.Hashed_Maps;
 
 package Tubastga_Window_Pkg.Images is
    type Type_Frame is
@@ -32,23 +33,20 @@ package Tubastga_Window_Pkg.Images is
       end record;
    type Type_Frame_Access is access all Type_Frame;
 
-   package Frames_List_Pkg is new Ada.Containers.Vectors
-     (Positive, Type_Frame_Access);
-
-   type Type_Action is
+   type Type_Image_Key is
       record
-         Action_Name : Ada.Strings.Unbounded.Unbounded_String;
-         Frames : Frames_List_Pkg.Vector;
+         Race_Key     : Positive;
+         Creature_Key : Positive;
       end record;
-   type Type_Action_Access is access all Type_Action;
 
-   package Actions_List_Pkg is new Ada.Containers.Vectors
-     (Positive, Type_Action_Access);
+   None_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
+   Selected_Patch_LB_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
+   Selected_Patch_RB_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
 
    type Type_Creature is
       record
          Creature_Name : Ada.Strings.Unbounded.Unbounded_String;
-         Actions : Actions_List_Pkg.Vector;
+         Frame         : Type_Frame_Access;
       end record;
    type Type_Creature_Access is access all Type_Creature;
 
@@ -57,7 +55,6 @@ package Tubastga_Window_Pkg.Images is
 
    type Type_Race is
       record
-         Folder    : Ada.Strings.Unbounded.Unbounded_String;
          Race_Name : Ada.Strings.Unbounded.Unbounded_String;
          Creatures : Creatures_List_Pkg.Vector;
       end record;
@@ -66,25 +63,19 @@ package Tubastga_Window_Pkg.Images is
    package Races_List_Pkg is new Ada.Containers.Vectors
      (Positive, Type_Race_Access);
 
-   procedure Initialize (P_Creatures : in out Creatures_List_Pkg.Vector);
+   procedure Initialize (P_Races : in out Races_List_Pkg.Vector);
 
-   function Get_Image (P_Creatures_List : in out Creatures_List_Pkg.Vector;
-                       P_Piece_Image : Tubastga_UI_Resources.Type_Image_Names)
+   function Get_Image (P_Races_List : in out Races_List_Pkg.Vector;
+                       P_Image_Key : in Type_Image_Key)
                        return Type_Frame_Access;
 
    All_Creatures : Creatures_List_Pkg.Vector;
 
    All_Races : Races_List_Pkg.Vector;
 
-   procedure Print_Frame_List (P_Frame_List : in Frames_List_Pkg.Vector);
-
-   procedure Print_Action_List (P_Action_List : in Actions_List_Pkg.Vector);
-
    procedure Print_Creature_List (P_Creature_List : in Creatures_List_Pkg.Vector);
 
    procedure Print_Creature (P_Creature : in Type_Creature);
-
-   procedure Print_Action (P_Action : in Type_Action);
 
    procedure Print_Frame (P_Frame : in Type_Frame);
 
