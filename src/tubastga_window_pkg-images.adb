@@ -25,7 +25,7 @@ with Landscape;
 
 package body Tubastga_Window_Pkg.Images is
 
-   Verbose : constant Boolean := True;
+   Verbose : constant Boolean := False;
 
    function Image_Names_Hashed (P_Image_Name : in Type_Image_Names) return Ada.Containers.Hash_Type
    is
@@ -177,8 +177,6 @@ package body Tubastga_Window_Pkg.Images is
          end if;
       end if;
 
-      Text_IO.Put_Line ("House_Image_Name:" & House_Image_Name'Img);
-
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Find_House_Image - exit");
       end if;
@@ -206,6 +204,7 @@ package body Tubastga_Window_Pkg.Images is
          Other_Image := Tubastga_Window_Pkg.Images.Minimap_Outside_View;
       end if;
 
+      text_io.Put_Line("Other_Image:" & Other_Image'Img);
 --      if Verbose then
 --         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - exit");
 --      end if;
@@ -226,6 +225,12 @@ package body Tubastga_Window_Pkg.Images is
 
       Images_List_Pkg.Include
         (P_Images, Selected_Patch_LB,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\selected_hexagon.png"), null, 0,
+            0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Selected_Patch_RB,
          new Type_Image'
            (Ada.Strings.Unbounded.To_Unbounded_String ("resources\selected_hexagon.png"), null, 0,
             0, 0, 0, 0, 0));
@@ -583,6 +588,10 @@ package body Tubastga_Window_Pkg.Images is
 
       An_Image : Type_Image_Access;
    begin
+      if Verbose then
+         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Print_Images_List - enter");
+      end if;
+
       Text_IO.Put_Line("Images List:");
       Trav_Images := Images_List_Pkg.First (P_Images_List);
       while Images_List_Pkg.Has_Element (Trav_Images) loop
@@ -593,6 +602,9 @@ package body Tubastga_Window_Pkg.Images is
          Trav_Images := Images_List_Pkg.Next (Trav_Images);
       end loop;
 
+      if Verbose then
+         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Print_Images_List - exit");
+      end if;
    end Print_Images_List;
 
 end Tubastga_Window_Pkg.Images;
