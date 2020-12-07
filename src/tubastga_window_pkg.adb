@@ -48,8 +48,6 @@ package body Tubastga_Window_Pkg is
 
    Verbose : constant Boolean := False;
 
-   All_Images : Tubastga_Window_Pkg.Images.Images_List_Pkg.Map;
-
    procedure Gtk_New (P_Dlg_Main_Menu : out Type_Dlg_Main_Menu_Access) is
    begin
       P_Dlg_Main_Menu := new Type_Dlg_Main_Menu_Record;
@@ -1019,11 +1017,11 @@ package body Tubastga_Window_Pkg is
 
       P_Wnd_Main.Map_Image.Image_Height := Gdk.Pixbuf.Get_Height (P_Wnd_Main.Map_Image.Image_Data);
 
-      Tubastga_Window_Pkg.Images.Initialize(All_Images);
+      Tubastga_Window_Pkg.Images.Initialize(Tubastga_Window_Pkg.Images.All_Images);
 
-Tubastga_Window_Pkg.Images.Load_Images (All_Images);
+      Tubastga_Window_Pkg.Images.Load_Images (Tubastga_Window_Pkg.Images.All_Images);
 
-Tubastga_Window_Pkg.Images.Print_Images_List (All_Images);
+      Tubastga_Window_Pkg.Images.Print_Images_List (Tubastga_Window_Pkg.Images.All_Images);
 
       Tubastga_Window_Pkg.Show_All (P_Wnd_Main);
 
