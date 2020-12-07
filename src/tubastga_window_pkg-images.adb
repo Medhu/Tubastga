@@ -20,190 +20,578 @@
 with Text_IO;
 with Glib.Error;
 with Ada.Directories;
+with Tubastga_Game;
+with Landscape;
 
 package body Tubastga_Window_Pkg.Images is
 
    Verbose : constant Boolean := True;
 
-   procedure Load_Image (P_Creature : in out Type_Creature_Access) is
+   function Image_Names_Hashed (P_Image_Name : in Type_Image_Names) return Ada.Containers.Hash_Type
+   is
+   begin
+      return Type_Image_Names'Pos (P_Image_Name);
+   end Image_Names_Hashed;
+
+   function Find_Piece_Image
+     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece) return Tubastga_Window_Pkg.Images
+     .Type_Image_Names
+   is
+      Piece_Image : Tubastga_Window_Pkg.Images.Type_Image_Names;
+
+      use Piece;
+   begin
+      Piece_Image := Tubastga_Window_Pkg.Images.None;
+
+      if P_Piece.Type_Of_Piece = Tubastga_Game.Sentry_Piece then
+         Piece_Image := Tubastga_Window_Pkg.Images.Fighter;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Knight_Piece then
+         Piece_Image := Tubastga_Window_Pkg.Images.Rider;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Bowman_Piece then
+         Piece_Image := Tubastga_Window_Pkg.Images.Archer;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Ship_Piece then
+         Piece_Image := Tubastga_Window_Pkg.Images.Boat;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Carrier_Piece then
+         Piece_Image := Tubastga_Window_Pkg.Images.Boat;
+      end if;
+
+      return Piece_Image;
+   end Find_Piece_Image;
+
+   function Find_Landscape_Image
+     (P_Landscape : in Landscape.Type_Landscape) return Tubastga_Window_Pkg.Images.Type_Image_Names
+   is
+      Landscape_Image : Tubastga_Window_Pkg.Images.Type_Image_Names;
+
+      use Landscape;
+   begin
+      Landscape_Image := Tubastga_Window_Pkg.Images.None;
+
+      if P_Landscape = Tubastga_Game.Landscape_Grass then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Green;
+      elsif P_Landscape = Tubastga_Game.Landscape_Forest then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Forested_Deciduous_Summer_Hills_Tile;
+      elsif P_Landscape = Tubastga_Game.Landscape_Mountain then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Hills_Variation;
+      elsif P_Landscape = Tubastga_Game.Landscape_Water then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Water;
+      end if;
+
+      return Landscape_Image;
+   end Find_Landscape_Image;
+
+   function Find_Minimap_Landscape_Image
+     (P_Landscape : in Landscape.Type_Landscape) return Tubastga_Window_Pkg.Images.Type_Image_Names
+   is
+      Landscape_Image : Tubastga_Window_Pkg.Images.Type_Image_Names;
+
+      use Landscape;
+   begin
+      --if Verbose then
+      --    Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - enter");
+      --end if;
+
+      if P_Landscape = Tubastga_Game.Landscape_Grass then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Minimap_Grass;
+      elsif P_Landscape = Tubastga_Game.Landscape_Forest then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Minimap_Forest;
+      elsif P_Landscape = Tubastga_Game.Landscape_Mountain then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Minimap_Mountain;
+      elsif P_Landscape = Tubastga_Game.Landscape_Water then
+         Landscape_Image := Tubastga_Window_Pkg.Images.Minimap_Water;
+      end if;
+
+      --if Verbose then
+      --   Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - exit");
+      --end if;
+
+      return Landscape_Image;
+   end Find_Minimap_Landscape_Image;
+
+   function Find_Player_Image
+     (P_Player_Id : in Player.Type_Player_Id) return Tubastga_Window_Pkg.Images.Type_Image_Names
+   is
+      Player_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
+
+      use Player;
+   begin
+      Player_Image_Name := Tubastga_Window_Pkg.Images.None;
+
+      if P_Player_Id = 1 then
+         Player_Image_Name := Tubastga_Window_Pkg.Images.Player_1;
+      elsif P_Player_Id = 2 then
+         Player_Image_Name := Tubastga_Window_Pkg.Images.Player_2;
+      else
+         Player_Image_Name := Tubastga_Window_Pkg.Images.Player_3;
+      end if;
+
+      return Player_Image_Name;
+   end Find_Player_Image;
+
+   function Find_House_Image
+     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece) return Tubastga_Window_Pkg.Images
+     .Type_Image_Names
+   is
+      House_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
+
+      use Piece;
+      use Player;
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Find_House_Image - enter");
+      end if;
+
+      House_Image_Name := Tubastga_Window_Pkg.Images.None;
+
+      if P_Piece.Type_Of_Piece = Tubastga_Game.Farm_House then
+         if P_Piece.Player_Id = 1 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Boat;
+         elsif P_Piece.Player_Id = 2 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Boat;
+         else
+            House_Image_Name := Tubastga_Window_Pkg.Images.Boat;
+         end if;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Tower_House then
+         if P_Piece.Player_Id = 1 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Towerhouse;
+         elsif P_Piece.Player_Id = 2 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Towerhouse;
+         else
+            House_Image_Name := Tubastga_Window_Pkg.Images.Towerhouse;
+         end if;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Lumberjack_House then
+         if P_Piece.Player_Id = 1 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Lumberjack;
+         elsif P_Piece.Player_Id = 2 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Lumberjack;
+         else
+            House_Image_Name := Tubastga_Window_Pkg.Images.Lumberjack;
+         end if;
+      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Stonecutter_House then
+         if P_Piece.Player_Id = 1 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Stonecutter;
+         elsif P_Piece.Player_Id = 2 then
+            House_Image_Name := Tubastga_Window_Pkg.Images.Stonecutter;
+         else
+            House_Image_Name := Tubastga_Window_Pkg.Images.Stonecutter;
+         end if;
+      end if;
+
+      Text_IO.Put_Line ("House_Image_Name:" & House_Image_Name'Img);
+
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Find_House_Image - exit");
+      end if;
+
+      return House_Image_Name;
+   end Find_House_Image;
+
+   function Find_Other_Image (P_Type : in String) return Tubastga_Window_Pkg.Images.Type_Image_Names
+   is
+      Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Names;
+   begin
+--      if Verbose then
+--         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - enter");
+--      end if;
+
+      Other_Image := Tubastga_Window_Pkg.Images.None;
+
+      if P_Type = "invisible" then
+         Other_Image := Tubastga_Window_Pkg.Images.Invisible;
+      elsif P_Type = "selected_patch_LB" then
+         Other_Image := Tubastga_Window_Pkg.Images.Selected_Patch_LB;
+      elsif P_Type = "selected_patch_RB" then
+         Other_Image := Tubastga_Window_Pkg.Images.Selected_Patch_RB;
+      elsif P_Type = "minimap_outside_view" then
+         Other_Image := Tubastga_Window_Pkg.Images.Minimap_Outside_View;
+      end if;
+
+--      if Verbose then
+--         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - exit");
+--      end if;
+
+      return Other_Image;
+   end Find_Other_Image;
+
+   procedure Initialize (P_Images : in out Images_List_Pkg.Map) is
+
+      use Glib;
+   begin
+
+      Images_List_Pkg.Include
+        (P_Images, Invisible,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\invisible_hexagon.png"), null, 0,
+            0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Selected_Patch_LB,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\selected_hexagon.png"), null, 0,
+            0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Player_1,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\player_red.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Player_2,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\player_green.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Player_3,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\player_blue.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Dry,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\dry.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Dry2,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\dry2.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Dry3,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\dry3.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Dry4,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\dry4.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Dry5,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\dry5.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green2,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green2.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green3,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green3.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green4,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green4.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green5,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green5.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green6,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green6.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green7,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green7.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Green8,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\green8.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry2,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry2.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry3,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry3.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry4,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry4.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry5,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry5.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Semi_Dry6,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\semi-dry6.png"), null, 0, 0, 0, 0,
+            0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Forested_Deciduous_Summer_Hills_Tile,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String
+              ("resources\forested-deciduous-summer-hills-tile.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Hills_Variation,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\hills-variation.png"), null, 0, 0,
+            0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Water,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\water.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Chest,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\box.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall1,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall1.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall2,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall2.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall3,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall3.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall4,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall4.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall5,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall5.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Wall6,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\wall6.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, None,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\empty_hexagon.png"), null, 0, 0,
+            0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Fighter,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\fighter-idle-1.png"), null, 0, 0,
+            0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Rider,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\rider.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Archer,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\archer.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Boat,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\boat.png"), null, 0, 0, 0, 0, 0,
+            0));
+
+      Images_List_Pkg.Include
+        (P_Images, Lumberjack,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\cobbles-keep.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Stonecutter,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\cobbles-keep.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Towerhouse,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\cobbles-keep.png"), null, 0, 0, 0,
+            0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Outside_View,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String
+              ("resources\outside_view_invisible_minimap_hexagon.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Grass,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_grass_hexagon.png"), null,
+            0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Mountain,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_mountain_hexagon.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Water,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_water_hexagon.png"), null,
+            0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Forest,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_forest_hexagon.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+
+   end Initialize;
+
+   procedure Load_Image (P_Image : in out Type_Image_Access) is
       Error : Glib.Error.GError;
 
       use Glib.Error;
    begin
 
-      Text_IO.Put_Line("Load_Image:"
-                      & Ada.Strings.Unbounded.To_String (P_Creature.all.Frame.all.Frame_Name));
+      Text_IO.Put_Line ("Load_Image:" & Ada.Strings.Unbounded.To_String (P_Image.all.Image_Name));
       Gdk.Pixbuf.Gdk_New_From_File
-        (P_Creature.all.Frame.all.Image_Data,
-         Ada.Strings.Unbounded.To_String (P_Creature.all.Frame.all.Frame_Name), Error);
+        (P_Image.all.Image_Data, Ada.Strings.Unbounded.To_String (P_Image.all.Image_Name), Error);
 
       if Error = null then
-         P_Creature.all.Frame.all.Image_Width :=
-           Gdk.Pixbuf.Get_Width (P_Creature.all.Frame.all.Image_Data);
-         P_Creature.all.Frame.all.Image_Height :=
-           Gdk.Pixbuf.Get_Height (P_Creature.all.Frame.all.Image_Data);
+         P_Image.all.Image_Width  := Gdk.Pixbuf.Get_Width (P_Image.all.Image_Data);
+         P_Image.all.Image_Height := Gdk.Pixbuf.Get_Height (P_Image.all.Image_Data);
          --
          Text_IO.Put_Line
-           (" Width:" & P_Creature.all.Frame.all.Image_Width'Img & " Height:" &
-            P_Creature.all.Frame.all.Image_Height'Img);
+           (" Width:" & P_Image.all.Image_Width'Img & " Height:" & P_Image.all.Image_Height'Img);
       else
          Text_IO.Put_Line ("Error: " & Glib.Error.Get_Message (Error));
          Glib.Error.Error_Free (Error);
-         P_Creature.all.Frame.all.Image_Width  := 72;
-         P_Creature.all.Frame.all.Image_Height := 72;
+         P_Image.all.Image_Width  := 72;
+         P_Image.all.Image_Height := 72;
 
-         P_Creature.all.Frame.all.Image_Data :=
+         P_Image.all.Image_Data :=
            Gdk.Pixbuf.Gdk_New
-             (Bits_Per_Sample => 24, Width => P_Creature.all.Frame.all.Image_Width,
-              Height          => P_Creature.all.Frame.all.Image_Height);
+             (Bits_Per_Sample => 24, Width => P_Image.all.Image_Width,
+              Height          => P_Image.all.Image_Height);
 
-         Gdk.Pixbuf.Fill (P_Creature.all.Frame.all.Image_Data, 16#0000FF00#);
+         Gdk.Pixbuf.Fill (P_Image.all.Image_Data, 16#0000FF00#);
       end if;
 
    end Load_Image;
 
-   procedure Initialize (P_Races : in out Races_List_Pkg.Vector) is
-      A_Creature     : Type_Creature_Access;
-      A_Race     : Type_Race_Access;
-      A_Frame : Type_Frame_Access;
-
-      use Glib;
-   begin
-
-      declare
-         A_Search              : Ada.Directories.Search_Type;
-         Races_Directory_Entry : Ada.Directories.Directory_Entry_Type;
-      begin
-         Text_IO.Put_Line ("Directory:");
-
-         Ada.Directories.Start_Search
-           (A_Search, "D:\Ada\Git\Tubastga\tubastga_client\resources\ny", "*");
-         while Ada.Directories.More_Entries (A_Search) loop
-            Ada.Directories.Get_Next_Entry (A_Search, Races_Directory_Entry);
-
-            if Ada.Directories.Simple_Name (Races_Directory_Entry) /= "." and
-              Ada.Directories.Simple_Name (Races_Directory_Entry) /= ".." then
-
-               A_Race :=
-                 new Type_Race'
-                   (Ada.Strings.Unbounded.To_Unbounded_String
-                      (Ada.Directories.Simple_Name (Races_Directory_Entry)),
-                    Creatures_List_Pkg.Empty_Vector);
-
-               declare
-                  A_Search                  : Ada.Directories.Search_Type;
-                  Creatures_Directory_Entry : Ada.Directories.Directory_Entry_Type;
-               begin
-
-                  Ada.Directories.Start_Search
-                    (A_Search, --"D:\Ada\Git\Tubastga\tubastga_client\resources\"
-                     Ada.Directories.Full_Name (Races_Directory_Entry), "*");
-                  while Ada.Directories.More_Entries (A_Search) loop
-                     Ada.Directories.Get_Next_Entry (A_Search, Creatures_Directory_Entry);
-
-                     if Ada.Directories.Simple_Name (Creatures_Directory_Entry) /= "." and
-                       Ada.Directories.Simple_Name (Creatures_Directory_Entry) /= ".." then
-
-                        A_Frame :=
-                          new Type_Frame'
-                            (Ada.Strings.Unbounded.To_Unbounded_String
-                               (Ada.Directories.Full_Name (Creatures_Directory_Entry)),
-                             null, 0, 0, 0, 0, 0, 0);
-
-                        A_Creature :=
-                          new Type_Creature'
-                             (Ada.Strings.Unbounded.To_Unbounded_String
-                                (Ada.Directories.Simple_Name (Creatures_Directory_Entry)),
-                              A_Frame);
-
-                        Load_Image (A_Creature);
-
-                        Creatures_List_Pkg.Append
-                          (A_Race.all.Creatures, A_Creature);
-
-                     end if;
-
-                  end loop;
-               end;
-
-               Races_List_Pkg.Append (All_Races, A_Race);
-            end if;
-
-         end loop;
-
-      end;
-
-   end Initialize;
-
-   function Get_Image (P_Races_List : in out Races_List_Pkg.Vector;
-                       P_Image_Key : in Type_Image_Key)
-                       return Type_Frame_Access
+   procedure Load_Images (P_Images_List : in out Images_List_Pkg.Map)
    is
-      A_Race     : Type_Race_Access;
-      A_Creature : Type_Creature_Access;
+      An_Element  : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
+      Trav_Images : Images_List_Pkg.Cursor;
    begin
-      if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Get_Image - enter");
-      end if;
+      Trav_Images := Images_List_Pkg.First (P_Images_List);
+      while Tubastga_Window_Pkg.Images.Images_List_Pkg.Has_Element (Trav_Images) loop
+         An_Element := Tubastga_Window_Pkg.Images.Images_List_Pkg.Element (Trav_Images);
 
-      A_Race := Races_List_Pkg.Element (P_Races_List, 3);
-      A_Creature := Creatures_List_Pkg.Element (A_Race.all.Creatures, 2);
+         Tubastga_Window_Pkg.Images.Load_Image (An_Element);
+         Trav_Images := Images_List_Pkg.Next (Trav_Images);
+      end loop;
 
-      Tubastga_Window_Pkg.Images.Print_Creature (A_Creature.all);
+   end Load_Images;
 
-      if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Get_Image - exit");
-      end if;
+   function Get_Image (P_Images_List : in out Images_List_Pkg.Map;
+      P_Image_Name                   : in     Type_Image_Names) return Type_Image_Access
+   is
+      Ret : Tubastga_Window_Pkg.Images.Type_Image_Access;
+   begin
+--      if Verbose then
+--         Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Get_Image - enter P_Image_Name=" & P_Image_Name'Img);
+--      end if;
 
-      return A_Creature.all.Frame;
+      Ret :=
+        Tubastga_Window_Pkg.Images.Images_List_Pkg.Element
+          (Tubastga_Window_Pkg.Images.All_Images, P_Image_Name);
+
+      --     if Verbose then
+      --        Text_IO.Put_Line ("Tubastga_Window_Pkg.Images.Get_Image - exit");
+      --     end if;
+
+      return Ret; --A_Creature.all.Frame;
    end Get_Image;
 
-   procedure Print_Creature (P_Creature : in Type_Creature) is
+   procedure Print_Image (P_Image : in Type_Image) is
    begin
-      Text_IO.Put_Line (Ada.Strings.Unbounded.To_String (P_Creature.Creature_Name));
-   end Print_Creature;
+      Text_IO.Put_Line ("    " & Ada.Strings.Unbounded.To_String (P_Image.Image_Name));
+   end Print_Image;
 
-   procedure Print_Frame (P_Frame : in Type_Frame) is
+   procedure Print_Images_List (P_Images_List : in Images_List_Pkg.Map) is
+      Trav_Images : Images_List_Pkg.Cursor;
+
+      An_Image : Type_Image_Access;
    begin
-      Text_IO.Put_Line ("    " & Ada.Strings.Unbounded.To_String (P_Frame.Frame_Name));
-   end Print_Frame;
+      Trav_Images := Images_List_Pkg.First (P_Images_List);
+      while Images_List_Pkg.Has_Element (Trav_Images) loop
+         An_Image := Images_List_Pkg.Element (Trav_Images);
+         Text_IO.Put ("Creature: " & Images_List_Pkg.Key (Trav_Images)'Img & " ");
+         Print_Image (An_Image.all);
 
-   procedure Print_Creature_List (P_Creature_List : in Creatures_List_Pkg.Vector) is
-      Trav_Creatures : Creatures_List_Pkg.Cursor;
-
-      A_Creature : Type_Creature_Access;
-   begin
-      Trav_Creatures := Creatures_List_Pkg.First (P_Creature_List);
-      while Creatures_List_Pkg.Has_Element (Trav_Creatures) loop
-         A_Creature := Creatures_List_Pkg.Element (Trav_Creatures);
-         Text_IO.Put ("Creature: " & Creatures_List_Pkg.To_Index (Trav_Creatures)'Img & " ");
-         Print_Creature (A_Creature.all);
-
-         Trav_Creatures := Creatures_List_Pkg.Next (Trav_Creatures);
+         Trav_Images := Images_List_Pkg.Next (Trav_Images);
       end loop;
 
-   end Print_Creature_List;
+   end Print_Images_List;
 
-   procedure Print_Races_List (P_Race_List : in Races_List_Pkg.Vector) is
-      Trav_Races : Races_List_Pkg.Cursor;
-
-      A_Race : Type_Race_Access;
-   begin
-      Trav_Races := Races_List_Pkg.First (P_Race_List);
-      while Races_List_Pkg.Has_Element (Trav_Races) loop
-
-         A_Race := Races_List_Pkg.Element (Trav_Races);
-         Text_IO.Put_Line ("Race:" & Ada.Strings.Unbounded.To_String (A_Race.all.Race_Name));
-         Print_Creature_List (A_Race.all.Creatures);
-
-         Trav_Races := Races_List_Pkg.Next (Trav_Races);
-      end loop;
-
-   end Print_Races_List;
-
-begin
-   Initialize (All_Races);
-
-   Print_Races_List (All_Races);
 end Tubastga_Window_Pkg.Images;

@@ -22,8 +22,11 @@ with Tubastga_Game;
 with Landscape;
 with Text_IO;
 with Glib;
+with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.MinimapView is
+
+   Verbose : constant Boolean := False;
 
    Minimap_Scale   : constant Positive := 30;
    Minimap_Origo_Y : constant Integer  := 370;
@@ -35,10 +38,14 @@ package body Tubastga_Window_Pkg.MinimapView is
       P_Minimapview : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       Minimap_X, Minimap_Y : Glib.Gint;
-      Landscape_Image      : Tubastga_UI_Resources.Type_Image_Names;
+      Minimap_Landscape_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
       use Landscape;
+      use Tubastga_Window_Pkg.Images;
    begin
+      if Verbose then
+         Text_IO.Put_Line("Tubastga_Window_Pkg.Minimapview.Draw_Minimap - enter");
+      end if;
 
       Minimap_X :=
         Glib.Gint (10 + Hexagon.Client_Map.Get_Absolute_X_From_AB (P_Patch) / Minimap_Scale);
@@ -47,17 +54,8 @@ package body Tubastga_Window_Pkg.MinimapView is
           (Minimap_Origo_Y - Hexagon.Client_Map.Get_Absolute_Y_From_AB (P_Patch) / Minimap_Scale);
 
       -- minimap
-
-      if P_Patch.Landscape_Here = Tubastga_Game.Landscape_Grass then
-         Landscape_Image :=Tubastga_UI_Resources.Minimap_Grass;
-      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Forest then
-         Landscape_Image := Tubastga_UI_Resources.Minimap_Forest;
-      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Mountain then
-         Landscape_Image := Tubastga_UI_Resources.Minimap_Mountain;
-      elsif P_Patch.Landscape_Here = Tubastga_Game.Landscape_Water then
-         Landscape_Image := Tubastga_UI_Resources.Minimap_Water;
-      end if;
-
+      Minimap_Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                                              Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image(P_Patch.Landscape_Here));
       if
         ((Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
             0 .. 50 or
@@ -73,13 +71,13 @@ package body Tubastga_Window_Pkg.MinimapView is
          (Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
             0 .. 820))
       then
-         Landscape_Image := Tubastga_UI_Resources.Minimap_Outside_View;
+      Minimap_Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                                                      Tubastga_Window_Pkg.Images.Find_Other_Image("minimap_outside_view"));
       end if;
-
 
       -- minimap
       Gdk.Pixbuf.Composite
-        (Tubastga_UI_Resources.All_Images (Landscape_Image).Image_Data,
+        (Minimap_Landscape_Image.all.Image_Data,
          P_Minimapview,
          Glib.Gint (Minimap_X),
          Glib.Gint (Minimap_Y),
@@ -92,6 +90,9 @@ package body Tubastga_Window_Pkg.MinimapView is
          Gdk.Pixbuf.Interp_Nearest,
          255);
 
+      if Verbose then
+         Text_IO.Put_Line("Tubastga_Window_Pkg.Minimapview.Draw_Minimap - exit");
+      end if;
    end Draw_Minimap;
 
 end Tubastga_Window_Pkg.MinimapView;

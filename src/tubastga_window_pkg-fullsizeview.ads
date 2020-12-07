@@ -88,10 +88,6 @@ package Tubastga_Window_Pkg.FullsizeView is
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector);
 
-   function Find_Piece_Image
-     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece)
-      return Tubastga_UI_Resources.Type_Image_Names;
-
    procedure Draw_Pieces
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;

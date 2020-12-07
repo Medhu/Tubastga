@@ -88,8 +88,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    Game_Area_Origo_Y : constant Integer := 1050;
    Map_Scale         : Float            := 0.5;
 
---   Patch_Zoom : Boolean := False;
-
    Minimap_Origo_Y : constant Integer := 400;
 
    Button_Event : Boolean := False;
@@ -332,7 +330,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       A_Piece_Id       : Piece.Type_Piece_Id;
       A_Piece_Position : Tubastga_Window_Pkg.Lists.Type_Piece_Position;
 
-      use Piece;
    begin
 
       Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
@@ -357,21 +354,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
      (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
-      use Piece;
-      use Landscape;
-      use Hexagon.Client_Map;
-      use Player;
-
-      Landscape_Image,
-      Surprise_Image,
-      Piece_Image,
-      UI_Aid_Image,
-      Player_Image,
-      Construction_Image : Tubastga_UI_Resources.Type_Image_Names;
-
-      --
-      use Hexagon;
-
    begin
       All_Pieces_On_Map (A_Client_Map, P_Patch);
 
@@ -384,12 +366,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       then
 
          if P_Patch.Visible then
-            Landscape_Image    := Tubastga_UI_Resources.None;
-            Surprise_Image     := Tubastga_UI_Resources.None;
-            Construction_Image := Tubastga_UI_Resources.None;
-            Player_Image       := Tubastga_UI_Resources.None;
-            Piece_Image        := Tubastga_UI_Resources.None;
-            UI_Aid_Image       := Tubastga_UI_Resources.None;
 
             Gdk.Pixbuf.Fill (All_Effects_On_Patch, Glib.Guint32 (0));
             Gdk.Pixbuf.Fill (All_Landscape_On_Patch, Glib.Guint32 (0));

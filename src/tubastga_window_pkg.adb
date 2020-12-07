@@ -42,14 +42,13 @@ with Gtk.Adjustment;
 with Tubastga_UI_Aux;
 with Utilities;
 with Gtk.Tree_View_Column;
-with Tubastga_UI_Resources;
 with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg is
 
    Verbose : constant Boolean := False;
 
-   All_Races : Tubastga_Window_Pkg.Images.Races_List_Pkg.Vector;
+   All_Images : Tubastga_Window_Pkg.Images.Images_List_Pkg.Map;
 
    procedure Gtk_New (P_Dlg_Main_Menu : out Type_Dlg_Main_Menu_Access) is
    begin
@@ -1020,8 +1019,11 @@ package body Tubastga_Window_Pkg is
 
       P_Wnd_Main.Map_Image.Image_Height := Gdk.Pixbuf.Get_Height (P_Wnd_Main.Map_Image.Image_Data);
 
-      Tubastga_UI_Resources.Initialize;
-      Tubastga_Window_Pkg.Images.Initialize(All_Races);
+      Tubastga_Window_Pkg.Images.Initialize(All_Images);
+
+Tubastga_Window_Pkg.Images.Load_Images (All_Images);
+
+Tubastga_Window_Pkg.Images.Print_Images_List (All_Images);
 
       Tubastga_Window_Pkg.Show_All (P_Wnd_Main);
 

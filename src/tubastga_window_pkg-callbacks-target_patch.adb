@@ -24,6 +24,7 @@ with Utilities;
 with Gtk.Tree_Selection;
 with Gtk.Tree_Model;
 with Gtk.Enums;
+with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
 
@@ -38,7 +39,8 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Target_Patch.On_Target_Patch_Tree_View - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Target_Patch.On_Target_Patch_Tree_View - enter");
       end if;
 
       Selected_Record := Gtk.Tree_View.Get_Selection (Object);
@@ -52,13 +54,13 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
       Tubastga_Window_Pkg.Lists.Set_Last_Selected_Piece (RB_Selected_Pieces, A_Piece_Id, False);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Target_Patch.On_Target_Patch_Tree_View - exit ");
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Target_Patch.On_Target_Patch_Tree_View - exit ");
       end if;
    end On_Target_Patch_Tree_View;
 
-   procedure Set_Target_Patch_Window
-     (P_Window : in out Type_Wnd_Target_Patch_Access;
-      P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Target_Patch_Access;
+      P_Patch                                  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav       : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id : Piece.Type_Piece_Id;
@@ -77,7 +79,8 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window - enter");
       end if;
 
       if P_Patch = null then
@@ -89,8 +92,7 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
       Gtk.Tree_Selection.Get_Selected (Selected_Record, Selected_Model, Selected_Iter);
 
       if Selected_Model /= Gtk.Tree_Model.Null_Gtk_Tree_Model and
-        Selected_Iter /= Gtk.Tree_Model.Null_Iter
-      then
+        Selected_Iter /= Gtk.Tree_Model.Null_Iter then
          A_Path := Gtk.Tree_Model.Get_Path (Selected_Model, Selected_Iter);
       end if;
 
@@ -102,30 +104,23 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
 
          Gtk.List_Store.Append (P_Window.all.Target_Pieces_List_Store, List_Store_Iter);
          Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store,
-            List_Store_Iter,
-            0,
-            Glib.Gint (A_Piece.all.Id));
+           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 0, Glib.Gint (A_Piece.all.Id));
          Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store,
-            List_Store_Iter,
-            1,
-            Tubastga_UI_Resources.All_Images
-              (Tubastga_Window_Pkg.FullsizeView.Find_Piece_Image
+           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 1,
+            Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Piece_Image
                  (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
               .Image_Data);
          Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store,
-            List_Store_Iter,
-            2,
+           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 2,
             Utilities.RemoteString.To_String (A_Piece.all.Name));
 
          Trav := Landscape.Pieces_Here_List.Next (Trav);
       end loop;
 
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces) /=
-        Piece.Undefined_Piece_Id
-      then
+        Piece.Undefined_Piece_Id then
 
          Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Target_Pieces_Tree_View);
 
@@ -136,7 +131,8 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window - exit");
       end if;
    end Set_Target_Patch_Window;
 

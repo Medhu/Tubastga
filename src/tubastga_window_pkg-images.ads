@@ -21,62 +21,63 @@ with Gdk.Pixbuf;
 with Glib;
 with Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Maps;
+with Landscape;
+with Player;
 
 package Tubastga_Window_Pkg.Images is
-   type Type_Frame is
-      record
-         Frame_Name                : Ada.Strings.Unbounded.Unbounded_String;
-         Image_Data                : Gdk.Pixbuf.Gdk_Pixbuf;
-         Image_Height, Image_Width : Glib.Gint;
-         Dest_X, Dest_Y,
-         Offset_X, Offset_Y        : Glib.Gint;
-      end record;
-   type Type_Frame_Access is access all Type_Frame;
 
-   type Type_Image_Key is
-      record
-         Race_Key     : Positive;
-         Creature_Key : Positive;
-      end record;
+   type Type_Image is record
+      Image_Name                         : Ada.Strings.Unbounded.Unbounded_String;
+      Image_Data                         : Gdk.Pixbuf.Gdk_Pixbuf;
+      Image_Height, Image_Width          : Glib.Gint;
+      Dest_X, Dest_Y, Offset_X, Offset_Y : Glib.Gint;
+   end record;
+   type Type_Image_Access is access all Type_Image;
 
-   None_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
-   Selected_Patch_LB_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
-   Selected_Patch_RB_2 : constant Type_Image_Key := Type_Image_Key'(1, 1);
+   type Type_Image_Names is
+     (Invisible, Selected_Patch_LB, Selected_Patch_RB, Player_1, Player_2, Player_3, Dry, Dry2,
+      Dry3, Dry4, Dry5, Green, Green2, Green3, Green4, Green5, Green6, Green7, Green8, Semi_Dry,
+      Semi_Dry2, Semi_Dry3, Semi_Dry4, Semi_Dry5, Semi_Dry6, Forested_Deciduous_Summer_Hills_Tile,
+      Hills_Variation, Water, Chest, Wall1, Wall2, Wall3, Wall4, Wall5, Wall6, None, Fighter, Rider,
+      Archer, Boat, Lumberjack, Stonecutter, Towerhouse, Minimap_Outside_View, Minimap_Grass,
+      Minimap_Mountain, Minimap_Water, Minimap_Forest);
 
-   type Type_Creature is
-      record
-         Creature_Name : Ada.Strings.Unbounded.Unbounded_String;
-         Frame         : Type_Frame_Access;
-      end record;
-   type Type_Creature_Access is access all Type_Creature;
+   function Image_Names_Hashed (P_Image_Name : in Type_Image_Names) return Ada.Containers.Hash_Type;
 
-   package Creatures_List_Pkg is new Ada.Containers.Vectors
-     (Positive, Type_Creature_Access);
+   package Images_List_Pkg is new Ada.Containers.Hashed_Maps (Type_Image_Names, Type_Image_Access,
+      Image_Names_Hashed, "=", "=");
 
-   type Type_Race is
-      record
-         Race_Name : Ada.Strings.Unbounded.Unbounded_String;
-         Creatures : Creatures_List_Pkg.Vector;
-      end record;
-   type Type_Race_Access is access all Type_Race;
+   function Find_Landscape_Image
+     (P_Landscape : in Landscape.Type_Landscape) return Tubastga_Window_Pkg.Images.Type_Image_Names;
 
-   package Races_List_Pkg is new Ada.Containers.Vectors
-     (Positive, Type_Race_Access);
+   function Find_Minimap_Landscape_Image
+     (P_Landscape : in Landscape.Type_Landscape) return Tubastga_Window_Pkg.Images.Type_Image_Names;
 
-   procedure Initialize (P_Races : in out Races_List_Pkg.Vector);
+   function Find_Piece_Image
+     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece) return Tubastga_Window_Pkg.Images
+     .Type_Image_Names;
 
-   function Get_Image (P_Races_List : in out Races_List_Pkg.Vector;
-                       P_Image_Key : in Type_Image_Key)
-                       return Type_Frame_Access;
+   function Find_Player_Image
+     (P_Player_Id : in Player.Type_Player_Id) return Tubastga_Window_Pkg.Images.Type_Image_Names;
 
-   All_Creatures : Creatures_List_Pkg.Vector;
+   function Find_House_Image
+     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece) return Tubastga_Window_Pkg.Images
+     .Type_Image_Names;
 
-   All_Races : Races_List_Pkg.Vector;
+   function Find_Other_Image
+     (P_Type : in String) return Tubastga_Window_Pkg.Images.Type_Image_Names;
 
-   procedure Print_Creature_List (P_Creature_List : in Creatures_List_Pkg.Vector);
+   procedure Initialize (P_Images : in out Images_List_Pkg.Map);
 
-   procedure Print_Creature (P_Creature : in Type_Creature);
+   procedure Load_Images (P_Images_List : in out Images_List_Pkg.Map);
 
-   procedure Print_Frame (P_Frame : in Type_Frame);
+   procedure Print_Images_List (P_Images_List : in Images_List_Pkg.Map);
+
+   function Get_Image (P_Images_List : in out Images_List_Pkg.Map;
+      P_Image_Name                   : in     Type_Image_Names) return Type_Image_Access;
+
+   All_Images : Images_List_Pkg.Map;
+
+   procedure Print_Image (P_Image : in Type_Image);
 
 end Tubastga_Window_Pkg.Images;

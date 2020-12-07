@@ -33,9 +33,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
    Png_Width         : constant Glib.Gint := 72;
    Png_Height        : constant Glib.Gint := 72;
 
-   to_do : exception;
    use Glib;
-   use Tubastga_UI_Resources;
 
    function Get_All_Pix_Patch_X_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
@@ -93,6 +91,40 @@ package body Tubastga_Window_Pkg.FullsizeView is
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch); -- - 25;
    end Get_All_Pix_Piece_Y_From_AB;
 
+   procedure Draw_Arrow
+   is
+   begin
+      null;
+--private static void drawArrow(int tipX, int tailX, int tipY, int tailY, Graphics2D g)
+--{
+--    int arrowLength = 7; //can be adjusted
+--    int dx = tipX - tailX;
+--    int dy = tipY - tailY;
+
+--    double theta = Math.atan2(dy, dx);
+
+--    double rad = Math.toRadians(35); //35 angle, can be adjusted
+--    double x = tipX - arrowLength * Math.cos(theta + rad);
+--    double y = tipY - arrowLength * Math.sin(theta + rad);
+
+--    double phi2 = Math.toRadians(-35);//-35 angle, can be adjusted
+--    double x2 = tipX - arrowLength * Math.cos(theta + phi2);
+--    double y2 = tipY - arrowLength * Math.sin(theta + phi2);
+
+--    int[] arrowYs = new int[3];
+--    arrowYs[0] = tipY;
+--    arrowYs[1] = (int) y;
+--    arrowYs[2] = (int) y2;
+
+--    int[] arrowXs = new int[3];
+--    arrowXs[0] = tipX;
+--    arrowXs[1] = (int) x;
+--    arrowXs[2] = (int) x2;
+
+--    g.fillPolygon(arrowXs, arrowYs, 3);
+--}
+   end Draw_Arrow;
+
    procedure Draw_Effects
      (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Effect_List : in     Effect.Effect_List.Map)
@@ -101,11 +133,12 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       use Effect;
    begin
+
       Trav := Effect.Effect_List.First (P_Effect_List);
       while Effect.Effect_List.Has_Element (Trav) loop
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Treasure then
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Chest).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Chest).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -135,7 +168,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall1 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall1).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall1).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -152,7 +185,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall2 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall2).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall2).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -169,7 +202,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall3 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall3).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall3).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -186,7 +219,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall4 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall4).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall4).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -203,7 +236,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall5 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall5).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall5).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -220,7 +253,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall6 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Wall6).Image_Data,
+              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall6).Image_Data,
                P_Pixbuf,
                Glib.Gint (0),
                Glib.Gint (0),
@@ -241,7 +274,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
      (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Landscape : in     Landscape.Type_Landscape)
    is
-      Landscape_Image : Tubastga_UI_Resources.Type_Image_Names;
+      Landscape_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
       use Landscape;
    begin
@@ -249,18 +282,10 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes - enter");
       end if;
 
-      if P_Landscape = Tubastga_Game.Landscape_Grass then
-         Landscape_Image := Tubastga_UI_Resources.Green;
-      elsif P_Landscape = Tubastga_Game.Landscape_Forest then
-         Landscape_Image := Tubastga_UI_Resources.Forested_Deciduous_Summer_Hills_Tile;
-      elsif P_Landscape = Tubastga_Game.Landscape_Mountain then
-         Landscape_Image := Tubastga_UI_Resources.Hills_Variation;
-      elsif P_Landscape = Tubastga_Game.Landscape_Water then
-         Landscape_Image := Tubastga_UI_Resources.Water;
-      end if;
-
+      Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                                              Tubastga_Window_Pkg.Images.Find_Landscape_Image(P_Landscape));
       Gdk.Pixbuf.Composite
-        (Tubastga_UI_Resources.All_Images (Landscape_Image).Image_Data,
+        (Landscape_Image.all.Image_Data,
          P_Pixbuf,
          Glib.Gint (0),
          Glib.Gint (0),
@@ -349,6 +374,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
       P_Pixbuf     : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       x, y : Glib.Gint;
+      Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
       use Landscape;
    begin
@@ -359,8 +385,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       x := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch);
       y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch);
 
+      Other_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                                          Tubastga_Window_Pkg.Images.Find_Other_Image("invisible") );
+
       Gdk.Pixbuf.Composite
-        (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Invisible).Image_Data,
+        (Other_Image.all.Image_Data,
          P_Pixbuf,
          Glib.Gint (x),
          Glib.Gint (y),
@@ -385,7 +414,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
       P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
-      Player_Image : Tubastga_UI_Resources.Type_Image_Names;
+      Player_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Piece      : Piece.Client_Piece.Type_Client_Piece_Class_Access;
 
       use Player;
@@ -396,18 +425,13 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
       if Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) then
-         Player_Image := Tubastga_UI_Resources.None;
 
          A_Piece :=
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
-         if A_Piece.Player_Id = 1 then
-            Player_Image := Tubastga_UI_Resources.Player_1;
-         elsif A_Piece.Player_Id = 2 then
-            Player_Image := Tubastga_UI_Resources.Player_2;
-         else
-            Player_Image := Tubastga_UI_Resources.Player_3;
-         end if;
+         Player_Image :=
+           Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                              Tubastga_Window_Pkg.Images.Find_Player_Image(A_Piece.all.Player_Id));
 
          declare
             x, y : Glib.Gint;
@@ -419,7 +443,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
               Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_Y_From_AB (P_Client_Map, P_Patch);
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Player_Image).Image_Data,
+              (Player_Image.all.Image_Data,
                P_Fullsizeview,
                Glib.Gint (x),
                Glib.Gint (y),
@@ -448,12 +472,14 @@ package body Tubastga_Window_Pkg.FullsizeView is
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
-      Piece_Image : Tubastga_UI_Resources.Type_Image_Names;
+      Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
+      Piece_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Piece     : Piece.Client_Piece.Type_Client_Piece_Class_Access;
       Piece_No    : Integer;
 
       use Piece;
       use Player;
+      use Tubastga_Window_Pkg.Images;
    begin
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Houses - enter");
@@ -462,46 +488,16 @@ package body Tubastga_Window_Pkg.FullsizeView is
       Piece_No    := 1;
       Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
       while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
-         Piece_Image := Tubastga_UI_Resources.None;
 
          A_Piece :=
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
+         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_House_Image(Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+         Piece_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                              Piece_Image_Name);
          -- Now houses
-         if A_Piece.Type_Of_Piece = Tubastga_Game.Farm_House then
-            if A_Piece.Player_Id = 1 then
-               Piece_Image := Tubastga_UI_Resources.Boat;
-            elsif A_Piece.Player_Id = 2 then
-               Piece_Image := Tubastga_UI_Resources.Boat;
-            else
-               Piece_Image := Tubastga_UI_Resources.Boat;
-            end if;
-         elsif A_Piece.Type_Of_Piece = Tubastga_Game.Tower_House then
-            if A_Piece.Player_Id = 1 then
-               Piece_Image := Tubastga_UI_Resources.Towerhouse;
-            elsif A_Piece.Player_Id = 2 then
-               Piece_Image := Tubastga_UI_Resources.Towerhouse;
-            else
-               Piece_Image := Tubastga_UI_Resources.Towerhouse;
-            end if;
-         elsif A_Piece.Type_Of_Piece = Tubastga_Game.Lumberjack_House then
-            if A_Piece.Player_Id = 1 then
-               Piece_Image := Tubastga_UI_Resources.Lumberjack;
-            elsif A_Piece.Player_Id = 2 then
-               Piece_Image := Tubastga_UI_Resources.Lumberjack;
-            else
-               Piece_Image := Tubastga_UI_Resources.Lumberjack;
-            end if;
-         elsif A_Piece.Type_Of_Piece = Tubastga_Game.Stonecutter_House then
-            if A_Piece.Player_Id = 1 then
-               Piece_Image := Tubastga_UI_Resources.Stonecutter;
-            elsif A_Piece.Player_Id = 2 then
-               Piece_Image := Tubastga_UI_Resources.Stonecutter;
-            else
-               Piece_Image := Tubastga_UI_Resources.Stonecutter;
-            end if;
-         end if;
 
+         if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
          declare
             x, y : Glib.Gint;
             use Hexagon;
@@ -517,9 +513,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
                  P_Patch,
                  Piece_No);
 
-            if Piece_Image /= Tubastga_UI_Resources.None then
                Gdk.Pixbuf.Composite
-                 (Tubastga_UI_Resources.All_Images (Piece_Image).Image_Data,
+                 (Piece_Image.all.Image_Data,
                   P_Fullsizeview,
                   Glib.Gint (x),
                   Glib.Gint (y),
@@ -531,9 +526,10 @@ package body Tubastga_Window_Pkg.FullsizeView is
                   1.0,
                   Gdk.Pixbuf.Interp_Nearest,
                   255);
-            end if;
 
-         end;
+            end;
+         end if;
+
          Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
          Piece_No    := Piece_No + 1;
       end loop;
@@ -543,31 +539,6 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Houses;
 
-   function Find_Piece_Image
-     (P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece)
-      return Tubastga_UI_Resources.Type_Image_Names
-   is
-      Piece_Image : Tubastga_UI_Resources.Type_Image_Names;
-
-      use Piece;
-   begin
-      Piece_Image := Tubastga_UI_Resources.None;
-
-      if P_Piece.Type_Of_Piece = Tubastga_Game.Sentry_Piece then
-         Piece_Image := Tubastga_UI_Resources.Fighter;
-      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Knight_Piece then
-         Piece_Image := Tubastga_UI_Resources.Rider;
-      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Bowman_Piece then
-         Piece_Image := Tubastga_UI_Resources.Archer;
-      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Ship_Piece then
-         Piece_Image := Tubastga_UI_Resources.Boat;
-      elsif P_Piece.Type_Of_Piece = Tubastga_Game.Carrier_Piece then
-         Piece_Image := Tubastga_UI_Resources.Boat;
-      end if;
-
-      return Piece_Image;
-   end Find_Piece_Image;
-
    procedure Draw_Pieces
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
@@ -576,13 +547,14 @@ package body Tubastga_Window_Pkg.FullsizeView is
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
-      Piece_Image : Tubastga_UI_Resources.Type_Image_Names;
+      Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
+      Piece_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Piece     : Piece.Client_Piece.Type_Client_Piece_Class_Access;
       Piece_No    : Integer;
-      A_Frame     : Tubastga_Window_Pkg.Images.Type_Frame_Access;
 
       use Piece;
       use Player;
+      use Tubastga_Window_Pkg.Images;
    begin
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Pieces - enter");
@@ -595,7 +567,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
          A_Piece :=
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
-         Piece_Image := Find_Piece_Image (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_Piece_Image (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+         Piece_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
+                                                            Piece_Image_Name);
+
+         if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
 
          declare
             x, y : Glib.Gint;
@@ -612,27 +588,24 @@ package body Tubastga_Window_Pkg.FullsizeView is
                  P_Patch,
                  Piece_No);
 
-            if Piece_Image /= Tubastga_UI_Resources.None then
-                  A_Frame := Tubastga_Window_Pkg.Images.Get_Image
-                 (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.None_2);
-Text_IO.Put_Line("AAAA");
-               Gdk.Pixbuf.Composite
-                 (A_Frame.all.Image_Data,
+
+            Gdk.Pixbuf.Composite
+                 (Piece_Image.all.Image_Data,
                   P_Fullsizeview,
-                  Glib.Gint (x + A_Frame.all.Dest_X),
-                  Glib.Gint (y + A_Frame.all.Dest_Y),
-                  A_Frame.all.Image_Width,--  + 150,
-                  A_Frame.all.Image_Height,-- + 150,
-                  Glib.Gdouble (x + A_Frame.all.Offset_X),
-                  Glib.Gdouble (y + A_Frame.all.Offset_Y),
+                  Glib.Gint (x + Piece_Image.all.Dest_X),
+                  Glib.Gint (y + Piece_Image.all.Dest_Y),
+                  Piece_Image.all.Image_Width,--  + 150,
+                  Piece_Image.all.Image_Height,-- + 150,
+                  Glib.Gdouble (x + Piece_Image.all.Offset_X),
+                  Glib.Gdouble (y + Piece_Image.all.Offset_Y),
                   1.0,
                   1.0,
                   Gdk.Pixbuf.Interp_Nearest,
                   255);
 
-            end if;
+            end;
+         end if;
 
-         end;
          Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
          Piece_No    := Piece_No + 1;
       end loop;
@@ -648,7 +621,7 @@ Text_IO.Put_Line("AAAA");
       P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
    is
       Trav  : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
-      A_Frame : Tubastga_Window_Pkg.Images.Type_Frame_Access;
+      Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Pos : Hexagon.Type_Hexagon_Position;
 
       use Hexagon;
@@ -663,12 +636,12 @@ Text_IO.Put_Line("AAAA");
 
          if A_Pos = P_Patch.Pos then
 
-            A_Frame := Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.Selected_Patch_LB_2);
+            Other_Image := Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image("selected_patch_LB"));
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Selected_Patch_LB)
-                 .Image_Data,
+              (Other_Image.all.Image_Data,
                P_Pixbuf,
                Gint (0),
                Gint (0),
@@ -691,12 +664,12 @@ Text_IO.Put_Line("AAAA");
 
          if A_Pos = P_Patch.Pos then
 
-            A_Frame := Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Races, Tubastga_Window_Pkg.Images.Selected_Patch_RB_2);
+            Other_Image := Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image("selected_patch_RB"));
 
             Gdk.Pixbuf.Composite
-              (Tubastga_UI_Resources.All_Images (Tubastga_UI_Resources.Selected_Patch_RB)
-                 .Image_Data,
+              (Other_Image.all.Image_Data,
                P_Pixbuf,
                Gint (0),
                Gint (0),

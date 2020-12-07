@@ -39,7 +39,11 @@ with Piece;
 with Piece.Client_Piece;
 with Goods;
 with Ada.Containers.Vectors;
-with Tubastga_UI_Resources;
+with Ada.Strings;
+with Gdk;
+with Ada.Strings.Unbounded;
+with Gdk.Pixbuf;
+with Glib;
 
 package Tubastga_Window_Pkg is
 
@@ -174,6 +178,12 @@ package Tubastga_Window_Pkg is
 
    type Type_Wnd_Target_Patch_Access is access all Type_Wnd_Target_Patch_Record'Class;
 
+   type Type_Map_Data is record
+      Filename                  : Ada.Strings.Unbounded.Unbounded_String;
+      Image_Data                : Gdk.Pixbuf.Gdk_Pixbuf;
+      Image_Height, Image_Width : Glib.Gint;
+   end record;
+
    procedure Gtk_New (P_Wnd_Target_Patch : out Type_Wnd_Target_Patch_Access);
    procedure Initialize (P_Wnd_Target_Patch : access Type_Wnd_Target_Patch_Record'Class);
 
@@ -207,7 +217,7 @@ package Tubastga_Window_Pkg is
       --
       Btn_Game : Gtk.Tool_Button.Gtk_Tool_Button;
       --
-      Map_Image : Tubastga_UI_Resources.Type_Graphic_Data;
+      Map_Image : Type_Map_Data;
 
       Wnd_Performing_Patch : Type_Wnd_Performing_Patch_Access;
       Wnd_Target_Patch           : Type_Wnd_Target_Patch_Access;
