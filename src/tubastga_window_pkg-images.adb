@@ -583,10 +583,11 @@ package body Tubastga_Window_Pkg.Images is
 
       An_Image : Type_Image_Access;
    begin
+      Text_IO.Put_Line("Images List:");
       Trav_Images := Images_List_Pkg.First (P_Images_List);
       while Images_List_Pkg.Has_Element (Trav_Images) loop
          An_Image := Images_List_Pkg.Element (Trav_Images);
-         Text_IO.Put ("Creature: " & Images_List_Pkg.Key (Trav_Images)'Img & " ");
+         Text_IO.Put ("Image: " & Images_List_Pkg.Key (Trav_Images)'Img & " ");
          Print_Image (An_Image.all);
 
          Trav_Images := Images_List_Pkg.Next (Trav_Images);
