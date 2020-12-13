@@ -23,6 +23,8 @@ with Tubastga_Game;
 with Player;
 with Text_IO;
 with Tubastga_Window_Pkg.Images;
+with Cairo;
+with gdk.Cairo;
 
 
 package body Tubastga_Window_Pkg.FullsizeView is
@@ -90,40 +92,6 @@ package body Tubastga_Window_Pkg.FullsizeView is
    begin
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch); -- - 25;
    end Get_All_Pix_Piece_Y_From_AB;
-
-   procedure Draw_Arrow
-   is
-   begin
-      null;
---private static void drawArrow(int tipX, int tailX, int tipY, int tailY, Graphics2D g)
---{
---    int arrowLength = 7; //can be adjusted
---    int dx = tipX - tailX;
---    int dy = tipY - tailY;
-
---    double theta = Math.atan2(dy, dx);
-
---    double rad = Math.toRadians(35); //35 angle, can be adjusted
---    double x = tipX - arrowLength * Math.cos(theta + rad);
---    double y = tipY - arrowLength * Math.sin(theta + rad);
-
---    double phi2 = Math.toRadians(-35);//-35 angle, can be adjusted
---    double x2 = tipX - arrowLength * Math.cos(theta + phi2);
---    double y2 = tipY - arrowLength * Math.sin(theta + phi2);
-
---    int[] arrowYs = new int[3];
---    arrowYs[0] = tipY;
---    arrowYs[1] = (int) y;
---    arrowYs[2] = (int) y2;
-
---    int[] arrowXs = new int[3];
---    arrowXs[0] = tipX;
---    arrowXs[1] = (int) x;
---    arrowXs[2] = (int) x2;
-
---    g.fillPolygon(arrowXs, arrowYs, 3);
---}
-   end Draw_Arrow;
 
    procedure Draw_Effects
      (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
@@ -302,6 +270,187 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes - exit");
       end if;
    end Draw_Landscapes;
+
+   procedure Draw_Arrow
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf)
+   is
+      x : Glib.Gint;
+      y : Glib.Gint;
+
+      use Hexagon;
+   begin
+      x := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch);
+      y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch);
+      -- lim inn biter av pilen. småbiter som png.
+
+      if P_Patch.Pos.A =6 and P_Patch.Pos.B = 3 then
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow1")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+
+         elsif P_Patch.Pos.A =9 and P_Patch.Pos.B = 3 then
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow2")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+                elsif P_Patch.Pos.A =8 and P_Patch.Pos.B = 3 then
+
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow3")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+
+         elsif P_Patch.Pos.A =7 then
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow4")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+
+         elsif P_Patch.Pos.A =10 then
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow5")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+
+         elsif P_Patch.Pos.A =9 and P_Patch.Pos.B = 2 then
+      Gdk.Pixbuf.Composite
+        (Tubastga_Window_Pkg.Images.Get_Image
+           (Tubastga_Window_Pkg.Images.All_Images,
+            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow6")).all.Image_Data,
+         P_Fullsizeview,
+         Glib.Gint (x),
+         Glib.Gint (y),
+         Png_Width,
+         Png_Height,
+         Glib.Gdouble (x),
+         Glib.Gdouble (y),
+         1.0,
+         1.0,
+         Gdk.Pixbuf.Interp_Nearest,
+         255);
+      end if;
+
+--      Gdk.Pixbuf.Composite
+--        (P_All_Landscape_On_Patch,
+--         P_Fullsizeview,
+--         Glib.Gint (x),
+--         Glib.Gint (y),
+--         Png_Width,
+--         Png_Height,
+--         Glib.Gdouble (x),
+--         Glib.Gdouble (y),
+--         1.0,
+--         1.0,
+--         Gdk.Pixbuf.Interp_Nearest,
+--         255);
+--      A_Cairo_Surface := gdk.Cairo.Create_From_Pixbuf(P_Pixbuf,Gint(1));
+--      A_Cairo_Context := Cairo.Create(A_Cairo_Surface);
+
+--      Cairo.Move_To(A_Cairo_Context, Gdouble(1.0), Gdouble(1.0));
+
+--      A_Cairo_Surface := Gdk.Cairo.Create_From_Pixbuf(P_Pixbuf, Gint(1));
+--      gdk.Cairo.Set_Source_Pixbuf
+--        (A_Cairo_Context,
+--         P_Pixbuf,
+--         Glib.Gdouble (500),
+--         Glib.Gdouble (250));
+--      Cairo.Move_To(A_Cairo_Context,Gdouble(0.0), Gdouble(0.0));
+--      Cairo.Line_To(A_Cairo_Context,Gdouble(100.0), Gdouble(100.0));
+
+--      P_Pixbuf := Gdk.Pixbuf.Get_(A_Cairo_Surface,Gint(0), Gint(0), Cairo.Cairo_Context.G;
+
+
+--      cairo.Destroy(A_Cairo_Context);
+--      cairo.Surface_Destroy (A_Cairo_Surface);
+
+--private static void drawArrow(int tipX, int tailX, int tipY, int tailY, Graphics2D g)
+--{
+--    int arrowLength = 7; //can be adjusted
+--    int dx = tipX - tailX;
+--    int dy = tipY - tailY;
+
+--    double theta = Math.atan2(dy, dx);
+
+--    double rad = Math.toRadians(35); //35 angle, can be adjusted
+--    double x = tipX - arrowLength * Math.cos(theta + rad);
+--    double y = tipY - arrowLength * Math.sin(theta + rad);
+
+--    double phi2 = Math.toRadians(-35);//-35 angle, can be adjusted
+--    double x2 = tipX - arrowLength * Math.cos(theta + phi2);
+--    double y2 = tipY - arrowLength * Math.sin(theta + phi2);
+
+--    int[] arrowYs = new int[3];
+--    arrowYs[0] = tipY;
+--    arrowYs[1] = (int) y;
+--    arrowYs[2] = (int) y2;
+
+--    int[] arrowXs = new int[3];
+--    arrowXs[0] = tipX;
+--    arrowXs[1] = (int) x;
+--    arrowXs[2] = (int) x2;
+
+--    g.fillPolygon(arrowXs, arrowYs, 3);
+--}
+   end Draw_Arrow;
+
 
    procedure Draw_All_Patch
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;

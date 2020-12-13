@@ -202,6 +202,18 @@ package body Tubastga_Window_Pkg.Images is
          Other_Image := Tubastga_Window_Pkg.Images.Selected_Patch_RB;
       elsif P_Type = "minimap_outside_view" then
          Other_Image := Tubastga_Window_Pkg.Images.Minimap_Outside_View;
+      elsif P_Type = "arrow1" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow1;
+      elsif P_Type = "arrow2" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow2;
+      elsif P_Type = "arrow3" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow3;
+      elsif P_Type = "arrow4" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow4;
+      elsif P_Type = "arrow5" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow5;
+      elsif P_Type = "arrow6" then
+         Other_Image := Tubastga_Window_Pkg.Images.Arrow6;
       end if;
 
       text_io.Put_Line("Other_Image:" & Other_Image'Img);
@@ -507,6 +519,41 @@ package body Tubastga_Window_Pkg.Images is
            (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_forest_hexagon.png"),
             null, 0, 0, 0, 0, 0, 0));
 
+      Images_List_Pkg.Include
+        (P_Images, Arrow1,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow1_hexagon.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+        Images_List_Pkg.Include
+          (P_Images, Arrow2,
+           new Type_Image'
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow2_hexagon.png"),
+              null, 0, 0, 0, 0, 0, 0));
+
+        Images_List_Pkg.Include
+          (P_Images, Arrow3,
+           new Type_Image'
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow3_hexagon.png"),
+              null, 0, 0, 0, 0, 0, 0));
+
+        Images_List_Pkg.Include
+          (P_Images, Arrow4,
+           new Type_Image'
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow4_hexagon.png"),
+              null, 0, 0, 0, 0, 0, 0));
+
+        Images_List_Pkg.Include
+          (P_Images, Arrow5,
+           new Type_Image'
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow5_hexagon.png"),
+              null, 0, 0, 0, 0, 0, 0));
+
+        Images_List_Pkg.Include
+          (P_Images, Arrow6,
+           new Type_Image'
+             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow6_hexagon.png"),
+              null, 0, 0, 0, 0, 0, 0));
 
    end Initialize;
 

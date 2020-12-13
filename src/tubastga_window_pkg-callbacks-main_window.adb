@@ -450,6 +450,11 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Tubastga_Window_Pkg.FullsizeView.Draw_Invisible (A_Client_Map, P_Patch.all, All_Pix);
          end if;
 
+         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+           (A_Client_Map,
+            P_Patch.all,
+            All_Pix);
+
       end if;
 
    end Draw_Map;
@@ -729,6 +734,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       if Curr_Patch /= null then
 
+         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow(A_Client_Map, Curr_Patch.all, All_Pix);
+
          declare
             use Utilities;
             Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
@@ -874,10 +881,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       --
       -- Helper lines....
---        Cairo.Move_To (P_Draw, Gdouble (36.0 / 0.65 * Map_Scale), Gdouble (0));
---        Cairo.Line_To (P_Draw, Gdouble (36.0 / 0.65 * Map_Scale), Gdouble (700));
---        Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (682.0 / 0.65 * Map_Scale));
---        Cairo.Line_To (P_Draw, Gdouble (700), Gdouble (682.0 / 0.65 * Map_Scale));
+--        Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (0));
+  --      Cairo.Line_To (P_Draw, Gdouble (100.0), Gdouble (1000));
+    --    Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (682.0 / 0.65 * Map_Scale));
+      --  Cairo.Line_To (P_Draw, Gdouble (700), Gdouble (682.0 / 0.65 * Map_Scale));
 
       --Player Pos
 --      Cairo.Move_To (P_Draw, Gdouble (36.0 / 0.65 * Map_Scale), Gdouble (682.0 / 0.65 * Map_Scale));
@@ -936,7 +943,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       --        Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (600));
       --        Cairo.Line_To (P_Draw, Gdouble (700), Gdouble (600));
 
---      Cairo.Stroke (P_Draw);
+      Cairo.Stroke (P_Draw);
 
       if Verbose then
          Text_IO.Put_Line

@@ -68,6 +68,11 @@ package Tubastga_Window_Pkg.FullsizeView is
      (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Landscape : in     Landscape.Type_Landscape);
 
+   procedure Draw_Arrow
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf);
+
    procedure Draw_All_Patch
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
@@ -103,6 +108,9 @@ package Tubastga_Window_Pkg.FullsizeView is
      (P_Pixbuf                             : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_Patch                              : in     Hexagon.Client_Map.Type_Client_Patch;
       P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector);
+
+--   procedure Draw_Arrow
+--          (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    function Selected_Patch
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
