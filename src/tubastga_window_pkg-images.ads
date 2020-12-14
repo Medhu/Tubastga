@@ -40,7 +40,8 @@ package Tubastga_Window_Pkg.Images is
       Semi_Dry2, Semi_Dry3, Semi_Dry4, Semi_Dry5, Semi_Dry6, Forested_Deciduous_Summer_Hills_Tile,
       Hills_Variation, Water, Chest, Wall1, Wall2, Wall3, Wall4, Wall5, Wall6, None, Fighter, Rider,
       Archer, Boat, Lumberjack, Stonecutter, Towerhouse, Minimap_Outside_View, Minimap_Grass,
-      Minimap_Mountain, Minimap_Water, Minimap_Forest, Arrow1, Arrow2, Arrow3, Arrow4, Arrow5, Arrow6);
+      Minimap_Mountain, Minimap_Water, Minimap_Forest, Arrow1, Arrow2, Arrow3, Arrowhead1, Arrowhead2,
+      Arrowhead3, Arrowhead4, Arrowhead5, Arrowhead6);
 
    function Image_Names_Hashed (P_Image_Name : in Type_Image_Names) return Ada.Containers.Hash_Type;
 

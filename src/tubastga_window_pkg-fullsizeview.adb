@@ -26,7 +26,6 @@ with Tubastga_Window_Pkg.Images;
 with Cairo;
 with gdk.Cairo;
 
-
 package body Tubastga_Window_Pkg.FullsizeView is
    Verbose : constant Boolean := False;
 
@@ -37,65 +36,56 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
    use Glib;
 
-   function Get_All_Pix_Patch_X_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Patch_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
    begin
       return Glib.Gint
           (Game_Area_Origo_X + Hexagon.Client_Map.Get_X_From_AB (P_Client_Map, P_Patch) - 20);
    end Get_All_Pix_Patch_X_From_AB;
 
-   function Get_All_Pix_Patch_Y_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Patch_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
    begin
       return Glib.Gint
           (Game_Area_Origo_Y - Hexagon.Client_Map.Get_Y_From_AB (P_Client_Map, P_Patch) - 22);
    end Get_All_Pix_Patch_Y_From_AB;
 
-   function Get_All_Pix_Player_X_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Player_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) + 15;
    end Get_All_Pix_Player_X_From_AB;
 
-   function Get_All_Pix_Player_Y_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Player_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch) + 2;
    end Get_All_Pix_Player_Y_From_AB;
 
-   function Get_All_Pix_Piece_X_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint
+   function Get_All_Pix_Piece_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch);-- -13;
    end Get_All_Pix_Piece_X_From_AB;
 
-   function Get_All_Pix_Piece_Y_From_AB
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint
+   function Get_All_Pix_Piece_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch); -- - 25;
    end Get_All_Pix_Piece_Y_From_AB;
 
-   procedure Draw_Effects
-     (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Effect_List : in     Effect.Effect_List.Map)
+   procedure Draw_Effects (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Effect_List                 : in     Effect.Effect_List.Map)
    is
       Trav : Effect.Effect_List.Cursor;
 
@@ -106,26 +96,18 @@ package body Tubastga_Window_Pkg.FullsizeView is
       while Effect.Effect_List.Has_Element (Trav) loop
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Treasure then
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Chest).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Chest)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
          Trav := Effect.Effect_List.Next (Trav);
       end loop;
    end Draw_Effects;
 
-   procedure Draw_Constructions
-     (P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Construction_List : in     Effect.Effect_List.Map)
+   procedure Draw_Constructions (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Construction_List                 : in     Effect.Effect_List.Map)
    is
       Trav : Effect.Effect_List.Cursor;
 
@@ -136,111 +118,68 @@ package body Tubastga_Window_Pkg.FullsizeView is
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall1 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall1).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall1)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall2 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall2).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall2)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall3 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall3).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall3)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall4 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall4).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall4)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall5 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall5).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall5)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          if Effect.Effect_List.Element (Trav).Effect_Name = Tubastga_Game.Effect_Wall6 then
 
             Gdk.Pixbuf.Composite
-              (Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall6).Image_Data,
-               P_Pixbuf,
-               Glib.Gint (0),
-               Glib.Gint (0),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (0),
-               Glib.Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Tubastga_Window_Pkg.Images.Get_Image
+                 (Tubastga_Window_Pkg.Images.All_Images, Tubastga_Window_Pkg.Images.Wall6)
+                 .Image_Data,
+               P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width, Png_Height, Glib.Gdouble (0),
+               Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
          Trav := Effect.Effect_List.Next (Trav);
       end loop;
    end Draw_Constructions;
 
-   procedure Draw_Landscapes
-     (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Landscape : in     Landscape.Type_Landscape)
+   procedure Draw_Landscapes (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Landscape                      : in     Landscape.Type_Landscape)
    is
       Landscape_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
@@ -250,31 +189,22 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes - enter");
       end if;
 
-      Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                                              Tubastga_Window_Pkg.Images.Find_Landscape_Image(P_Landscape));
+      Landscape_Image :=
+        Tubastga_Window_Pkg.Images.Get_Image
+          (Tubastga_Window_Pkg.Images.All_Images,
+           Tubastga_Window_Pkg.Images.Find_Landscape_Image (P_Landscape));
       Gdk.Pixbuf.Composite
-        (Landscape_Image.all.Image_Data,
-         P_Pixbuf,
-         Glib.Gint (0),
-         Glib.Gint (0),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (0),
-         Glib.Gdouble (0),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (Landscape_Image.all.Image_Data, P_Pixbuf, Glib.Gint (0), Glib.Gint (0), Png_Width,
+         Png_Height, Glib.Gdouble (0), Glib.Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes - exit");
       end if;
    end Draw_Landscapes;
 
-   procedure Draw_Arrow
-     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf)
+   procedure Draw_Arrow (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                         : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview                  : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       x : Glib.Gint;
       y : Glib.Gint;
@@ -285,107 +215,144 @@ package body Tubastga_Window_Pkg.FullsizeView is
       y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch);
       -- lim inn biter av pilen. småbiter som png.
 
-      if P_Patch.Pos.A =6 and P_Patch.Pos.B = 3 then
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow1")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+      if P_Patch.Pos.A = 6 and P_Patch.Pos.B = 3 then
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrow1")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
-         elsif P_Patch.Pos.A =9 and P_Patch.Pos.B = 3 then
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow2")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
-                elsif P_Patch.Pos.A =8 and P_Patch.Pos.B = 3 then
+      elsif P_Patch.Pos.A = 6 and P_Patch.Pos.B = 2 then
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead4")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow3")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+      elsif P_Patch.Pos.A = 6 and P_Patch.Pos.B = 4 then
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead1")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
-         elsif P_Patch.Pos.A =7 then
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow4")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+      elsif P_Patch.Pos.A = 9 and P_Patch.Pos.B = 3 then
 
-         elsif P_Patch.Pos.A =10 then
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow5")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrow2")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
-         elsif P_Patch.Pos.A =9 and P_Patch.Pos.B = 2 then
-      Gdk.Pixbuf.Composite
-        (Tubastga_Window_Pkg.Images.Get_Image
-           (Tubastga_Window_Pkg.Images.All_Images,
-            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow6")).all.Image_Data,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+      elsif P_Patch.Pos.A = 8 and P_Patch.Pos.B = 3 then
+
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead5")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+      elsif P_Patch.Pos.A = 10 and P_Patch.Pos.B = 3 then
+
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead2")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+      elsif P_Patch.Pos.A = 5 and P_Patch.Pos.B = 6 then
+
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrow3")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+      elsif P_Patch.Pos.A = 6 and P_Patch.Pos.B = 5 then
+
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead6")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+      elsif P_Patch.Pos.A = 4 and P_Patch.Pos.B = 7 then
+
+         Gdk.Pixbuf.Composite
+           (Tubastga_Window_Pkg.Images.Get_Image
+              (Tubastga_Window_Pkg.Images.All_Images,
+               Tubastga_Window_Pkg.Images.Find_Other_Image ("arrowhead3")).all
+              .Image_Data,
+            P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height, Glib.Gdouble (x),
+            Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+--         elsif P_Patch.Pos.A =7 then
+--      Gdk.Pixbuf.Composite
+--        (Tubastga_Window_Pkg.Images.Get_Image
+--           (Tubastga_Window_Pkg.Images.All_Images,
+--            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow4")).all.Image_Data,
+--         P_Fullsizeview,
+--         Glib.Gint (x),
+--         Glib.Gint (y),
+--         Png_Width,
+--         Png_Height,
+--         Glib.Gdouble (x),
+--         Glib.Gdouble (y),
+--         1.0,
+--         1.0,
+--         Gdk.Pixbuf.Interp_Nearest,
+--         255);
+
+--         elsif P_Patch.Pos.A =10 then
+--      Gdk.Pixbuf.Composite
+--        (Tubastga_Window_Pkg.Images.Get_Image
+--           (Tubastga_Window_Pkg.Images.All_Images,
+--            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow5")).all.Image_Data,
+--         P_Fullsizeview,
+--         Glib.Gint (x),
+--         Glib.Gint (y),
+--         Png_Width,
+--         Png_Height,
+--         Glib.Gdouble (x),
+--         Glib.Gdouble (y),
+--         1.0,
+--         1.0,
+--         Gdk.Pixbuf.Interp_Nearest,
+--         255);
+
+--         elsif P_Patch.Pos.A =9 and P_Patch.Pos.B = 2 then
+--      Gdk.Pixbuf.Composite
+--        (Tubastga_Window_Pkg.Images.Get_Image
+--           (Tubastga_Window_Pkg.Images.All_Images,
+--            Tubastga_Window_Pkg.Images.Find_Other_Image("arrow6")).all.Image_Data,
+--         P_Fullsizeview,
+--         Glib.Gint (x),
+--         Glib.Gint (y),
+--         Png_Width,
+--         Png_Height,
+--         Glib.Gdouble (x),
+--         Glib.Gdouble (y),
+--         1.0,
+--         1.0,
+--         Gdk.Pixbuf.Interp_Nearest,
+--         255);
+      else
+         null;
       end if;
 
 --      Gdk.Pixbuf.Composite
@@ -416,7 +383,6 @@ package body Tubastga_Window_Pkg.FullsizeView is
 --      Cairo.Line_To(A_Cairo_Context,Gdouble(100.0), Gdouble(100.0));
 
 --      P_Pixbuf := Gdk.Pixbuf.Get_(A_Cairo_Surface,Gint(0), Gint(0), Cairo.Cairo_Context.G;
-
 
 --      cairo.Destroy(A_Cairo_Context);
 --      cairo.Surface_Destroy (A_Cairo_Surface);
@@ -451,13 +417,10 @@ package body Tubastga_Window_Pkg.FullsizeView is
 --}
    end Draw_Arrow;
 
-
-   procedure Draw_All_Patch
-     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_All_Landscape_On_Patch,
-      P_All_Constructions_On_Patch,
+   procedure Draw_All_Patch (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                             : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview                      : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_All_Landscape_On_Patch, P_All_Constructions_On_Patch,
       P_All_Effects_On_Patch : in out Gdk.Pixbuf.Gdk_Pixbuf)
 
    is
@@ -471,58 +434,26 @@ package body Tubastga_Window_Pkg.FullsizeView is
       y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch);
 
       Gdk.Pixbuf.Composite
-        (P_All_Landscape_On_Patch,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (P_All_Landscape_On_Patch, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width,
+         Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       Gdk.Pixbuf.Composite
-        (P_All_Constructions_On_Patch,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (P_All_Constructions_On_Patch, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width,
+         Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       Gdk.Pixbuf.Composite
-        (P_All_Effects_On_Patch,
-         P_Fullsizeview,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (P_All_Effects_On_Patch, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width,
+         Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_All_Patch - exit");
       end if;
    end Draw_All_Patch;
 
-   procedure Draw_Invisible
-     (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Pixbuf     : in out Gdk.Pixbuf.Gdk_Pixbuf)
+   procedure Draw_Invisible (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
-      x, y : Glib.Gint;
+      x, y        : Glib.Gint;
       Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
       use Landscape;
@@ -534,33 +465,24 @@ package body Tubastga_Window_Pkg.FullsizeView is
       x := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch);
       y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch);
 
-      Other_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                                          Tubastga_Window_Pkg.Images.Find_Other_Image("invisible") );
+      Other_Image :=
+        Tubastga_Window_Pkg.Images.Get_Image
+          (Tubastga_Window_Pkg.Images.All_Images,
+           Tubastga_Window_Pkg.Images.Find_Other_Image ("invisible"));
 
       Gdk.Pixbuf.Composite
-        (Other_Image.all.Image_Data,
-         P_Pixbuf,
-         Glib.Gint (x),
-         Glib.Gint (y),
-         Png_Width,
-         Png_Height,
-         Glib.Gdouble (x),
-         Glib.Gdouble (y),
-         1.0,
-         1.0,
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (Other_Image.all.Image_Data, P_Pixbuf, Glib.Gint (x), Glib.Gint (y), Png_Width, Png_Height,
+         Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       if Verbose and False then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Invisible - exit");
       end if;
    end Draw_Invisible;
 
-   procedure Draw_Players
-     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Players (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                           : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview                    : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here                     : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
       Player_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
@@ -579,8 +501,9 @@ package body Tubastga_Window_Pkg.FullsizeView is
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
          Player_Image :=
-           Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                              Tubastga_Window_Pkg.Images.Find_Player_Image(A_Piece.all.Player_Id));
+           Tubastga_Window_Pkg.Images.Get_Image
+             (Tubastga_Window_Pkg.Images.All_Images,
+              Tubastga_Window_Pkg.Images.Find_Player_Image (A_Piece.all.Player_Id));
 
          declare
             x, y : Glib.Gint;
@@ -592,17 +515,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
               Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_Y_From_AB (P_Client_Map, P_Patch);
 
             Gdk.Pixbuf.Composite
-              (Player_Image.all.Image_Data,
-               P_Fullsizeview,
-               Glib.Gint (x),
-               Glib.Gint (y),
-               Png_Width,
-               Png_Height,
-               Glib.Gdouble (x),
-               Glib.Gdouble (y),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
+              (Player_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width,
+               Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest,
                255);
          end;
 
@@ -613,18 +527,17 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Players;
 
-   procedure Draw_Houses
-     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Houses (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                          : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview                   : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here                    : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
-      Piece_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      A_Piece     : Piece.Client_Piece.Type_Client_Piece_Class_Access;
-      Piece_No    : Integer;
+      Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
+      A_Piece          : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Piece_No         : Integer;
 
       use Piece;
       use Player;
@@ -641,26 +554,25 @@ package body Tubastga_Window_Pkg.FullsizeView is
          A_Piece :=
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
-         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_House_Image(Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
-         Piece_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                              Piece_Image_Name);
+         Piece_Image_Name :=
+           Tubastga_Window_Pkg.Images.Find_House_Image
+             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+         Piece_Image :=
+           Tubastga_Window_Pkg.Images.Get_Image
+             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
          -- Now houses
 
          if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
-         declare
-            x, y : Glib.Gint;
-            use Hexagon;
-         begin
-            x :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
-                (P_Client_Map,
-                 P_Patch,
-                 Piece_No);
-            y :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
-                (P_Client_Map,
-                 P_Patch,
-                 Piece_No);
+            declare
+               x, y : Glib.Gint;
+               use Hexagon;
+            begin
+               x :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
+                   (P_Client_Map, P_Patch, Piece_No);
+               y :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
+                   (P_Client_Map, P_Patch, Piece_No);
 
                Gdk.Pixbuf.Composite
                  (Piece_Image.all.Image_Data,
@@ -669,12 +581,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
                   Glib.Gint (y),
                   Png_Width,--  + 150,
                   Png_Height,-- + 150,
-                  Glib.Gdouble (x),
-                  Glib.Gdouble (y),
-                  1.0,
-                  1.0,
-                  Gdk.Pixbuf.Interp_Nearest,
-                  255);
+                  Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0,
+                  Gdk.Pixbuf.Interp_Nearest, 255);
 
             end;
          end if;
@@ -688,18 +596,17 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Houses;
 
-   procedure Draw_Pieces
-     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Pieces (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                          : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview                   : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here                    : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
-      Piece_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      A_Piece     : Piece.Client_Piece.Type_Client_Piece_Class_Access;
-      Piece_No    : Integer;
+      Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
+      A_Piece          : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Piece_No         : Integer;
 
       use Piece;
       use Player;
@@ -716,29 +623,27 @@ package body Tubastga_Window_Pkg.FullsizeView is
          A_Piece :=
            Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
 
-         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_Piece_Image (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
-         Piece_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                                            Piece_Image_Name);
+         Piece_Image_Name :=
+           Tubastga_Window_Pkg.Images.Find_Piece_Image
+             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+         Piece_Image :=
+           Tubastga_Window_Pkg.Images.Get_Image
+             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
 
          if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
 
-         declare
-            x, y : Glib.Gint;
-            use Hexagon;
-         begin
-            x :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
-                (P_Client_Map,
-                 P_Patch,
-                 Piece_No);
-            y :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
-                (P_Client_Map,
-                 P_Patch,
-                 Piece_No);
+            declare
+               x, y : Glib.Gint;
+               use Hexagon;
+            begin
+               x :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
+                   (P_Client_Map, P_Patch, Piece_No);
+               y :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
+                   (P_Client_Map, P_Patch, Piece_No);
 
-
-            Gdk.Pixbuf.Composite
+               Gdk.Pixbuf.Composite
                  (Piece_Image.all.Image_Data,
                   P_Fullsizeview,
                   Glib.Gint (x + Piece_Image.all.Dest_X),
@@ -746,10 +651,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                   Piece_Image.all.Image_Width,--  + 150,
                   Piece_Image.all.Image_Height,-- + 150,
                   Glib.Gdouble (x + Piece_Image.all.Offset_X),
-                  Glib.Gdouble (y + Piece_Image.all.Offset_Y),
-                  1.0,
-                  1.0,
-                  Gdk.Pixbuf.Interp_Nearest,
+                  Glib.Gdouble (y + Piece_Image.all.Offset_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest,
                   255);
 
             end;
@@ -764,14 +666,13 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Pieces;
 
-   procedure Draw_Patch_Selections
-     (P_Pixbuf                             : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Patch                              : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
+   procedure Draw_Patch_Selections (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Patch                                : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_LB_Selected_Pos, P_RB_Selected_Pos   :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
    is
-      Trav  : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
+      Trav        : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
       Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      A_Pos : Hexagon.Type_Hexagon_Position;
+      A_Pos       : Hexagon.Type_Hexagon_Position;
 
       use Hexagon;
    begin
@@ -785,23 +686,14 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
          if A_Pos = P_Patch.Pos then
 
-            Other_Image := Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Images,
-               Tubastga_Window_Pkg.Images.Find_Other_Image("selected_patch_LB"));
+            Other_Image :=
+              Tubastga_Window_Pkg.Images.Get_Image
+                (Tubastga_Window_Pkg.Images.All_Images,
+                 Tubastga_Window_Pkg.Images.Find_Other_Image ("selected_patch_LB"));
 
             Gdk.Pixbuf.Composite
-              (Other_Image.all.Image_Data,
-               P_Pixbuf,
-               Gint (0),
-               Gint (0),
-               Png_Width,
-               Png_Height,
-               Gdouble (0),
-               Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Other_Image.all.Image_Data, P_Pixbuf, Gint (0), Gint (0), Png_Width, Png_Height,
+               Gdouble (0), Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Next (Trav);
@@ -813,23 +705,14 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
          if A_Pos = P_Patch.Pos then
 
-            Other_Image := Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Images,
-               Tubastga_Window_Pkg.Images.Find_Other_Image("selected_patch_RB"));
+            Other_Image :=
+              Tubastga_Window_Pkg.Images.Get_Image
+                (Tubastga_Window_Pkg.Images.All_Images,
+                 Tubastga_Window_Pkg.Images.Find_Other_Image ("selected_patch_RB"));
 
             Gdk.Pixbuf.Composite
-              (Other_Image.all.Image_Data,
-               P_Pixbuf,
-               Gint (0),
-               Gint (0),
-               Png_Width,
-               Png_Height,
-               Gdouble (0),
-               Gdouble (0),
-               1.0,
-               1.0,
-               Gdk.Pixbuf.Interp_Nearest,
-               255);
+              (Other_Image.all.Image_Data, P_Pixbuf, Gint (0), Gint (0), Png_Width, Png_Height,
+               Gdouble (0), Gdouble (0), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
          end if;
 
          Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Next (Trav);
@@ -840,11 +723,9 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Patch_Selections;
 
-   function Selected_Patch
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Fullsizeview_X,
-      P_Fullsizeview_Y : Glib.Gdouble)
-      return Hexagon.Client_Map.Type_Client_Patch_Adress
+   function Selected_Patch (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Fullsizeview_X, P_Fullsizeview_Y :    Glib.Gdouble) return Hexagon.Client_Map
+     .Type_Client_Patch_Adress
    is
       X, Y : Integer;
    begin
