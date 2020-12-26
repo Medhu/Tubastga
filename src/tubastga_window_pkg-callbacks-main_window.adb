@@ -450,11 +450,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Tubastga_Window_Pkg.FullsizeView.Draw_Invisible (A_Client_Map, P_Patch.all, All_Pix);
          end if;
 
-         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
-           (A_Client_Map,
-            P_Patch.all,
-            All_Pix);
-
       end if;
 
    end Draw_Map;
@@ -583,14 +578,16 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       use Player;
       use Glib;
    begin
-      if Verbose then
-         Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event - enter ");
-      end if;
-
       if Me_Player_Id = 0 then
          return True;
       end if;
+
+      --if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event - enter ");
+      --end if;
+
+
 
       for Trav_Players in Player_Name_List'First .. Player_Name_List'Last loop
          if Player_Name_List (Trav_Players) = "" then
@@ -734,7 +731,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       if Curr_Patch /= null then
 
-         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow(A_Client_Map, Curr_Patch.all, All_Pix);
+--         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow(A_Client_Map, Curr_Patch.all, All_Pix);
 
          declare
             use Utilities;
@@ -866,6 +863,18 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Glib.Gdouble (500),
          Glib.Gdouble (250));
 
+      declare
+      begin
+         Text_IO.Put_Line("A - START");
+         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+           (A_Client_Map,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, 5, 5).all,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, 9, 7).all,
+            All_Pix);
+
+         Text_IO.Put_Line("A - SLUTT");
+      end;
+
       Cairo.Paint (P_Draw);
 
       --  Bold and a bigger font
@@ -945,10 +954,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       Cairo.Stroke (P_Draw);
 
-      if Verbose then
+      --if Verbose then
          Text_IO.Put_Line
            ("Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event - exit");
-      end if;
+      --end if;
 
       return True;
 

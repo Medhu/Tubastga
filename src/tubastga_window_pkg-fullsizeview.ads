@@ -70,7 +70,8 @@ package Tubastga_Window_Pkg.FullsizeView is
 
    procedure Draw_Arrow
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_From_Patch                         : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_To_Patch                         : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_All_Patch

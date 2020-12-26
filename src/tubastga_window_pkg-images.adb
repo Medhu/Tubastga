@@ -202,27 +202,11 @@ package body Tubastga_Window_Pkg.Images is
          Other_Image := Tubastga_Window_Pkg.Images.Selected_Patch_RB;
       elsif P_Type = "minimap_outside_view" then
          Other_Image := Tubastga_Window_Pkg.Images.Minimap_Outside_View;
-      elsif P_Type = "arrow1" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrow1;
-      elsif P_Type = "arrow2" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrow2;
-      elsif P_Type = "arrow3" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrow3;
-      elsif P_Type = "arrowhead1" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead1;
-      elsif P_Type = "arrowhead2" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead2;
-      elsif P_Type = "arrowhead3" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead3;
-      elsif P_Type = "arrowhead4" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead4;
-      elsif P_Type = "arrowhead5" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead5;
-      elsif P_Type = "arrowhead6" then
-         Other_Image := Tubastga_Window_Pkg.Images.Arrowhead6;
+      elsif P_Type = "point" then
+         Other_Image := Tubastga_Window_Pkg.Images.Point;
       end if;
 
-      text_io.Put_Line("Other_Image:" & Other_Image'Img);
+      --text_io.Put_Line("Other_Image:" & Other_Image'Img);
 --      if Verbose then
 --         Text_IO.Put_Line("Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image - exit");
 --      end if;
@@ -526,58 +510,10 @@ package body Tubastga_Window_Pkg.Images is
             null, 0, 0, 0, 0, 0, 0));
 
       Images_List_Pkg.Include
-        (P_Images, Arrow1,
+        (P_Images, Point,
          new Type_Image'
-           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow1_hexagon.png"),
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\point.png"),
             null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrow2,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow2_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrow3,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrow3_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrowhead1,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead1_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrowhead2,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead2_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrowhead3,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead3_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrowhead4,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead4_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-        Images_List_Pkg.Include
-          (P_Images, Arrowhead5,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead5_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
-
-      Images_List_Pkg.Include
-          (P_Images, Arrowhead6,
-           new Type_Image'
-             (Ada.Strings.Unbounded.To_Unbounded_String ("resources\arrowhead6_hexagon.png"),
-              null, 0, 0, 0, 0, 0, 0));
 
    end Initialize;
 
