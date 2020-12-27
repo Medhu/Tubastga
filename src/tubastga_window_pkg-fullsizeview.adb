@@ -251,11 +251,57 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       end Draw_Line;
 
+      procedure Gtk_Arrow_Pixbuf
+        (P_From_x       : in Glib.Gint;
+         P_From_y       : in Glib.Gint;
+         P_To_x         : in Glib.Gint;
+         P_To_y         : in Glib.Gint;
+         P_Arrow_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf)
+      is
+         min_x : Glib.Gint;
+         max_x : Glib.Gint;
+         min_y : Glib.Gint;
+         max_y : Glib.Gint;
+      begin
+         if P_From_x < P_To_x then
+            min_x := Glib.Gint'Max(P_From_x - 15, 0);
+            max_x := To_x + 15;
+         else
+            min_x := To_x + 15;
+            max_x := P_From_y - 15;
+         end if;
+
+         if P_From_y < To_y then
+            min_y := Glib.Gint'Max(P_From_y + 15, 0);
+            max_y := To_y - 15;
+         else
+            min_y := To_y - 15;
+            max_y := P_From_y + 15;
+         end if;
+
+         P_Arrow_Pixbuf :=
+           Gdk.Pixbuf.Gdk_New
+             (Has_Alpha => True,
+              Width     => Max_x - Min_x,
+              Height    => Max_y - Min_y);
+
+         Text_IO.Put_Line("Arrow Min_x:" & Min_x'Img & " Min_y:" & Min_y'Img &
+                            " Max_x:" & Max_x'Img & " Max_y:" & Max_y'Img);
+         --Draw_Line (min_x, min_y, max_x, max_y, P_Fullsizeview);
+         --Draw_Line (min_x, max_y, max_x, min_y, P_Fullsizeview);
+         Draw_Line (P_From_X, P_From_Y, P_To_X, P_To_Y, P_Arrow_Pixbuf);
+
+      end Gtk_Arrow_Pixbuf;
+
+
    begin
       if Verbose then
          Text_IO.Put_Line ("Tubatsga_Window_Pkg.Fullsizeview.Draw_Arrow - enter");
       end if;
 
+      -- 1. Create a Pixbuf area around the arrow
+      -- 2. Draw the arrow in the "arrow-pixbuf".
+      -- 3. paint the arrow back in the P_Fullsizeview.
       From_x :=
         Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_From_Patch);
       From_y :=
@@ -269,6 +315,36 @@ package body Tubastga_Window_Pkg.FullsizeView is
       d_x := Float (To_x - From_x);
       d_y := Float (To_y - From_y);
 
+      Text_IO.Put_Line("====== START");
+      declare
+         min_x : Glib.Gint;
+         max_x : Glib.Gint;
+         min_y : Glib.Gint;
+         max_y : Glib.Gint;
+      begin
+         if From_x < To_x then
+            min_x := Glib.Gint'Max(From_x - 15, 0);
+            max_x := To_x + 15;
+         else
+            min_x := To_x + 15;
+            max_x := From_y - 15;
+         end if;
+
+         if From_y < To_y then
+            min_y := Glib.Gint'Max(From_y + 15, 0);
+            max_y := To_y - 15;
+         else
+            min_y := To_y - 15;
+            max_y := From_y + 15;
+         end if;
+
+         Text_IO.Put_Line("Arrow Min_x:" & Min_x'Img & " Min_y:" & Min_y'Img &
+                            " Max_x:" & Max_x'Img & " Max_y:" & Max_y'Img);
+         Draw_Line (min_x, min_y, max_x, max_y, P_Fullsizeview);
+         Draw_Line (min_x, max_y, max_x, min_y, P_Fullsizeview);
+      end;
+
+      Text_IO.Put_Line("====== END");
       theta := Math.Arctan (d_y, d_x, 3.1415);
       declare
          x1 : Float;
@@ -276,8 +352,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
          x2 : Float;
          y2 : Float;
 
-         arrow_Angle  : constant Float := 3.1415 / 6.0;
-         arrow_Length : constant Float := 100.0;
+         arrow_Angle  : constant Float := 3.1415 / 24.0;
+         arrow_Length : constant Float := 20.0;
       begin
          x1 := Float (To_x) - arrow_Length * Math.cos (theta + arrow_Angle, 3.1415);
          y1 := Float (To_y) - arrow_Length * Math.sin (theta + arrow_Angle, 3.1415);
