@@ -864,12 +864,21 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Glib.Gdouble (250));
 
       declare
+         Trav : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
+         Target_Pos : Hexagon.Type_Hexagon_Position;
+         Performing_Pos : Hexagon.Type_Hexagon_Position;
       begin
          Text_IO.Put_Line("A - START");
+         Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (LB_Selected_Pos);
+         Performing_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
+
+         Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (RB_Selected_Pos);
+         Target_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
+
          Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
            (A_Client_Map,
-            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, 5, 5).all,
-            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, 9, 7).all,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Performing_Pos.A, Performing_Pos.B).all,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Target_Pos.A, Target_Pos.B).all,
             All_Pix);
 
          Text_IO.Put_Line("A - SLUTT");
