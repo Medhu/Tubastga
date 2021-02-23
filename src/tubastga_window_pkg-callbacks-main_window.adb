@@ -731,8 +731,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       if Curr_Patch /= null then
 
---         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow(A_Client_Map, Curr_Patch.all, All_Pix);
-
          declare
             use Utilities;
             Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
@@ -868,7 +866,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Target_Pos : Hexagon.Type_Hexagon_Position;
          Performing_Pos : Hexagon.Type_Hexagon_Position;
       begin
-         Text_IO.Put_Line("A - START");
          Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (LB_Selected_Pos);
          Performing_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
 
@@ -880,8 +877,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Performing_Pos.A, Performing_Pos.B).all,
             Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Target_Pos.A, Target_Pos.B).all,
             All_Pix);
-
-         Text_IO.Put_Line("A - SLUTT");
       end;
 
       Cairo.Paint (P_Draw);
