@@ -26,7 +26,7 @@ with Tubastga_Window_Pkg.Images;
 with Cairo;
 with gdk.Cairo;
 with Ada.Numerics.Generic_Elementary_Functions;
---with Text_IO.Float_IO;
+
 
 package body Tubastga_Window_Pkg.FullsizeView is
    Verbose : constant Boolean := False;
@@ -216,9 +216,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       d_x    : Float;
       d_y    : Float;
       --theta  : Float;
-      Orig_X       : Glib.Gint;
-      Orig_Y       : Glib.Gint;
-      Arrow_Pixbuf : Gdk.Pixbuf.Gdk_Pixbuf;
+      Orig_X            : Glib.Gint;
+      Orig_Y            : Glib.Gint;
+      Arrow_Pixbuf_Main : Gdk.Pixbuf.Gdk_Pixbuf;
+      Arrow_Pixbuf_1    : Gdk.Pixbuf.Gdk_Pixbuf;
+      Arrow_Pixbuf_2    : Gdk.Pixbuf.Gdk_Pixbuf;
 
       package Math is new Ada.Numerics.Generic_Elementary_Functions (Float);
 
@@ -384,39 +386,54 @@ package body Tubastga_Window_Pkg.FullsizeView is
       d_x := Float (To_x - From_x);
       d_y := Float (To_y - From_y);
 
-      Text_IO.Put_Line
-        ("====== START " & " From_x:" & From_x'Img & " From_y:" & From_y'Img & " To_x:" & To_x'Img &
-         " To_y:" & To_y'Img);
-      Gtk_Arrow_Pixbuf (From_x, From_y, To_x, To_y, Orig_X, Orig_Y, Arrow_Pixbuf);
-      Text_IO.Put_Line ("====== END");
-
-      --theta := Math.Arctan (d_y, d_x, 3.1415);
       declare
---         x1 : Float;
---         y1 : Float;
---         x2 : Float;
---         y2 : Float;
+         x1 : Float;
+         y1 : Float;
+         x2 : Float;
+         y2 : Float;
 
+         theta        : Float;
          arrow_Angle  : constant Float := 3.1415 / 24.0;
          arrow_Length : constant Float := 20.0;
       begin
---         x1 := Float (To_x) - arrow_Length * Math.cos (theta + arrow_Angle, 3.1415);
---         y1 := Float (To_y) - arrow_Length * Math.sin (theta + arrow_Angle, 3.1415);
---         x2 := Float (To_x) - arrow_Length * Math.cos (theta - arrow_Angle, 3.1415);
---         y2 := Float (To_y) - arrow_Length * Math.sin (theta - arrow_Angle, 3.1415);
+         theta := Math.Arctan (d_y, d_x, 3.1415);
 
-         Draw_Line (From_x - Orig_X, From_y - Orig_Y, To_x - Orig_X, To_y - Orig_Y, Arrow_Pixbuf);
---         Draw_Line (To_x - Orig_X, To_y - Orig_Y,
---                    Glib.Gint (x1) - Orig_X, Glib.Gint (y1) - Orig_Y,
---                    Arrow_Pixbuf);
---         Draw_Line (Glib.Gint (x1), Glib.Gint (y1), Glib.Gint (x2), Glib.Gint (y2), Arrow_Pixbuf);
---         Draw_Line (Glib.Gint (x2), Glib.Gint (y2), To_x, To_y, Arrow_Pixbuf);
+         x1 := Float (To_x) - arrow_Length * Math.cos (theta + arrow_Angle, 3.1415);
+         y1 := Float (To_y) - arrow_Length * Math.sin (theta + arrow_Angle, 3.1415);
+         x2 := Float (To_x) - arrow_Length * Math.cos (theta - arrow_Angle, 3.1415);
+         y2 := Float (To_y) - arrow_Length * Math.sin (theta - arrow_Angle, 3.1415);
+
+--      Text_IO.Put_Line
+--        ("====== START " & " From_x:" & From_x'Img & " From_y:" & From_y'Img & " To_x:" & To_x'Img &
+--         " To_y:" & To_y'Img);
+         Gtk_Arrow_Pixbuf (From_x, From_y, To_x, To_y, Orig_X, Orig_Y, Arrow_Pixbuf_Main);
+         Gtk_Arrow_Pixbuf (From_x, From_y, To_x, To_y, Orig_X, Orig_Y, Arrow_Pixbuf_1);
+         Gtk_Arrow_Pixbuf (From_x, From_y, To_x, To_y, Orig_X, Orig_Y, Arrow_Pixbuf_2);
+--      Text_IO.Put_Line ("====== END");
+
+         Draw_Line
+           (From_x - Orig_X, From_y - Orig_Y, To_x - Orig_X, To_y - Orig_Y, Arrow_Pixbuf_Main);
+         Gdk.Pixbuf.Composite
+           (Arrow_Pixbuf_Main, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
+            Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_Main), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_Main),
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+         Draw_Line
+           (To_x - Orig_X, To_y - Orig_Y, Glib.Gint (x1) - Orig_X, Glib.Gint (y1) - Orig_Y,
+            Arrow_Pixbuf_1);
+         Gdk.Pixbuf.Composite
+           (Arrow_Pixbuf_1, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
+            Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_1), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_2),
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+
+         Draw_Line
+           (To_x - Orig_X, To_y - Orig_Y, Glib.Gint (x2) - Orig_X, Glib.Gint (y2) - Orig_Y,
+            Arrow_Pixbuf_2);
+         Gdk.Pixbuf.Composite
+           (Arrow_Pixbuf_2, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
+            Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_2), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_2),
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
       end;
-
-      Gdk.Pixbuf.Composite
-        (Arrow_Pixbuf, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
-         Gdk.Pixbuf.Get_Width (Arrow_Pixbuf), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf),
-         Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
       if Verbose then
          Text_IO.Put_Line ("Tubatsga_Window_Pkg.Fullsizeview.Draw_Arrow - exit");
