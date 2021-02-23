@@ -275,7 +275,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                           (Tubastga_Window_Pkg.Images.All_Images,
                            Tubastga_Window_Pkg.Images.Find_Other_Image ("point")).all
                           .Image_Data,
-                        P_Linebuf, Glib.Gint (x), Glib.Gint (y), 1, 1, Glib.Gdouble (x),
+                        P_Linebuf, Glib.Gint (x), Glib.Gint (y), 3, 3, Glib.Gdouble (x),
                         Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
 
                   end if;
