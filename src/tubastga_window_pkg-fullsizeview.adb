@@ -351,7 +351,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                 (Has_Alpha => True, Width => Max_x - Min_x, Height => Max_y - Min_y);
          end;
 
-         Gdk.Pixbuf.Fill (P_Arrow_Pixbuf, 141);
+         Gdk.Pixbuf.Fill (P_Arrow_Pixbuf, 0);
 
 --         Text_IO.Put_Line("Arrow Min_x:" & Min_x'Img & " Min_y:" & Min_y'Img &
 --                            " Max_x:" & Max_x'Img & " Max_y:" & Max_y'Img);
@@ -416,7 +416,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Gdk.Pixbuf.Composite
            (Arrow_Pixbuf_Main, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
             Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_Main), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_Main),
-            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 128);
 
          Draw_Line
            (To_x - Orig_X, To_y - Orig_Y, Glib.Gint (x1) - Orig_X, Glib.Gint (y1) - Orig_Y,
@@ -424,7 +424,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Gdk.Pixbuf.Composite
            (Arrow_Pixbuf_1, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
             Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_1), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_2),
-            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 128);
 
          Draw_Line
            (To_x - Orig_X, To_y - Orig_Y, Glib.Gint (x2) - Orig_X, Glib.Gint (y2) - Orig_Y,
@@ -432,7 +432,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Gdk.Pixbuf.Composite
            (Arrow_Pixbuf_2, P_Fullsizeview, Glib.Gint (Orig_X), Glib.Gint (Orig_Y),
             Gdk.Pixbuf.Get_Width (Arrow_Pixbuf_2), Gdk.Pixbuf.Get_Height (Arrow_Pixbuf_2),
-            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
+            Glib.Gdouble (Orig_X), Glib.Gdouble (Orig_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 128);
       end;
 
       if Verbose then
