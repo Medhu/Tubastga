@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -111,14 +111,14 @@ package Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A);
 
    procedure Perform_Piece_Effect
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect);
+      P_Effect_Name : in Effect.Type_Effect_Name);
 
    procedure Get_Map (P_Server_Map : out Landscape.Type_Map);
 
@@ -139,7 +139,7 @@ package Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect);
+      P_Effect_Name : in Effect.Type_Effect_Name);
 
    procedure Grant_Patch_Effect
      (P_Player_Id   : in Player.Type_Player_Id;
@@ -152,7 +152,7 @@ package Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A);
 
    procedure Client_Stopped (P_Player_Id : in Player.Type_Player_Id);

@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -255,7 +255,7 @@ package body Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
@@ -267,7 +267,7 @@ package body Client.ClientRPC is
         (P_Player_Id,
          P_Action_Type,
          P_Piece_Id,
-         P_Effect,
+         P_Effect_Name,
          P_Area);
 
       if Verbose then
@@ -280,14 +280,14 @@ package body Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect)
+      P_Effect_Name : in Effect.Type_Effect_Name)
    is
    begin
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Perform_Piece_Effect - enter");
       end if;
 
-      Tubastga_ServerRCI.Perform_Piece_Effect (P_Player_Id, P_Action_Type, P_Piece_Id, P_Effect);
+      Tubastga_ServerRCI.Perform_Piece_Effect (P_Player_Id, P_Action_Type, P_Piece_Id, P_Effect_Name);
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Perform_Piece_Effect - exit");
       end if;
@@ -316,14 +316,14 @@ package body Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect)
+      P_Effect_Name : in Effect.Type_Effect_Name)
    is
    begin
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Revoke_Effect - enter");
       end if;
 
-      Tubastga_ServerRCI.Revoke_Piece_Effect (P_Player_Id, P_Action_Type, P_Piece_Id, P_Effect);
+      Tubastga_ServerRCI.Revoke_Piece_Effect (P_Player_Id, P_Action_Type, P_Piece_Id, P_Effect_Name);
 
       if Verbose then
          Text_IO.Put_Line ("Client.ClientRPC.Revoke_Effect - exit");
@@ -358,7 +358,7 @@ package body Client.ClientRPC is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece_Id    : in Piece.Type_Piece_Id;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
@@ -370,7 +370,7 @@ package body Client.ClientRPC is
         (P_Player_Id,
          P_Action_Type,
          P_Piece_Id,
-         P_Effect,
+         P_Effect_Name,
          P_Area);
 
       if Verbose then

@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -333,7 +333,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall1, 0),
+         Tubastga_Game.Effect_Wall1,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall1;
@@ -357,7 +357,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall2, 0),
+         Tubastga_Game.Effect_Wall2,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall2;
@@ -381,7 +381,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall3, 0),
+         Tubastga_Game.Effect_Wall3,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall3;
@@ -405,7 +405,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall4, 0),
+         Tubastga_Game.Effect_Wall4,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall4;
@@ -429,7 +429,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall5, 0),
+         Tubastga_Game.Effect_Wall5,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall5;
@@ -453,7 +453,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Patch_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall6, 0),
+         Tubastga_Game.Effect_Wall6,
          Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
 
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall6;
@@ -606,7 +606,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Piece.Client_Piece.Revoke_Piece_Effect
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Captain, 1));
+         Tubastga_Game.Effect_Captain);
 
    end On_Button_Demote;
 
@@ -637,7 +637,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
          Piece.Client_Piece.Perform_Patch_Effect
            (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-            An_Effect, Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Patch.all.Pos));
+            An_Effect.Effect_Name, Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Patch.all.Pos));
       end if;
 
    end On_Button_Search;

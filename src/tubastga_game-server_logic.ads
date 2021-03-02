@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -38,10 +38,13 @@ with Hexagon.Server_Navigation;
 package Tubastga_Game.Server_Logic is
    Not_Implementet : exception;
 
+   type Type_Attack_State is (Idle, Start_Attacking, Defence_Done);
+
    type Type_My_Tubastga_Piece is new Piece.Server.Fighting_Piece.Type_Piece with record
       Storage : Goods.Type_Storage_Access := null;
       Health  : Integer                   := 0;
       Energy  : Integer                   := 0;
+      Attack_State : Type_Attack_State := Idle;
    end record;
 
    type Type_My_Tubastga_Piece_Access_Class is access all Type_My_Tubastga_Piece'Class;
@@ -309,14 +312,14 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name      : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean;
 
    procedure Before_Perform_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Result      :    out Status.Type_Result_Status);
 
@@ -325,13 +328,13 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in     Effect.Type_Effect);
+      P_Effect_Name      : in     Effect.Type_Effect_Name);
 
    procedure End_Perform_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name             : in     Effect.Type_Effect_Name;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
@@ -343,14 +346,14 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in Effect.Type_Effect;
+      P_Effect_Name      : in Effect.Type_Effect_Name;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean;
 
    procedure Before_Perform_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Result      :    out Status.Type_Result_Status);
 
@@ -359,13 +362,13 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in     Effect.Type_Effect);
+      P_Effect_Name      : in     Effect.Type_Effect_Name);
 
    procedure End_Perform_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name             : in     Effect.Type_Effect_Name;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
@@ -377,26 +380,26 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name      : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in     Effect.Type_Effect);
+      P_Effect_Name      : in     Effect.Type_Effect_Name);
 
    procedure End_Perform_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name             : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
@@ -407,26 +410,26 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name      : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in     Effect.Type_Effect);
+      P_Effect_Name      : in     Effect.Type_Effect_Name);
 
    procedure End_Perform_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name             : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
@@ -485,20 +488,20 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Revoke_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Result             : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
@@ -509,20 +512,20 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in Player.Type_Player_Id;
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Revoke_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Result             : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
@@ -588,14 +591,14 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Revoke_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure End_Revoke_Patch_Effect
@@ -603,7 +606,7 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 
@@ -615,14 +618,14 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in Action.Type_Action_Type;
       P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in Effect.Type_Effect) return Boolean;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean;
 
    procedure Before_Revoke_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Result      :    out Status.Type_Result_Status);
 
    procedure End_Revoke_Patch_Effect
@@ -630,7 +633,7 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect             : in     Effect.Type_Effect;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
       P_Attempts_Remaining : in out Integer);
 

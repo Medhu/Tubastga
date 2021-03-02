@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -303,7 +303,7 @@ package body Piece.Client_Piece is
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Type_Piece;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
@@ -315,7 +315,7 @@ package body Piece.Client_Piece is
         (P_Player_Id,
          P_Action_Type,
          P_Piece.Id,
-         P_Effect,
+         P_Effect_Name,
          P_Area);
 
       if Verbose then
@@ -329,7 +329,7 @@ package body Piece.Client_Piece is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Type_Piece;
       P_Patch       : in     Landscape.Type_Patch;
-      P_Effect      : in     Effect.Type_Effect)
+      P_Effect_Name : in     Effect.Type_Effect_Name)
    is
    begin
       if Verbose then
@@ -340,7 +340,7 @@ package body Piece.Client_Piece is
         (P_Player_Id,
          P_Action_Type,
          P_Piece.Id,
-         P_Effect);
+         P_Effect_Name);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Perform_Piece_Effect - exit");
@@ -392,7 +392,7 @@ package body Piece.Client_Piece is
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Effect      : in     Effect.Type_Effect)
+      P_Effect_Name : in     Effect.Type_Effect_Name)
    is
    begin
       if Verbose then
@@ -403,7 +403,7 @@ package body Piece.Client_Piece is
         (P_Player_Id,
          P_Action_Type,
          P_Piece.Id,
-         P_Effect);
+         P_Effect_Name);
 
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Revoke_Piece_Effect - exit");
@@ -438,7 +438,7 @@ package body Piece.Client_Piece is
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in     Piece.Type_Piece;
-      P_Effect      : in     Effect.Type_Effect;
+      P_Effect_Name : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A)
    is
    begin
@@ -450,7 +450,7 @@ package body Piece.Client_Piece is
         (P_Player_Id,
          P_Action_Type,
          P_Piece.Id,
-         P_Effect,
+         P_Effect_Name,
          P_Area);
 
       if Verbose then

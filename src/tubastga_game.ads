@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -77,6 +77,9 @@ package Tubastga_Game is
    Effect_Wall4        : constant Effect.Type_Effect_Name := 15;
    Effect_Wall5        : constant Effect.Type_Effect_Name := 16;
    Effect_Wall6        : constant Effect.Type_Effect_Name := 17;
+   --
+   Effect_Attack_Start : constant Effect.Type_Effect_Name := 18;
+   Effect_Defence_Done : constant Effect.Type_Effect_Name := 19;
 
    Land_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
      new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
