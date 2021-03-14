@@ -24,6 +24,7 @@ with Tubastga_Window_Pkg.FullsizeView;
 with Gtk.Tree_Selection;
 with Gtk.Tree_Model;
 with Gtk.Enums;
+with GtkAda.Dialogs;
 with Action;
 with Tubastga_Game;
 with Tubastga_UI_Aux;
@@ -169,6 +170,100 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
    end On_Performing_Patch_Tree_View;
 
+   function Validate_Search (P_Searching_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
+      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Ret : Boolean := True;
+
+      use Piece;
+   begin
+
+      if P_Searching_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the searching");
+         Ret := False;
+
+      end if;
+
+      return Ret;
+   end Validate_Search;
+
+   function Validate_Promote_Demote (P_Promoting_Piece_Id : in Piece.Type_Piece_Id) return Boolean
+   is
+      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Ret : Boolean := True;
+
+      use Piece;
+   begin
+
+      if P_Promoting_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
+         Ret := False;
+
+      end if;
+
+      return Ret;
+   end Validate_Promote_Demote;
+
+   function Validate_Construct (P_Constructing_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
+      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Ret : Boolean := True;
+
+      use Piece;
+   begin
+
+      if P_Constructing_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
+         Ret := False;
+
+      end if;
+
+      return Ret;
+   end Validate_Construct;
+
+   function Validate_Move (P_Moving_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
+      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Ret : Boolean := True;
+
+      use Piece;
+   begin
+
+      if P_Moving_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to move");
+         Ret := False;
+
+      end if;
+
+      return Ret;
+   end Validate_Move;
+
+   function Validate_Attack
+     (P_Attacking_Piece_Id, P_Attacked_Piece_Id : in Piece.Type_Piece_Id) return Boolean
+   is
+      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Ret : Boolean := True;
+
+      use Piece;
+   begin
+
+      if P_Attacking_Piece_Id = Piece.Undefined_Piece_Id and
+        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose an attacker and a target");
+         Ret := False;
+
+      elsif P_Attacking_Piece_Id = Piece.Undefined_Piece_Id and
+        P_Attacked_Piece_Id /= Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose an attacker");
+         Ret := False;
+
+      elsif P_Attacking_Piece_Id /= Piece.Undefined_Piece_Id and
+        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id then
+         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a target");
+         Ret := False;
+
+      end if;
+
+      return Ret;
+   end Validate_Attack;
+
    procedure On_Button_Place_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
 
       Selected_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
@@ -182,15 +277,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall1, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall1;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall1, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall1;
+      end if;
+
    end On_Button_Place_Wall1;
 
    procedure On_Button_Place_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -206,15 +305,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall2, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall2;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall2, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall2;
+      end if;
+
    end On_Button_Place_Wall2;
 
    procedure On_Button_Place_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -230,15 +333,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall3, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall3;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall3, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall3;
+      end if;
+
    end On_Button_Place_Wall3;
 
    procedure On_Button_Place_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -254,15 +361,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall4, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall4;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall4, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall4;
+      end if;
+
    end On_Button_Place_Wall4;
 
    procedure On_Button_Place_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -278,15 +389,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall5, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall5;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall5, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall5;
+      end if;
+
    end On_Button_Place_Wall5;
 
    procedure On_Button_Place_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -302,15 +417,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Grant_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Wall6, 0),
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall6;
+         Piece.Client_Piece.Grant_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Wall6, 0),
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall6;
+      end if;
+
    end On_Button_Place_Wall6;
    --
    --
@@ -328,15 +447,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall1,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall1;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall1,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall1;
+      end if;
+
    end On_Button_Remove_Wall1;
 
    procedure On_Button_Remove_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -352,15 +475,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall2,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall2;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall2,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall2;
+      end if;
+
    end On_Button_Remove_Wall2;
 
    procedure On_Button_Remove_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -376,15 +503,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall3,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall3;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall3,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall3;
+      end if;
+
    end On_Button_Remove_Wall3;
 
    procedure On_Button_Remove_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -400,15 +531,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall4,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall4;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall4,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall4;
+      end if;
+
    end On_Button_Remove_Wall4;
 
    procedure On_Button_Remove_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -424,15 +559,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall5,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall5;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall5,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall5;
+      end if;
+
    end On_Button_Remove_Wall5;
 
    procedure On_Button_Remove_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -448,15 +587,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Piece.Client_Piece.Revoke_Patch_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Wall6,
-         Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+      if Validate_Construct (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
 
-      Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall6;
+         Piece.Client_Piece.Revoke_Patch_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Wall6,
+            Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Pos));
+
+         Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall6;
+      end if;
+
    end On_Button_Remove_Wall6;
 
    procedure On_Button_Move (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -473,14 +616,19 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
-      Selected_Patch    :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
 
-      Piece.Client_Piece.Perform_Move
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Landscape.Type_Patch (Selected_Patch.all));
+      if Validate_Move (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
+         Selected_Patch :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
+
+         Piece.Client_Piece.Perform_Move
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Landscape.Type_Patch (Selected_Patch.all));
+
+      end if;
 
    end On_Button_Move;
 
@@ -495,6 +643,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       Selected_Piece_Id_RB : Piece.Type_Piece_Id;
       Selected_Patch_RB    : Hexagon.Client_Map.Type_Client_Patch_Adress;
       Selected_Pos_RB      : Hexagon.Type_Hexagon_Position;
+
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -503,23 +652,28 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Selected_Piece_Id_LB :=
         Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece_LB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_LB);
-      Selected_Pos_LB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-      Selected_Patch_LB :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB
-          (A_Client_Map, Selected_Pos_LB.A, Selected_Pos_LB.B);
-
       Selected_Piece_Id_RB :=
         Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces);
-      Selected_Piece_RB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_RB);
-      Selected_Pos_RB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
-      Selected_Patch_RB :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB
-          (A_Client_Map, Selected_Pos_RB.A, Selected_Pos_RB.B);
 
-      Piece.Client_Piece.Perform_Attack
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece_LB.all),
-         Piece.Type_Piece (Selected_Piece_RB.all));
+      if Validate_Attack (Selected_Piece_Id_LB, Selected_Piece_Id_RB) then
+
+         Selected_Piece_LB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_LB);
+         Selected_Pos_LB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+         Selected_Patch_LB :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos_LB.A, Selected_Pos_LB.B);
+
+         Selected_Piece_RB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_RB);
+         Selected_Pos_RB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
+         Selected_Patch_RB :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos_RB.A, Selected_Pos_RB.B);
+
+         Piece.Client_Piece.Perform_Attack
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece_LB.all),
+            Piece.Type_Piece (Selected_Piece_RB.all));
+
+      end if;
 
    end On_Button_Attack;
 
@@ -542,24 +696,28 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
       Selected_Piece_Id_LB :=
         Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece_LB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_LB);
-      Selected_Pos_LB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-      Selected_Patch_LB :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB
-          (A_Client_Map, Selected_Pos_LB.A, Selected_Pos_LB.B);
-
       Selected_Piece_Id_RB :=
         Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces);
-      Selected_Piece_RB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_RB);
-      Selected_Pos_RB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
-      Selected_Patch_RB :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB
-          (A_Client_Map, Selected_Pos_RB.A, Selected_Pos_RB.B);
 
-      Piece.Client_Piece.Perform_Ranged_Attack
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece_LB.all),
-         Piece.Type_Piece (Selected_Piece_RB.all));
+      if Validate_Attack (Selected_Piece_Id_LB, Selected_Piece_Id_RB) then
 
+         Selected_Piece_LB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_LB);
+         Selected_Pos_LB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+         Selected_Patch_LB :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos_LB.A, Selected_Pos_LB.B);
+
+         Selected_Piece_RB := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id_RB);
+         Selected_Pos_RB   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
+         Selected_Patch_RB :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos_RB.A, Selected_Pos_RB.B);
+
+         Piece.Client_Piece.Perform_Ranged_Attack
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece_LB.all),
+            Piece.Type_Piece (Selected_Piece_RB.all));
+
+      end if;
    end On_Button_Ranged_Attack;
 
    procedure On_Button_Promote (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -575,14 +733,18 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-      Selected_Patch    :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
 
-      Piece.Client_Piece.Grant_Piece_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Effect.Type_Effect'(Tubastga_Game.Effect_Captain, 1));
+      if Validate_Promote_Demote (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+         Selected_Patch :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
+
+         Piece.Client_Piece.Grant_Piece_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Effect.Type_Effect'(Tubastga_Game.Effect_Captain, 1));
+      end if;
 
    end On_Button_Promote;
 
@@ -599,14 +761,18 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-      Selected_Patch    :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
 
-      Piece.Client_Piece.Revoke_Piece_Effect
-        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-         Tubastga_Game.Effect_Captain);
+      if Validate_Promote_Demote (Selected_Piece_Id) then
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+         Selected_Patch :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
+
+         Piece.Client_Piece.Revoke_Piece_Effect
+           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+            Tubastga_Game.Effect_Captain);
+      end if;
 
    end On_Button_Demote;
 
@@ -625,19 +791,26 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
-      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
-      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-      Selected_Patch    :=
-        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
 
-      Effect_Cursor :=
-        Effect.Effect_List.Find (Selected_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure);
-      if Effect.Effect_List.Has_Element (Effect_Cursor) then
-         An_Effect := Effect.Effect_List.Element (Effect_Cursor);
+      if Validate_Search (Selected_Piece_Id) then
 
-         Piece.Client_Piece.Perform_Patch_Effect
-           (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
-            An_Effect.Effect_Name, Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Patch.all.Pos));
+         Selected_Piece := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+         Selected_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+         Selected_Patch :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
+
+         Effect_Cursor :=
+           Effect.Effect_List.Find (Selected_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure);
+         if Effect.Effect_List.Has_Element (Effect_Cursor) then
+            An_Effect := Effect.Effect_List.Element (Effect_Cursor);
+
+            Piece.Client_Piece.Perform_Patch_Effect
+              (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+               An_Effect.Effect_Name,
+               Hexagon.Area.Type_Action_Capabilities_A'(1 => Selected_Patch.all.Pos));
+         end if;
+
       end if;
 
    end On_Button_Search;

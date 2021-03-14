@@ -38,7 +38,7 @@ procedure Tubastga_Server_Starter is
    Tubastga_Class2 : Tubastga_Game.Server_Logic.Type_My_Tubastga_House_Access_Class;
 
 begin
-   Text_IO.Put_Line ("Tubast'ga - v0.5. Copyright (C) 2015-2019  Frank J Jorgensen");
+   Text_IO.Put_Line ("Tubast'ga - v0.5.1 Copyright (C) 2015-2021  Frank J Jorgensen");
    Text_IO.Put_Line
      ("This program comes with ABSOLUTELY NO WARRANTY; for details see attached gpl.txt");
    Text_IO.Put_Line ("or <http://www.gnu.org/licenses/>");

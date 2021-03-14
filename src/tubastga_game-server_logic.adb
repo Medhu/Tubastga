@@ -2990,6 +2990,52 @@ package body Tubastga_Game.Server_Logic is
          end if;
 
          Server.ServerAPI.Observe_Game (5);
+
+      elsif Current_Scenario = "scenario_battle" then
+         Text_IO.Put_Line ("Server is running the scenario : scenario_battle.dat");
+
+         A_Pos_Blue1 := Hexagon.Type_Hexagon_Position'(True, 16, 20);
+         A_Pos_Blue2 := Hexagon.Type_Hexagon_Position'(True, 17, 20);
+
+         A_Pos_Red1 := Hexagon.Type_Hexagon_Position'(True, 73, 87);
+         A_Pos_Red2 := Hexagon.Type_Hexagon_Position'(True, 18, 21);
+
+
+         A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
+         A_Piece.Category      := Piece.House_Piece;
+         A_Piece.Player_Id     := 1;
+
+         Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue1, A_Piece,
+            A_Piece.Id, Ret_Status, True);
+
+         A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
+         A_Piece.Category      := Piece.Fighting_Piece;
+         A_Piece.Player_Id     := 1;
+
+        Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
+            A_Piece.Id, Ret_Status, True);
+
+         A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
+         A_Piece.Category      := Piece.House_Piece;
+         A_Piece.Player_Id     := 2;
+
+         Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1, A_Piece, A_Piece.Id,
+            Ret_Status, True);
+
+         A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
+         A_Piece.Category      := Piece.Fighting_Piece;
+         A_Piece.Player_Id     := 2;
+
+         Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2, A_Piece, A_Piece.Id,
+            Ret_Status, True);
+
+         --
+
+         Server.ServerAPI.Observe_Game (5);
       end if; --  Scenario dependent logic
 
       if Verbose then
