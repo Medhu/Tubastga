@@ -50,11 +50,11 @@ package Tubastga_Window_Pkg.Callbacks.Performing_Patch is
      (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
    procedure Activate_Action_Buttons
-     (P_Window        : in out Type_Wnd_Performing_Patch_Access;
+     (P_Window        : in out Type_Wnd_Action_Access;
       P_Type_Category : in     Piece.Type_Category);
 
    procedure Set_Selected_Patch_Window
-     (P_Window : in out Type_Wnd_Performing_Patch_Access;
+     (P_Window : in out Type_Wnd_Action_Access;
       P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
 
 end Tubastga_Window_Pkg.Callbacks.Performing_Patch;

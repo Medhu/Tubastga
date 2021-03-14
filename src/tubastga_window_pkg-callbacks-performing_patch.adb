@@ -36,7 +36,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
 
    Verbose : constant Boolean := False;
 
-   procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Performing_Patch_Access;
+   procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Action_Access;
       P_Type_Category                          : in     Piece.Type_Category)
    is
       use Piece;
@@ -58,7 +58,7 @@ package body Tubastga_Window_Pkg.Callbacks.Performing_Patch is
       end if;
    end Activate_Action_Buttons;
 
-   procedure Set_Selected_Patch_Window (P_Window : in out Type_Wnd_Performing_Patch_Access;
+   procedure Set_Selected_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
       P_Patch                                    : in Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav       : Landscape.Pieces_Here_List.Cursor;

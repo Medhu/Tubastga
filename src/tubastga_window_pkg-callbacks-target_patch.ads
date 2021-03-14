@@ -21,7 +21,7 @@ package Tubastga_Window_Pkg.Callbacks.Target_Patch is
    procedure On_Target_Patch_Tree_View (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
    procedure Set_Target_Patch_Window
-     (P_Window : in out Type_Wnd_Performing_Patch_Access;
+     (P_Window : in out Type_Wnd_Action_Access;
       P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
 
 end Tubastga_Window_Pkg.Callbacks.Target_Patch;

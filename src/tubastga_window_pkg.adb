@@ -1043,13 +1043,13 @@ package body Tubastga_Window_Pkg is
       end if;
    end Initialize;
 
-   procedure Gtk_New (P_Wnd_Performing_Patch : out Type_Wnd_Performing_Patch_Access) is
+   procedure Gtk_New (P_Wnd_Action : out Type_Wnd_Action_Access) is
    begin
-      P_Wnd_Performing_Patch := new Type_Wnd_Performing_Patch_Record;
-      Tubastga_Window_Pkg.Initialize (P_Wnd_Performing_Patch);
+      P_Wnd_Action := new Type_Wnd_Action_Record;
+      Tubastga_Window_Pkg.Initialize (P_Wnd_Action);
    end Gtk_New;
 
-   procedure Initialize (P_Wnd_Performing_Patch : access Type_Wnd_Performing_Patch_Record'Class) is
+   procedure Initialize (P_Wnd_Action : access Type_Wnd_Action_Record'Class) is
       pragma Suppress (All_Checks);
 
       Piece_Info : Glib.GType_Array (1 .. 3) :=
@@ -1064,24 +1064,24 @@ package body Tubastga_Window_Pkg is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Performing_Patch) - enter");
       end if;
 
-      Gtk.Window.Initialize (P_Wnd_Performing_Patch, Gtk.Enums.Window_Toplevel);
-      Tubastga_Window_Pkg.Set_Title (P_Wnd_Performing_Patch, -"Tubast'ga - Performing Patch");
-      Tubastga_Window_Pkg.Set_Position (P_Wnd_Performing_Patch, Gtk.Enums.Win_Pos_None);
-      Tubastga_Window_Pkg.Set_Modal (P_Wnd_Performing_Patch, False);
-      Tubastga_Window_Pkg.Set_Resizable (P_Wnd_Performing_Patch, False);
+      Gtk.Window.Initialize (P_Wnd_Action, Gtk.Enums.Window_Toplevel);
+      Tubastga_Window_Pkg.Set_Title (P_Wnd_Action, -"Tubast'ga - Performing Patch");
+      Tubastga_Window_Pkg.Set_Position (P_Wnd_Action, Gtk.Enums.Win_Pos_None);
+      Tubastga_Window_Pkg.Set_Modal (P_Wnd_Action, False);
+      Tubastga_Window_Pkg.Set_Resizable (P_Wnd_Action, False);
 
-      P_Wnd_Performing_Patch.all.Performing_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Performing_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
-      Gtk.List_Store.Gtk_New (P_Wnd_Performing_Patch.all.Performing_Pieces_List_Store, Piece_Info);
+      Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Performing_Pieces_List_Store, Piece_Info);
       Gtk.Tree_View.Gtk_New
-        (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
-         P_Wnd_Performing_Patch.all.Performing_Pieces_List_Store);
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
+         P_Wnd_Action.all.Performing_Pieces_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
       C :=
         Gtk.Tree_View.Append_Column
-          (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
+          (P_Wnd_Action.all.Perform_Pieces_Tree_View,
            Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
@@ -1091,256 +1091,256 @@ package body Tubastga_Window_Pkg is
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
       C :=
         Gtk.Tree_View.Append_Column
-          (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
+          (P_Wnd_Action.all.Perform_Pieces_Tree_View,
            Col_Piece_Name);
       Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
 
       Gtk.Tree_View.Set_Activate_On_Single_Click
-        (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
          True);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Performing_Scroll_VBox,
-         P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View);
+        (P_Wnd_Action.all.Performing_Scroll_VBox,
+         P_Wnd_Action.all.Perform_Pieces_Tree_View);
       Gtk.Tree_View.Set_Size_Request
-        (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
          150,
          200);
 
-      P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox :=
+      P_Wnd_Action.all.Fighting_Piece_Action_VBox :=
         Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Move);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Move, "Move");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Move);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Move, "Move");
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Attack);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Attack, "Attack");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Attack);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Attack, "Attack");
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Ranged_Attack);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Ranged_Attack, "Range Attack");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Ranged_Attack);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Ranged_Attack, "Range Attack");
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Search);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Search, "Search");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Search);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Search, "Search");
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Promote);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Promote, "Promote");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Promote);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Promote, "Promote");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.Btn_Promote,
+        (P_Wnd_Action.all.Btn_Promote,
          Gtk.Image.Gtk_Image_New_From_File ("resources\promote.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Demote);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Demote, "Demote");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Demote);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Demote, "Demote");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.Btn_Demote,
+        (P_Wnd_Action.all.Btn_Demote,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
 --        --
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Create_Path);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Create_Path, "Create Path");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Create_Path);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Create_Path, "Create Path");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Create_Path,
+        (P_Wnd_Action.all.Btn_Create_Path,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
 --      Tubastga_Window_Pkg.Add (P_Wnd_Performing_Patch, P_Wnd_Performing_Patch.all.Btn_Create_Path);
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Path);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Path, "Remove Path");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Path);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Path, "Remove Path");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Create_Path,
+        (P_Wnd_Action.all.Btn_Create_Path,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
 --      Tubastga_Window_Pkg.Add (P_Wnd_Performing_Patch, P_Wnd_Performing_Patch.all.Btn_Remove_Path);
 
 
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Move);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Move);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Attack);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Attack);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Ranged_Attack);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Ranged_Attack);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Search);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Search);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Promote);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Promote);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Demote);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Demote);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Create_Path);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Create_Path);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Path);
+        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+         P_Wnd_Action.all.Btn_Remove_Path);
 
       -- Place WallN
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall1);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall1, "Place Wall 1");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall1);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall1, "Place Wall 1");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall1,
+        (P_Wnd_Action.all.Btn_Place_Wall1,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall1.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall2);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall2, "Place Wall 2");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall2);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall2, "Place Wall 2");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall2,
+        (P_Wnd_Action.all.Btn_Place_Wall2,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall2.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall2);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall2, "Place Wall 2");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall2);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall2, "Place Wall 2");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall2,
+        (P_Wnd_Action.all.Btn_Place_Wall2,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall2.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall3);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall3, "Place Wall 3");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall3);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall3, "Place Wall 3");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall3,
+        (P_Wnd_Action.all.Btn_Place_Wall3,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall3.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall4);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall4, "Place Wall 4");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall4);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall4, "Place Wall 4");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall4,
+        (P_Wnd_Action.all.Btn_Place_Wall4,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall4.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Place_Wall5);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Place_Wall5, "Place Wall 5");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall5);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall5, "Place Wall 5");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.Btn_Place_Wall5,
+        (P_Wnd_Action.all.Btn_Place_Wall5,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall5.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Place_Wall6);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Place_Wall6, "Place Wall 6");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall6);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Place_Wall6, "Place Wall 6");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall6,
+        (P_Wnd_Action.all.Btn_Place_Wall6,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
 
       ---
       -- Remove WallN
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall1);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall1, "Remove Wall 1");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall1);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall1, "Remove Wall 1");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall1,
+        (P_Wnd_Action.all.Btn_Remove_Wall1,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall1.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2, "Remove Wall 2");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall2);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall2, "Remove Wall 2");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2,
+        (P_Wnd_Action.all.Btn_Remove_Wall2,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall2.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2, "Remove Wall 2");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall2);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall2, "Remove Wall 2");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2,
+        (P_Wnd_Action.all.Btn_Remove_Wall2,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall2.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall3);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall3, "Remove Wall 3");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall3);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall3, "Remove Wall 3");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall3,
+        (P_Wnd_Action.all.Btn_Remove_Wall3,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall3.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall4);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall4, "Remove Wall 4");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall4);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall4, "Remove Wall 4");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall4,
+        (P_Wnd_Action.all.Btn_Remove_Wall4,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall4.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.Btn_Remove_Wall5);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.Btn_Remove_Wall5, "Remove Wall 5");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall5);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall5, "Remove Wall 5");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.Btn_Remove_Wall5,
+        (P_Wnd_Action.all.Btn_Remove_Wall5,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall5.png"));
 
-      Gtk.Button.Gtk_New (P_Wnd_Performing_Patch.all.Btn_Remove_Wall6);
-      Gtk.Button.Set_Label (P_Wnd_Performing_Patch.all.Btn_Remove_Wall6, "Remove Wall 6");
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Remove_Wall6);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Remove_Wall6, "Remove Wall 6");
       Gtk.Button.Set_Image
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall6,
+        (P_Wnd_Action.all.Btn_Remove_Wall6,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
 
-      P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.House_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       -- Place_WallN
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall1);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall1);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall2);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall2);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall3);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall3);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall4);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall4);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall5);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall5);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Place_Wall6);
+        (P_Wnd_Action.all.House_Piece_Action1_VBox,
+         P_Wnd_Action.all.Btn_Place_Wall6);
 
-      P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.House_Piece_Action2_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       -- Remove_WallN
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall1);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall1);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall2);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall2);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall3);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall3);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall4);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall4);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall5);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall5);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox,
-         P_Wnd_Performing_Patch.all.Btn_Remove_Wall6);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Remove_Wall6);
 
       --
 
-      P_Wnd_Performing_Patch.all.Performing_Content_HBox := Gtk.Box.Gtk_Hbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Performing_Content_HBox := Gtk.Box.Gtk_Hbox_New (True, Glib.Gint (2));
 
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Performing_Content_HBox,
-         P_Wnd_Performing_Patch.all.Performing_Scroll_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.Performing_Scroll_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Performing_Content_HBox,
-         P_Wnd_Performing_Patch.all.Fighting_Piece_Action_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.Fighting_Piece_Action_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Performing_Content_HBox,
-         P_Wnd_Performing_Patch.all.House_Piece_Action1_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.House_Piece_Action1_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Performing_Content_HBox,
-         P_Wnd_Performing_Patch.all.House_Piece_Action2_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.House_Piece_Action2_VBox);
 
       --
       --
       --
-      P_Wnd_Performing_Patch.all.Target_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Target_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
-      Gtk.List_Store.Gtk_New (P_Wnd_Performing_Patch.all.Target_Pieces_List_Store, Piece_Info);
+      Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Target_Pieces_List_Store, Piece_Info);
       Gtk.Tree_View.Gtk_New
-        (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View,
-         P_Wnd_Performing_Patch.all.Target_Pieces_List_Store);
+        (P_Wnd_Action.all.Target_Pieces_Tree_View,
+         P_Wnd_Action.all.Target_Pieces_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
       C :=
         Gtk.Tree_View.Append_Column
-          (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View,
+          (P_Wnd_Action.all.Target_Pieces_Tree_View,
            Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
@@ -1350,25 +1350,25 @@ package body Tubastga_Window_Pkg is
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
       C :=
         Gtk.Tree_View.Append_Column
-          (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View,
+          (P_Wnd_Action.all.Target_Pieces_Tree_View,
            Col_Piece_Name);
       Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
 
       Gtk.Tree_View.Set_Activate_On_Single_Click
-        (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View,
+        (P_Wnd_Action.all.Target_Pieces_Tree_View,
          True);
       Gtk.Box.Pack_Start
-        (P_Wnd_Performing_Patch.all.Target_Scroll_VBox,
-         P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View);
-      Gtk.Tree_View.Set_Size_Request (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View, 450, 210);
+        (P_Wnd_Action.all.Target_Scroll_VBox,
+         P_Wnd_Action.all.Target_Pieces_Tree_View);
+      Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Target_Pieces_Tree_View, 450, 210);
 
 
 --      Tubastga_Window_Pkg.Show_All (P_Wnd_Target_Patch);
 
       Callbacks_Tubastga.Tree_View_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Target_Pieces_Tree_View,
+        (P_Wnd_Action.all.Target_Pieces_Tree_View,
          "row-activated",
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Target_Patch.On_Target_Patch_Tree_View'Access),
@@ -1378,53 +1378,53 @@ package body Tubastga_Window_Pkg is
       --
       --
 --      P_Wnd_Performing_Patch.all.Performing_Content_HBox := Gtk.Box.Gtk_Hbox_New (True, Glib.Gint (2));
-      P_Wnd_Performing_Patch.all.Frank := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Frank := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
       --
       --
       --
       --Tubastga_Window_Pkg.Add (P_Wnd_Performing_Patch, P_Wnd_Performing_Patch.all.Target_Scroll_VBox);
       --Tubastga_Window_Pkg.Add (P_Wnd_Performing_Patch, P_Wnd_Performing_Patch.all.Performing_Content_HBox);
-      Gtk.Box.Pack_Start (P_Wnd_Performing_Patch.all.Frank, P_Wnd_Performing_Patch.all.Performing_Content_HBox);
-      Gtk.Box.Pack_Start (P_Wnd_Performing_Patch.all.Frank, P_Wnd_Performing_Patch.all.Target_Scroll_VBox);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Frank, P_Wnd_Action.all.Performing_Content_HBox);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Frank, P_Wnd_Action.all.Target_Scroll_VBox);
 
-      Tubastga_Window_Pkg.Add (P_Wnd_Performing_Patch, P_Wnd_Performing_Patch.all.Frank);
+      Tubastga_Window_Pkg.Add (P_Wnd_Action, P_Wnd_Action.all.Frank);
 
-      Tubastga_Window_Pkg.Show_All (P_Wnd_Performing_Patch);
+      Tubastga_Window_Pkg.Show_All (P_Wnd_Action);
 
 
       -- Place WallN
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall1,
+        (P_Wnd_Action.all.Btn_Place_Wall1,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall1'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall2,
+        (P_Wnd_Action.all.Btn_Place_Wall2,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall2'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall3,
+        (P_Wnd_Action.all.Btn_Place_Wall3,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall3'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall4,
+        (P_Wnd_Action.all.Btn_Place_Wall4,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall4'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall5,
+        (P_Wnd_Action.all.Btn_Place_Wall5,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall5'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Place_Wall6,
+        (P_Wnd_Action.all.Btn_Place_Wall6,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Place_Wall6'Access),
@@ -1432,37 +1432,37 @@ package body Tubastga_Window_Pkg is
 
       -- Remove WallN
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall1,
+        (P_Wnd_Action.all.Btn_Remove_Wall1,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall1'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall2,
+        (P_Wnd_Action.all.Btn_Remove_Wall2,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall2'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall3,
+        (P_Wnd_Action.all.Btn_Remove_Wall3,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall3'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall4,
+        (P_Wnd_Action.all.Btn_Remove_Wall4,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall4'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall5,
+        (P_Wnd_Action.all.Btn_Remove_Wall5,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall5'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Remove_Wall6,
+        (P_Wnd_Action.all.Btn_Remove_Wall6,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Wall6'Access),
@@ -1470,55 +1470,55 @@ package body Tubastga_Window_Pkg is
 
       --
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Move,
+        (P_Wnd_Action.all.Btn_Move,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Move'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Attack,
+        (P_Wnd_Action.all.Btn_Attack,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Attack'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Ranged_Attack,
+        (P_Wnd_Action.all.Btn_Ranged_Attack,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Ranged_Attack'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Search,
+        (P_Wnd_Action.all.Btn_Search,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Search'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Promote,
+        (P_Wnd_Action.all.Btn_Promote,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Promote'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Btn_Demote,
+        (P_Wnd_Action.all.Btn_Demote,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Demote'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.Btn_Create_Path,
+        (P_Wnd_Action.all.Btn_Create_Path,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Create_Path'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Performing_Patch.Btn_Remove_Path,
+        (P_Wnd_Action.all.Btn_Remove_Path,
          "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Button_Remove_Path'Access),
          False);
 
       Callbacks_Tubastga.Tree_View_Cb.Connect
-        (P_Wnd_Performing_Patch.all.Perform_Pieces_Tree_View,
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
          "row-activated",
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Performing_Patch.On_Performing_Patch_Tree_View'Access),

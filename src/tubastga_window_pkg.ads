@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -129,7 +129,7 @@ package Tubastga_Window_Pkg is
 
    package Performing_Piece_Pkg is new Ada.Containers.Vectors (Positive, Type_HBox_Performing_Piece);
    --
-   type Type_Wnd_Performing_Patch_Record is new Gtk.Window.Gtk_Window_Record with record
+   type Type_Wnd_Action_Record is new Gtk.Window.Gtk_Window_Record with record
 
       Performing_Content_HBox                 : Gtk.Box.Gtk_Hbox;
       Performing_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
@@ -170,10 +170,10 @@ package Tubastga_Window_Pkg is
       Frank : Gtk.Box.Gtk_Vbox;
    end record;
 
-   type Type_Wnd_Performing_Patch_Access is access all Type_Wnd_Performing_Patch_Record'Class;
+   type Type_Wnd_Action_Access is access all Type_Wnd_Action_Record'Class;
 
-   procedure Gtk_New (P_Wnd_Performing_Patch : out Type_Wnd_Performing_Patch_Access);
-   procedure Initialize (P_Wnd_Performing_Patch : access Type_Wnd_Performing_Patch_Record'Class);
+   procedure Gtk_New (P_Wnd_Action : out Type_Wnd_Action_Access);
+   procedure Initialize (P_Wnd_Action : access Type_Wnd_Action_Record'Class);
 
 --   type Type_Wnd_Target_Patch_Record is new Gtk.Window.Gtk_Window_Record with record
 
@@ -228,8 +228,8 @@ package Tubastga_Window_Pkg is
       --
       Map_Image : Type_Map_Data;
 
-      Wnd_Performing_Patch : Type_Wnd_Performing_Patch_Access;
---      Wnd_Target_Patch           : Type_Wnd_Target_Patch_Access;
+      Wnd_Performing_Patch : Type_Wnd_Action_Access;
+
       Dlg_Main_Menu          : Type_Dlg_Main_Menu_Access;
    end record;
 
