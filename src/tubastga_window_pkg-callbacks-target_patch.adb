@@ -59,7 +59,7 @@ package body Tubastga_Window_Pkg.Callbacks.Target_Patch is
       end if;
    end On_Target_Patch_Tree_View;
 
-   procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Target_Patch_Access;
+   procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Performing_Patch_Access;
       P_Patch                                  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav       : Landscape.Pieces_Here_List.Cursor;

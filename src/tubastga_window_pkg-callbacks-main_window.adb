@@ -1085,7 +1085,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   Shift_LR_Pressed);
 
                Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window
-                 (The_Window.all.Wnd_Target_Patch,
+                 (The_Window.all.Wnd_Performing_Patch,
                   A_Patch);
 
             end if;

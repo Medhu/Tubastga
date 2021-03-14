@@ -413,10 +413,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
         (The_Window.all.Wnd_Performing_Patch,
          Glib.UTF8_String'
            ("Tubast'ga - Performing Patch - " & Utilities.RemoteString.To_String (My_Name)));
-      Set_Title
-        (The_Window.all.Wnd_Target_Patch,
-         Glib.UTF8_String'
-           ("Tubast'ga - Target Patch - " & Utilities.RemoteString.To_String (My_Name)));
+--      Set_Title
+--        (The_Window.all.Wnd_Target_Patch,
+--         Glib.UTF8_String'
+--           ("Tubast'ga - Target Patch - " & Utilities.RemoteString.To_String (My_Name)));
 
       Refresh_Server_Configuration (The_Window.all.Dlg_Main_Menu);
 
@@ -465,7 +465,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
       Set_Title
         (The_Window.all.Wnd_Performing_Patch,
          Glib.UTF8_String'("Tubast'ga - Performing Patch"));
-      Set_Title (The_Window.all.Wnd_Target_Patch, Glib.UTF8_String'("Tubast'ga - Target Patch"));
+--      Set_Title (The_Window.all.Wnd_Target_Patch, Glib.UTF8_String'("Tubast'ga - Target Patch"));
 
       Refresh_Server_Configuration (The_Window.all.Dlg_Main_Menu);
 

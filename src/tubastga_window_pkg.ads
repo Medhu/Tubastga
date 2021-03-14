@@ -131,8 +131,8 @@ package Tubastga_Window_Pkg is
    --
    type Type_Wnd_Performing_Patch_Record is new Gtk.Window.Gtk_Window_Record with record
 
-      Content_HBox                 : Gtk.Box.Gtk_Hbox;
-      Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
+      Performing_Content_HBox                 : Gtk.Box.Gtk_Hbox;
+      Performing_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
       Performing_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
       Perform_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
 
@@ -159,6 +159,15 @@ package Tubastga_Window_Pkg is
       --
       Btn_Create_Path : Gtk.Button.Gtk_Button;
       Btn_Remove_Path : Gtk.Button.Gtk_Button;
+      --
+      --
+      Target_Content_HBox                 : Gtk.Box.Gtk_Hbox;
+      Target_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
+
+      Target_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
+      Target_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
+
+      Frank : Gtk.Box.Gtk_Vbox;
    end record;
 
    type Type_Wnd_Performing_Patch_Access is access all Type_Wnd_Performing_Patch_Record'Class;
@@ -166,17 +175,17 @@ package Tubastga_Window_Pkg is
    procedure Gtk_New (P_Wnd_Performing_Patch : out Type_Wnd_Performing_Patch_Access);
    procedure Initialize (P_Wnd_Performing_Patch : access Type_Wnd_Performing_Patch_Record'Class);
 
-   type Type_Wnd_Target_Patch_Record is new Gtk.Window.Gtk_Window_Record with record
+--   type Type_Wnd_Target_Patch_Record is new Gtk.Window.Gtk_Window_Record with record
 
-      Content_HBox                 : Gtk.Box.Gtk_Hbox;
-      Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
+--      Content_HBox                 : Gtk.Box.Gtk_Hbox;
+--      Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
 
-      Target_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
-      Target_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
+--      Target_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
+--      Target_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
 
-   end record;
+--   end record;
 
-   type Type_Wnd_Target_Patch_Access is access all Type_Wnd_Target_Patch_Record'Class;
+--   type Type_Wnd_Target_Patch_Access is access all Type_Wnd_Target_Patch_Record'Class;
 
    type Type_Map_Data is record
       Filename                  : Ada.Strings.Unbounded.Unbounded_String;
@@ -184,8 +193,8 @@ package Tubastga_Window_Pkg is
       Image_Height, Image_Width : Glib.Gint;
    end record;
 
-   procedure Gtk_New (P_Wnd_Target_Patch : out Type_Wnd_Target_Patch_Access);
-   procedure Initialize (P_Wnd_Target_Patch : access Type_Wnd_Target_Patch_Record'Class);
+--   procedure Gtk_New (P_Wnd_Target_Patch : out Type_Wnd_Target_Patch_Access);
+--   procedure Initialize (P_Wnd_Target_Patch : access Type_Wnd_Target_Patch_Record'Class);
 
    type Type_Wnd_Main_Record is new Gtk.Window.Gtk_Window_Record with record
       Box_Toolbar_Game                                              : Gtk.Box.Gtk_Vbox;
@@ -220,7 +229,7 @@ package Tubastga_Window_Pkg is
       Map_Image : Type_Map_Data;
 
       Wnd_Performing_Patch : Type_Wnd_Performing_Patch_Access;
-      Wnd_Target_Patch           : Type_Wnd_Target_Patch_Access;
+--      Wnd_Target_Patch           : Type_Wnd_Target_Patch_Access;
       Dlg_Main_Menu          : Type_Dlg_Main_Menu_Access;
    end record;
 
