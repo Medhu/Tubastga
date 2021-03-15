@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -56,8 +56,7 @@ with Tubastga_Window_Pkg.Effects;
 with Action;
 with Server;
 with Tubastga_Window_Pkg.Lists;
-with Tubastga_Window_Pkg.Callbacks.Performing_Patch;
-with Tubastga_Window_Pkg.Callbacks.Target_Patch;
+with Tubastga_Window_Pkg.Callbacks.Actions;
 with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Main_Window is
@@ -568,7 +567,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
      (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
       P_Draw : Cairo.Cairo_Context) return Boolean
    is
---      Target_X, Target_Y : Integer;
       Adm_Status : Status.Type_Adm_Status;
 
       use Utilities.RemoteString;
@@ -582,12 +580,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          return True;
       end if;
 
-      --if Verbose then
+      if Verbose then
          Text_IO.Put_Line
            ("Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event - enter ");
-      --end if;
-
-
+      end if;
 
       for Trav_Players in Player_Name_List'First .. Player_Name_List'Last loop
          if Player_Name_List (Trav_Players) = "" then
@@ -699,7 +695,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                      A_Patch :=
                        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
 
-                     Tubastga_Window_Pkg.Callbacks.Performing_Patch.Set_Selected_Patch_Window
+                     Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Patch_Window
                        (The_Window.all.Wnd_Performing_Patch,
                         A_Patch);
                   else
@@ -1072,7 +1068,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   A_Patch.all.Pos,
                   Shift_LR_Pressed);
 
-               Tubastga_Window_Pkg.Callbacks.Performing_Patch.Set_Selected_Patch_Window
+               Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Patch_Window
                  (The_Window.all.Wnd_Performing_Patch,
                   A_Patch);
 
@@ -1084,7 +1080,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   A_Patch.all.Pos,
                   Shift_LR_Pressed);
 
-               Tubastga_Window_Pkg.Callbacks.Target_Patch.Set_Target_Patch_Window
+               Tubastga_Window_Pkg.Callbacks.Actions.Set_Target_Patch_Window
                  (The_Window.all.Wnd_Performing_Patch,
                   A_Patch);
 

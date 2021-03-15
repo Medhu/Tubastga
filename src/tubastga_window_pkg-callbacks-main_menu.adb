@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -413,10 +413,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
         (The_Window.all.Wnd_Performing_Patch,
          Glib.UTF8_String'
            ("Tubast'ga - Performing Patch - " & Utilities.RemoteString.To_String (My_Name)));
---      Set_Title
---        (The_Window.all.Wnd_Target_Patch,
---         Glib.UTF8_String'
---           ("Tubast'ga - Target Patch - " & Utilities.RemoteString.To_String (My_Name)));
 
       Refresh_Server_Configuration (The_Window.all.Dlg_Main_Menu);
 
@@ -465,7 +461,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
       Set_Title
         (The_Window.all.Wnd_Performing_Patch,
          Glib.UTF8_String'("Tubast'ga - Performing Patch"));
---      Set_Title (The_Window.all.Wnd_Target_Patch, Glib.UTF8_String'("Tubast'ga - Target Patch"));
 
       Refresh_Server_Configuration (The_Window.all.Dlg_Main_Menu);
 

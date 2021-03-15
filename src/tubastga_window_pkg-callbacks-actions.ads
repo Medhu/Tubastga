@@ -1,7 +1,7 @@
 --
 --
 --      Tubastga Game - A turn based strategy game.
---      Copyright (C) 2015-2017  Frank J Jorgensen
+--      Copyright (C) 2015-2021  Frank J Jorgensen
 --
 --      This program is free software: you can redistribute it and/or modify
 --      it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 --
-package Tubastga_Window_Pkg.Callbacks.Performing_Patch is
+package Tubastga_Window_Pkg.Callbacks.Actions is
 
    -- Place WallN
    procedure On_Button_Place_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
@@ -57,4 +57,9 @@ package Tubastga_Window_Pkg.Callbacks.Performing_Patch is
      (P_Window : in out Type_Wnd_Action_Access;
       P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
 
-end Tubastga_Window_Pkg.Callbacks.Performing_Patch;
+   procedure On_Target_Patch_Tree_View (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
+
+   procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
+                                   P_Patch                                  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
+
+end Tubastga_Window_Pkg.Callbacks.Actions;
