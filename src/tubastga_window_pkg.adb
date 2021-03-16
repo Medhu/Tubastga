@@ -1359,12 +1359,12 @@ package body Tubastga_Window_Pkg is
            (Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View'Access),
          False);
 
-      P_Wnd_Action.all.Frank := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Content_HBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
-      Gtk.Box.Pack_Start (P_Wnd_Action.all.Frank, P_Wnd_Action.all.Performing_Content_HBox);
-      Gtk.Box.Pack_Start (P_Wnd_Action.all.Frank, P_Wnd_Action.all.Target_Scroll_VBox);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Content_HBox, P_Wnd_Action.all.Performing_Content_HBox);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Content_HBox, P_Wnd_Action.all.Target_Scroll_VBox);
 
-      Tubastga_Window_Pkg.Add (P_Wnd_Action, P_Wnd_Action.all.Frank);
+      Tubastga_Window_Pkg.Add (P_Wnd_Action, P_Wnd_Action.all.Content_HBox);
 
       Tubastga_Window_Pkg.Show_All (P_Wnd_Action);
 
