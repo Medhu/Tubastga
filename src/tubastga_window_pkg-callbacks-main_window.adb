@@ -954,10 +954,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       Cairo.Stroke (P_Draw);
 
-      --if Verbose then
+      if Verbose then
          Text_IO.Put_Line
            ("Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event - exit");
-      --end if;
+      end if;
 
       return True;
 
