@@ -61,124 +61,60 @@ package body Tubastga_Window_Pkg is
       end if;
 
       Gtk.Dialog.Initialize
-        (Gtk.Dialog.Gtk_Dialog (P_Dlg_Main_Menu),
-         "Main Menu",
+        (Gtk.Dialog.Gtk_Dialog (P_Dlg_Main_Menu), "Main Menu",
          Flags => Gtk.Dialog.Destroy_With_Parent);
       Gtk.Table.Gtk_New (P_Dlg_Main_Menu.all.Layout_Table, 9, 2, False);
 
-      Gtk.Box.Gtk_New (P_Dlg_Main_Menu.all.Box_Connect, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
+      Gtk.Box.Gtk_New
+        (P_Dlg_Main_Menu.all.Box_Connect, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
       Tubastga_UI_Aux.Get_TCPIP_Adress (TCPIPOctet1, TCPIPOctet2, TCPIPOctet3, TCPIPOctet4);
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.TCPIPLabel, "Server TCP/IP:");
       Gtk.Adjustment.Gtk_New
-        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet1,
-         Glib.Gdouble (TCPIPOctet1),
-         Glib.Gdouble (0),
-         Glib.Gdouble (255),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1));
+        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet1, Glib.Gdouble (TCPIPOctet1), Glib.Gdouble (0),
+         Glib.Gdouble (255), Glib.Gdouble (1), Glib.Gdouble (1), Glib.Gdouble (1));
       Gtk.Adjustment.Gtk_New
-        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet2,
-         Glib.Gdouble (TCPIPOctet2),
-         Glib.Gdouble (0),
-         Glib.Gdouble (255),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1));
+        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet2, Glib.Gdouble (TCPIPOctet2), Glib.Gdouble (0),
+         Glib.Gdouble (255), Glib.Gdouble (1), Glib.Gdouble (1), Glib.Gdouble (1));
       Gtk.Adjustment.Gtk_New
-        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet3,
-         Glib.Gdouble (TCPIPOctet3),
-         Glib.Gdouble (0),
-         Glib.Gdouble (255),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1));
+        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet3, Glib.Gdouble (TCPIPOctet3), Glib.Gdouble (0),
+         Glib.Gdouble (255), Glib.Gdouble (1), Glib.Gdouble (1), Glib.Gdouble (1));
       Gtk.Adjustment.Gtk_New
-        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet4,
-         Glib.Gdouble (TCPIPOctet4),
-         Glib.Gdouble (0),
-         Glib.Gdouble (255),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1));
+        (P_Dlg_Main_Menu.all.Adj_TCPIPOctet4, Glib.Gdouble (TCPIPOctet4), Glib.Gdouble (0),
+         Glib.Gdouble (255), Glib.Gdouble (1), Glib.Gdouble (1), Glib.Gdouble (1));
       Gtk.Adjustment.Gtk_New
-        (P_Dlg_Main_Menu.all.Adj_TCPIPPort,
-         Glib.Gdouble (0),
-         Glib.Gdouble (1),
-         Glib.Gdouble (65535),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1),
-         Glib.Gdouble (1));
+        (P_Dlg_Main_Menu.all.Adj_TCPIPPort, Glib.Gdouble (0), Glib.Gdouble (1),
+         Glib.Gdouble (65535), Glib.Gdouble (1), Glib.Gdouble (1), Glib.Gdouble (1));
 
       Gtk.Spin_Button.Gtk_New
-        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet1,
-         P_Dlg_Main_Menu.all.Adj_TCPIPOctet1,
-         Glib.Gdouble (1),
+        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet1, P_Dlg_Main_Menu.all.Adj_TCPIPOctet1, Glib.Gdouble (1),
          0);
       Gtk.Spin_Button.Gtk_New
-        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet2,
-         P_Dlg_Main_Menu.all.Adj_TCPIPOctet2,
-         Glib.Gdouble (1),
+        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet2, P_Dlg_Main_Menu.all.Adj_TCPIPOctet2, Glib.Gdouble (1),
          0);
       Gtk.Spin_Button.Gtk_New
-        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet3,
-         P_Dlg_Main_Menu.all.Adj_TCPIPOctet3,
-         Glib.Gdouble (1),
+        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet3, P_Dlg_Main_Menu.all.Adj_TCPIPOctet3, Glib.Gdouble (1),
          0);
       Gtk.Spin_Button.Gtk_New
-        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet4,
-         P_Dlg_Main_Menu.all.Adj_TCPIPOctet4,
-         Glib.Gdouble (1),
+        (P_Dlg_Main_Menu.all.Spn_TCPIPOctet4, P_Dlg_Main_Menu.all.Adj_TCPIPOctet4, Glib.Gdouble (1),
          0);
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.TCPIPPortLabel, "Port:");
 
       Gtk.Spin_Button.Gtk_New
-        (P_Dlg_Main_Menu.all.Spn_TCPIPPort,
-         P_Dlg_Main_Menu.all.Adj_TCPIPPort,
-         Glib.Gdouble (1),
-         0);
+        (P_Dlg_Main_Menu.all.Spn_TCPIPPort, P_Dlg_Main_Menu.all.Adj_TCPIPPort, Glib.Gdouble (1), 0);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.TCPIPLabel,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.TCPIPLabel, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.Spn_TCPIPOctet1,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.Spn_TCPIPOctet1, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.Spn_TCPIPOctet2,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.Spn_TCPIPOctet2, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.Spn_TCPIPOctet3,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.Spn_TCPIPOctet3, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.Spn_TCPIPOctet4,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.Spn_TCPIPOctet4, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.TCPIPPortLabel,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.TCPIPPortLabel, False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Connect,
-         P_Dlg_Main_Menu.all.Spn_TCPIPPort,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Connect, P_Dlg_Main_Menu.all.Spn_TCPIPPort, False, False, 2);
 
       Gtk.Spin_Button.Set_Value
         (Gtk.Spin_Button.Gtk_Spin_Button (P_Dlg_Main_Menu.all.Spn_TCPIPPort),
@@ -187,9 +123,7 @@ package body Tubastga_Window_Pkg is
       --
       --      Player info
       Gtk.Box.Gtk_New
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         Gtk.Enums.Orientation_Horizontal,
-         Glib.Gint (0));
+        (P_Dlg_Main_Menu.all.Box_Create_Game, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_1, "Player 1 Name:");
       Gtk.GEntry.Gtk_New (P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_1);
       Gtk.GEntry.Set_Max_Length (P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_1, Glib.Gint (10));
@@ -208,60 +142,35 @@ package body Tubastga_Window_Pkg is
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Create_Game_Chose_Scenario, "Chose scenario:");
       Gtk.Combo_Box_Text.Gtk_New (P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario);
       Gtk.Combo_Box_Text.Append_Text
-        (P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario,
-         "Not connected to server yet");
+        (P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario, "Not connected to server yet");
       Gtk.Combo_Box_Text.Set_Active (P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario, 0);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_1,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_1,
+         False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_1,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_1,
+         False, False, 2);
 
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_2,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_2,
+         False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_2,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_2,
+         False, False, 2);
 
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_3,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_3,
+         False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_3,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.En_Create_Game_Player_Name_3,
+         False, False, 2);
 
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.Lbl_Create_Game_Chose_Scenario,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.Lbl_Create_Game_Chose_Scenario,
+         False, False, 2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Create_Game,
-         P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Create_Game, P_Dlg_Main_Menu.all.Cmb_Create_Game_Chose_Scenario,
+         False, False, 2);
       --
       Gtk.Box.Show (P_Dlg_Main_Menu.all.Box_Create_Game);
       Gtk.Label.Show (P_Dlg_Main_Menu.all.Lbl_Create_Game_Player_Name_1);
@@ -282,14 +191,11 @@ package body Tubastga_Window_Pkg is
 
       --
       Gtk.Box.Gtk_New
-        (P_Dlg_Main_Menu.all.Box_Load_Game,
-         Gtk.Enums.Orientation_Horizontal,
-         Glib.Gint (0));
+        (P_Dlg_Main_Menu.all.Box_Load_Game, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Load_Game_Name, "Chose game to load:");
       Gtk.Combo_Box_Text.Gtk_New (P_Dlg_Main_Menu.all.Cmb_Load_Game_Name);
       Gtk.Combo_Box_Text.Append_Text
-        (P_Dlg_Main_Menu.all.Cmb_Load_Game_Name,
-         "Not connected to server yet");
+        (P_Dlg_Main_Menu.all.Cmb_Load_Game_Name, "Not connected to server yet");
       Gtk.Combo_Box_Text.Set_Active (P_Dlg_Main_Menu.all.Cmb_Load_Game_Name, 0);
 
       Gtk.Combo_Box_Text.Show (P_Dlg_Main_Menu.all.Cmb_Load_Game_Name);
@@ -297,23 +203,15 @@ package body Tubastga_Window_Pkg is
       Gtk.Box.Show (P_Dlg_Main_Menu.all.Box_Load_Game);
 
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Load_Game,
-         P_Dlg_Main_Menu.all.Lbl_Load_Game_Name,
-         False,
-         False,
+        (P_Dlg_Main_Menu.all.Box_Load_Game, P_Dlg_Main_Menu.all.Lbl_Load_Game_Name, False, False,
          2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Load_Game,
-         P_Dlg_Main_Menu.all.Cmb_Load_Game_Name,
-         False,
-         False,
+        (P_Dlg_Main_Menu.all.Box_Load_Game, P_Dlg_Main_Menu.all.Cmb_Load_Game_Name, False, False,
          2);
       --
       --
       Gtk.Box.Gtk_New
-        (P_Dlg_Main_Menu.all.Box_Save_Game,
-         Gtk.Enums.Orientation_Horizontal,
-         Glib.Gint (0));
+        (P_Dlg_Main_Menu.all.Box_Save_Game, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Save_Game_Name, "Save game as... :");
       Gtk.GEntry.Gtk_New (P_Dlg_Main_Menu.all.En_Save_Game_Name);
       Gtk.GEntry.Set_Max_Length (P_Dlg_Main_Menu.all.En_Save_Game_Name, 20);
@@ -324,162 +222,72 @@ package body Tubastga_Window_Pkg is
       Gtk.Box.Show (P_Dlg_Main_Menu.all.Box_Save_Game);
 
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Save_Game,
-         P_Dlg_Main_Menu.all.Lbl_Save_Game_Name,
-         False,
-         False,
+        (P_Dlg_Main_Menu.all.Box_Save_Game, P_Dlg_Main_Menu.all.Lbl_Save_Game_Name, False, False,
          2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Save_Game,
-         P_Dlg_Main_Menu.all.En_Save_Game_Name,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Save_Game, P_Dlg_Main_Menu.all.En_Save_Game_Name, False, False, 2);
       --
       Gtk.Box.Gtk_New
-        (P_Dlg_Main_Menu.all.Box_Join_Game,
-         Gtk.Enums.Orientation_Horizontal,
-         Glib.Gint (0));
+        (P_Dlg_Main_Menu.all.Box_Join_Game, Gtk.Enums.Orientation_Horizontal, Glib.Gint (0));
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Join_Player_Name, "Player Name");
       Gtk.Combo_Box_Text.Gtk_New (P_Dlg_Main_Menu.all.Cmb_Join_Player_Name);
       Gtk.Combo_Box_Text.Append_Text
-        (P_Dlg_Main_Menu.all.Cmb_Join_Player_Name,
-         "Not connected to server yet");
+        (P_Dlg_Main_Menu.all.Cmb_Join_Player_Name, "Not connected to server yet");
       Gtk.Combo_Box_Text.Set_Active (P_Dlg_Main_Menu.all.Cmb_Join_Player_Name, 0);
       Gtk.Label.Gtk_New (P_Dlg_Main_Menu.all.Lbl_Join_Game, "description of connection");
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Join_Game,
-         P_Dlg_Main_Menu.all.Lbl_Join_Player_Name,
-         False,
-         False,
+        (P_Dlg_Main_Menu.all.Box_Join_Game, P_Dlg_Main_Menu.all.Lbl_Join_Player_Name, False, False,
          2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Join_Game,
-         P_Dlg_Main_Menu.all.Cmb_Join_Player_Name,
-         False,
-         False,
+        (P_Dlg_Main_Menu.all.Box_Join_Game, P_Dlg_Main_Menu.all.Cmb_Join_Player_Name, False, False,
          2);
       Gtk.Box.Pack_Start
-        (P_Dlg_Main_Menu.all.Box_Join_Game,
-         P_Dlg_Main_Menu.all.Lbl_Join_Game,
-         False,
-         False,
-         2);
+        (P_Dlg_Main_Menu.all.Box_Join_Game, P_Dlg_Main_Menu.all.Lbl_Join_Game, False, False, 2);
       Gtk.Label.Show (P_Dlg_Main_Menu.all.Lbl_Join_Player_Name);
       Gtk.Combo_Box_Text.Show (P_Dlg_Main_Menu.all.Cmb_Join_Player_Name);
       Gtk.Label.Show (P_Dlg_Main_Menu.all.Lbl_Join_Game);
       Gtk.Box.Show (P_Dlg_Main_Menu.all.Box_Join_Game);
       --
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Box_Connect,
-         1,
-         2,
-         0,
-         1);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Box_Connect, 1, 2, 0, 1);
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Box_Create_Game,
-         1,
-         2,
-         2,
-         3);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Box_Create_Game, 1, 2, 2, 3);
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Box_Load_Game,
-         1,
-         2,
-         3,
-         4);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Box_Load_Game, 1, 2, 3, 4);
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Box_Save_Game,
-         1,
-         2,
-         4,
-         5);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Box_Save_Game, 1, 2, 4, 5);
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Box_Join_Game,
-         1,
-         2,
-         5,
-         6);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Box_Join_Game, 1, 2, 5, 6);
 
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Connect_Server, "Connect Server");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Connect_Server,
-         0,
-         1,
-         0,
-         1);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Connect_Server, 0, 1, 0, 1);
 
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Refresh, "Refresh");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Refresh,
-         0,
-         1,
-         1,
-         2);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Refresh, 0, 1, 1, 2);
 
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Create_Game, "Create Game");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Create_Game,
-         0,
-         1,
-         2,
-         3);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Create_Game, 0, 1, 2, 3);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Load_Game, "Load Game");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Load_Game,
-         0,
-         1,
-         3,
-         4);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Load_Game, 0, 1, 3, 4);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Save_Game, "Save Game");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Save_Game,
-         0,
-         1,
-         4,
-         5);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Save_Game, 0, 1, 4, 5);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Join_Game, "Join Game");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Join_Game,
-         0,
-         1,
-         5,
-         6);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Join_Game, 0, 1, 5, 6);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Leave_Game, "Leave Game");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Leave_Game,
-         0,
-         1,
-         6,
-         7);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Leave_Game, 0, 1, 6, 7);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Disconnect_Server, "Disconnect Server");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Disconnect_Server,
-         0,
-         1,
-         7,
-         8);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Disconnect_Server, 0, 1, 7, 8);
       Gtk.Button.Gtk_New (P_Dlg_Main_Menu.all.Btn_Close, "Close");
       Gtk.Table.Attach
-        (P_Dlg_Main_Menu.all.Layout_Table,
-         P_Dlg_Main_Menu.all.Btn_Close,
-         0,
-         1,
-         8,
-         9);
+        (P_Dlg_Main_Menu.all.Layout_Table, P_Dlg_Main_Menu.all.Btn_Close, 0, 1, 8, 9);
 
       Gtk.Box.Pack_Start (Get_Action_Area (P_Dlg_Main_Menu), P_Dlg_Main_Menu.all.Layout_Table);
 
@@ -504,95 +312,81 @@ package body Tubastga_Window_Pkg is
       Gtk.Button.Show (P_Dlg_Main_Menu.all.Btn_Close);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Connect_Server,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Connect_Server, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Connect'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Refresh,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Refresh, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Refresh'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Create_Game,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Create_Game, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Create_Game'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Join_Game,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Join_Game, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Join_Game'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Leave_Game,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Leave_Game, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Leave_Game'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Load_Game,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Load_Game, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Load_Game'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Save_Game,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Save_Game, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Save_Game'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Disconnect_Server,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Disconnect_Server, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Disconnect'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
-        (P_Dlg_Main_Menu.Btn_Close,
-         "clicked",
+        (P_Dlg_Main_Menu.Btn_Close, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Button_Close'Access),
          False);
 
       Callbacks_Tubastga.Spin_Button_Cb.Connect
-        (P_Dlg_Main_Menu.Spn_TCPIPOctet1,
-         "value-changed",
+        (P_Dlg_Main_Menu.Spn_TCPIPOctet1, "value-changed",
          Callbacks_Tubastga.Spin_Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Spin_Button_Change'Access),
          False);
       Callbacks_Tubastga.Spin_Button_Cb.Connect
-        (P_Dlg_Main_Menu.Spn_TCPIPOctet2,
-         "value-changed",
+        (P_Dlg_Main_Menu.Spn_TCPIPOctet2, "value-changed",
          Callbacks_Tubastga.Spin_Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Spin_Button_Change'Access),
          False);
       Callbacks_Tubastga.Spin_Button_Cb.Connect
-        (P_Dlg_Main_Menu.Spn_TCPIPOctet3,
-         "value-changed",
+        (P_Dlg_Main_Menu.Spn_TCPIPOctet3, "value-changed",
          Callbacks_Tubastga.Spin_Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Spin_Button_Change'Access),
          False);
       Callbacks_Tubastga.Spin_Button_Cb.Connect
-        (P_Dlg_Main_Menu.Spn_TCPIPOctet4,
-         "value-changed",
+        (P_Dlg_Main_Menu.Spn_TCPIPOctet4, "value-changed",
          Callbacks_Tubastga.Spin_Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Spin_Button_Change'Access),
          False);
       Callbacks_Tubastga.Spin_Button_Cb.Connect
-        (P_Dlg_Main_Menu.Spn_TCPIPPort,
-         "value-changed",
+        (P_Dlg_Main_Menu.Spn_TCPIPPort, "value-changed",
          Callbacks_Tubastga.Spin_Button_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Menu.On_Spin_Button_Change'Access),
          False);
@@ -614,11 +408,7 @@ package body Tubastga_Window_Pkg is
 
       Error : Glib.Error.GError;
 
-      Blue_Color,
-      Red_Color,
-      Grey_Color,
-      Green_Color,
-      Orange_Color,
+      Blue_Color, Red_Color, Grey_Color, Green_Color, Orange_Color,
       Yellow_Color : Gdk.Color.Gdk_Color;
 
       use Gdk.Event;
@@ -649,86 +439,44 @@ package body Tubastga_Window_Pkg is
       Gtk.Drawing_Area.Set_Size_Request (P_Wnd_Main.Area_Map, 700, 600);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Area_Map,
-         Left_Attach   => 1,
-         Right_Attach  => 12,
-         Top_Attach    => 0,
-         Bottom_Attach => 19,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Area_Map, Left_Attach => 1, Right_Attach => 12,
+         Top_Attach => 0, Bottom_Attach => 19, Xpadding => 0, Ypadding => 0);
 
       Gtk.Drawing_Area.Gtk_New (P_Wnd_Main.all.Area_Player_1_Timer);
       Gtk.Drawing_Area.Set_Size_Request (P_Wnd_Main.all.Area_Player_1_Timer, 70, 40);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Area_Player_1_Timer,
-         Left_Attach   => 13,
-         Right_Attach  => 14,
-         Top_Attach    => 0,
-         Bottom_Attach => 1,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Area_Player_1_Timer, Left_Attach => 13,
+         Right_Attach => 14, Top_Attach => 0, Bottom_Attach => 1, Xpadding => 0, Ypadding => 0);
 
       Gtk.Label.Gtk_New (P_Wnd_Main.all.Lbl_Player_1_Name);
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Lbl_Player_1_Name,
-         Left_Attach   => 14,
-         Right_Attach  => 15,
-         Top_Attach    => 0,
-         Bottom_Attach => 1,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Lbl_Player_1_Name, Left_Attach => 14,
+         Right_Attach => 15, Top_Attach => 0, Bottom_Attach => 1, Xpadding => 0, Ypadding => 0);
 
       Gtk.Drawing_Area.Gtk_New (P_Wnd_Main.all.Area_Player_2_Timer);
       Gtk.Drawing_Area.Set_Size_Request (P_Wnd_Main.all.Area_Player_2_Timer, 70, 40);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Area_Player_2_Timer,
-         Left_Attach   => 13,
-         Right_Attach  => 14,
-         Top_Attach    => 1,
-         Bottom_Attach => 2,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Area_Player_2_Timer, Left_Attach => 13,
+         Right_Attach => 14, Top_Attach => 1, Bottom_Attach => 2, Xpadding => 0, Ypadding => 0);
 
       Gtk.Label.Gtk_New (P_Wnd_Main.all.Lbl_Player_2_Name);
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Lbl_Player_2_Name,
-         Left_Attach   => 14,
-         Right_Attach  => 15,
-         Top_Attach    => 1,
-         Bottom_Attach => 2,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Lbl_Player_2_Name, Left_Attach => 14,
+         Right_Attach => 15, Top_Attach => 1, Bottom_Attach => 2, Xpadding => 0, Ypadding => 0);
 
       Gtk.Drawing_Area.Gtk_New (P_Wnd_Main.all.Area_Player_3_Timer);
       Gtk.Drawing_Area.Set_Size_Request (P_Wnd_Main.all.Area_Player_3_Timer, 70, 40);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Area_Player_3_Timer,
-         Left_Attach   => 13,
-         Right_Attach  => 14,
-         Top_Attach    => 2,
-         Bottom_Attach => 3,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Area_Player_3_Timer, Left_Attach => 13,
+         Right_Attach => 14, Top_Attach => 2, Bottom_Attach => 3, Xpadding => 0, Ypadding => 0);
 
       Gtk.Label.Gtk_New (P_Wnd_Main.all.Lbl_Player_3_Name);
       Gtk.Table.Attach
-        (P_Wnd_Main.all.Layout_Table,
-         P_Wnd_Main.all.Lbl_Player_3_Name,
-         Left_Attach   => 14,
-         Right_Attach  => 15,
-         Top_Attach    => 2,
-         Bottom_Attach => 3,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.all.Layout_Table, P_Wnd_Main.all.Lbl_Player_3_Name, Left_Attach => 14,
+         Right_Attach => 15, Top_Attach => 2, Bottom_Attach => 3, Xpadding => 0, Ypadding => 0);
 
       --
       --
@@ -738,40 +486,22 @@ package body Tubastga_Window_Pkg is
       Gtk.Text_View.Set_Size_Request (P_Wnd_Main.View_Activity_Report, 350, 600);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.Layout_Table,
-         P_Wnd_Main.View_Activity_Report,
-         Left_Attach   => 12,
-         Right_Attach  => 13,
-         Top_Attach    => 0,
-         Bottom_Attach => 19,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.Layout_Table, P_Wnd_Main.View_Activity_Report, Left_Attach => 12,
+         Right_Attach => 13, Top_Attach => 0, Bottom_Attach => 19, Xpadding => 0, Ypadding => 0);
 
       Gtk.Text_Buffer.Gtk_New (P_Wnd_Main.Buffer_Hover_Info);
       Gtk.Text_View.Gtk_New (P_Wnd_Main.View_Hover_Info, P_Wnd_Main.Buffer_Hover_Info);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.Layout_Table,
-         P_Wnd_Main.View_Hover_Info,
-         Left_Attach   => 13,
-         Right_Attach  => 14,
-         Top_Attach    => 3,
-         Bottom_Attach => 4,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.Layout_Table, P_Wnd_Main.View_Hover_Info, Left_Attach => 13, Right_Attach => 14,
+         Top_Attach => 3, Bottom_Attach => 4, Xpadding => 0, Ypadding => 0);
 
       Gtk.Text_Buffer.Gtk_New (P_Wnd_Main.Buffer_Resources_Info);
       Gtk.Text_View.Gtk_New (P_Wnd_Main.View_Resources_Info, P_Wnd_Main.Buffer_Resources_Info);
 
       Gtk.Table.Attach
-        (P_Wnd_Main.Layout_Table,
-         P_Wnd_Main.View_Resources_Info,
-         Left_Attach   => 13,
-         Right_Attach  => 14,
-         Top_Attach    => 4,
-         Bottom_Attach => 5,
-         Xpadding      => 0,
-         Ypadding      => 0);
+        (P_Wnd_Main.Layout_Table, P_Wnd_Main.View_Resources_Info, Left_Attach => 13,
+         Right_Attach => 14, Top_Attach => 4, Bottom_Attach => 5, Xpadding => 0, Ypadding => 0);
 
       --
       --  Buttons
@@ -786,8 +516,7 @@ package body Tubastga_Window_Pkg is
       Gtk.Tool_Button.Gtk_New (P_Wnd_Main.Btn_Place_Ship);
       Gtk.Tool_Button.Set_Label (P_Wnd_Main.Btn_Place_Ship, "Place Ship");
       Gtk.Tool_Button.Set_Icon_Widget
-        (P_Wnd_Main.Btn_Place_Ship,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\place_ship.png"));
+        (P_Wnd_Main.Btn_Place_Ship, Gtk.Image.Gtk_Image_New_From_File ("resources\place_ship.png"));
       Gtk.Toolbar.Insert (P_Wnd_Main.Toolbar_Main, P_Wnd_Main.Btn_Place_Ship);
 
       Gtk.Tool_Button.Gtk_New (P_Wnd_Main.Btn_Place_Knight);
@@ -821,8 +550,7 @@ package body Tubastga_Window_Pkg is
       Gtk.Tool_Button.Gtk_New (P_Wnd_Main.Btn_Place_Farm);
       Gtk.Tool_Button.Set_Label (P_Wnd_Main.Btn_Place_Farm, "Place Farm");
       Gtk.Tool_Button.Set_Icon_Widget
-        (P_Wnd_Main.Btn_Place_Farm,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\place_farm.png"));
+        (P_Wnd_Main.Btn_Place_Farm, Gtk.Image.Gtk_Image_New_From_File ("resources\place_farm.png"));
       Gtk.Toolbar.Insert (P_Wnd_Main.Toolbar_Main, P_Wnd_Main.Btn_Place_Farm);
 
       Gtk.Tool_Button.Gtk_New (P_Wnd_Main.Btn_Place_Lumberjack);
@@ -842,8 +570,7 @@ package body Tubastga_Window_Pkg is
       Gtk.Tool_Button.Gtk_New (P_Wnd_Main.Btn_Game);
       Gtk.Tool_Button.Set_Label (P_Wnd_Main.Btn_Game, "Game");
       Gtk.Tool_Button.Set_Icon_Widget
-        (P_Wnd_Main.Btn_Game,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\main_menu.png"));
+        (P_Wnd_Main.Btn_Game, Gtk.Image.Gtk_Image_New_From_File ("resources\main_menu.png"));
       Gtk.Toolbar.Insert (P_Wnd_Main.Toolbar_Main, P_Wnd_Main.Btn_Game);
 
       Gtk.Box.Pack_Start (P_Wnd_Main.Box_Toolbar_Game, P_Wnd_Main.Toolbar_Main, True, True);
@@ -851,163 +578,136 @@ package body Tubastga_Window_Pkg is
 
       Gtk.Drawing_Area.Set_Events
         (P_Wnd_Main.Area_Map,
-         Gdk.Event.Exposure_Mask or
-         Gdk.Event.Leave_Notify_Mask or
-         Gdk.Event.Button_Press_Mask or
-         Gdk.Event.Pointer_Motion_Mask or
-         Gdk.Event.Pointer_Motion_Hint_Mask);
+         Gdk.Event.Exposure_Mask or Gdk.Event.Leave_Notify_Mask or Gdk.Event.Button_Press_Mask or
+         Gdk.Event.Pointer_Motion_Mask or Gdk.Event.Pointer_Motion_Hint_Mask);
 
       --  Connect signals
 
       Callbacks_Tubastga.Drawing_Area_Callback.Connect
-        (P_Wnd_Main.Area_Map,
-         Gtk.Widget.Signal_Show,
+        (P_Wnd_Main.Area_Map, Gtk.Widget.Signal_Show,
          Callbacks_Tubastga.Drawing_Area_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Show'Unrestricted_Access));
       Callbacks_Tubastga.Event_Cb.Connect
-        (P_Wnd_Main.Area_Map,
-         Gtk.Widget.Signal_Draw,
+        (P_Wnd_Main.Area_Map, Gtk.Widget.Signal_Draw,
          Callbacks_Tubastga.Event_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Expose_Event'
+              Unrestricted_Access));
 
       Callbacks_Tubastga.Drawing_Area_Callback.Connect
-        (P_Wnd_Main.all.Area_Player_1_Timer,
-         Gtk.Widget.Signal_Show,
+        (P_Wnd_Main.all.Area_Player_1_Timer, Gtk.Widget.Signal_Show,
          Callbacks_Tubastga.Drawing_Area_Callback.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'
+              Unrestricted_Access));
       Callbacks_Tubastga.Event_Cb.Connect
-        (P_Wnd_Main.Area_Player_1_Timer,
-         Gtk.Widget.Signal_Draw,
+        (P_Wnd_Main.Area_Player_1_Timer, Gtk.Widget.Signal_Draw,
          Callbacks_Tubastga.Event_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_1_Timer_Area_Expose_Event'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_1_Timer_Area_Expose_Event'
+              Unrestricted_Access));
 
       Callbacks_Tubastga.Drawing_Area_Callback.Connect
-        (P_Wnd_Main.Area_Player_2_Timer,
-         Gtk.Widget.Signal_Show,
+        (P_Wnd_Main.Area_Player_2_Timer, Gtk.Widget.Signal_Show,
          Callbacks_Tubastga.Drawing_Area_Callback.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'
+              Unrestricted_Access));
       Callbacks_Tubastga.Event_Cb.Connect
-        (P_Wnd_Main.Area_Player_2_Timer,
-         Gtk.Widget.Signal_Draw,
+        (P_Wnd_Main.Area_Player_2_Timer, Gtk.Widget.Signal_Draw,
          Callbacks_Tubastga.Event_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_2_Timer_Area_Expose_Event'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_2_Timer_Area_Expose_Event'
+              Unrestricted_Access));
 
       Callbacks_Tubastga.Drawing_Area_Callback.Connect
-        (P_Wnd_Main.Area_Player_3_Timer,
-         Gtk.Widget.Signal_Show,
+        (P_Wnd_Main.Area_Player_3_Timer, Gtk.Widget.Signal_Show,
          Callbacks_Tubastga.Drawing_Area_Callback.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_Timer_Area_Show'
+              Unrestricted_Access));
       Callbacks_Tubastga.Event_Cb.Connect
-        (P_Wnd_Main.Area_Player_3_Timer,
-         Gtk.Widget.Signal_Draw,
+        (P_Wnd_Main.Area_Player_3_Timer, Gtk.Widget.Signal_Draw,
          Callbacks_Tubastga.Event_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_3_Timer_Area_Expose_Event'Unrestricted_Access));
+           (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Player_3_Timer_Area_Expose_Event'
+              Unrestricted_Access));
 
       Callbacks_Tubastga.Window_Cb.Connect
-        (P_Wnd_Main,
-         "destroy",
+        (P_Wnd_Main, "destroy",
          Callbacks_Tubastga.Window_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.Exit_Main'Access));
 
       Gtkada.Handlers.Return_Callback.Connect
-        (P_Wnd_Main.Area_Map,
-         "button_press_event",
-         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Button_Press_Event'Access,
-         False);
+        (P_Wnd_Main.Area_Map, "button_press_event",
+         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Button_Press_Event'Access, False);
 
       Gtkada.Handlers.Return_Callback.Connect
-        (P_Wnd_Main.Area_Map,
-         "scroll_event",
-         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Scroll_Event'Access,
-         False);
+        (P_Wnd_Main.Area_Map, "scroll_event",
+         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Scroll_Event'Access, False);
 
       Gtkada.Handlers.Return_Callback.Connect
-        (P_Wnd_Main.Area_Map,
-         "motion_notify_event",
-         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Motion_Notify_Event'Access,
-         False);
+        (P_Wnd_Main.Area_Map, "motion_notify_event",
+         Tubastga_Window_Pkg.Callbacks.Main_Window.On_Map_Area_Motion_Notify_Event'Access, False);
 
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Sentry,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Sentry, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Sentry'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Bowman,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Bowman, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Bowman'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Carrier,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Carrier, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Carrier'Access),
          False);
 
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Ship,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Ship, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Ship'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Farm,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Farm, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Farm'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Tower,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Tower, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Tower'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Lumberjack,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Lumberjack, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Lumberjack'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Stonecutter,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Stonecutter, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Stonecutter'Access),
          False);
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Place_Knight,
-         "clicked",
+        (P_Wnd_Main.Btn_Place_Knight, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Place_Knight'Access),
          False);
 
       Callbacks_Tubastga.Tool_Button_Callback.Connect
-        (P_Wnd_Main.Btn_Game,
-         "clicked",
+        (P_Wnd_Main.Btn_Game, "clicked",
          Callbacks_Tubastga.Tool_Button_Callback.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Main_Window.On_Button_Game'Access),
          False);
 
       Gtkada.Handlers.Return_Callback.Connect
-        (P_Wnd_Main,
-         "key_press_event",
+        (P_Wnd_Main, "key_press_event",
          Tubastga_Window_Pkg.Callbacks.Main_Window.On_Keyboard_Key_Press'Access);
 
       Gtkada.Handlers.Return_Callback.Connect
-        (P_Wnd_Main,
-         "key_release_event",
+        (P_Wnd_Main, "key_release_event",
          Tubastga_Window_Pkg.Callbacks.Main_Window.On_Keyboard_Key_Release'Access);
 
       Gtk.Drawing_Area.Add_Events
         (P_Wnd_Main.Area_Map,
-         Button_Press_Mask or
-         Button_Release_Mask or
-         Button_Motion_Mask or
-         Key_Press_Mask or
-         Key_Release_Mask or
-         Scroll_Mask);
+         Button_Press_Mask or Button_Release_Mask or Button_Motion_Mask or Key_Press_Mask or
+         Key_Release_Mask or Scroll_Mask);
 
       --
       Gdk.Pixbuf.Gdk_New_From_File (P_Wnd_Main.Map_Image.Image_Data, "resources\map.png", Error);
@@ -1016,7 +716,7 @@ package body Tubastga_Window_Pkg is
 
       P_Wnd_Main.Map_Image.Image_Height := Gdk.Pixbuf.Get_Height (P_Wnd_Main.Map_Image.Image_Data);
 
-      Tubastga_Window_Pkg.Images.Initialize(Tubastga_Window_Pkg.Images.All_Images);
+      Tubastga_Window_Pkg.Images.Initialize (Tubastga_Window_Pkg.Images.All_Images);
 
       Tubastga_Window_Pkg.Images.Load_Images (Tubastga_Window_Pkg.Images.All_Images);
 
@@ -1045,9 +745,9 @@ package body Tubastga_Window_Pkg is
       Tubastga_Window_Pkg.Initialize (P_Wnd_Action);
    end Gtk_New;
 
-   procedure Initialize (P_Wnd_Action : access Type_Wnd_Action_Record'Class) is
-      pragma Suppress (All_Checks);
-
+   --Performing_Scroll_VBox
+   procedure Initialize_Performing_Scroll_VBox (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
       Piece_Info : Glib.GType_Array (1 .. 3) :=
         Glib.GType_Array'(1 => Glib.GType_Int, 2 => Gdk.Pixbuf.Get_Type, 3 => Glib.GType_String);
       Text_Renderer   : Gtk.Cell_Renderer_Text.Gtk_Cell_Renderer_Text;
@@ -1056,58 +756,89 @@ package body Tubastga_Window_Pkg is
       Col_Piece_Image : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
       C               : Glib.Gint;
    begin
-      if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Performing_Patch) - enter");
-      end if;
-
-      Gtk.Window.Initialize (P_Wnd_Action, Gtk.Enums.Window_Toplevel);
-      Tubastga_Window_Pkg.Set_Title (P_Wnd_Action, -"Tubast'ga - Performing Patch");
-      Tubastga_Window_Pkg.Set_Position (P_Wnd_Action, Gtk.Enums.Win_Pos_None);
-      Tubastga_Window_Pkg.Set_Modal (P_Wnd_Action, False);
-      Tubastga_Window_Pkg.Set_Resizable (P_Wnd_Action, False);
-
       P_Wnd_Action.all.Performing_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Performing_Pieces_List_Store, Piece_Info);
       Gtk.Tree_View.Gtk_New
-        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-         P_Wnd_Action.all.Performing_Pieces_List_Store);
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View, P_Wnd_Action.all.Performing_Pieces_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
-      C :=
-        Gtk.Tree_View.Append_Column
-          (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-           Col_Piece_Image);
+      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Pieces_Tree_View, Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Image, Pixbuf_Renderer, "pixbuf", 1);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Name);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
-      C :=
-        Gtk.Tree_View.Append_Column
-          (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-           Col_Piece_Name);
+      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Pieces_Tree_View, Col_Piece_Name);
       Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
 
-      Gtk.Tree_View.Set_Activate_On_Single_Click
-        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-         True);
+      Gtk.Tree_View.Set_Activate_On_Single_Click (P_Wnd_Action.all.Perform_Pieces_Tree_View, True);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Scroll_VBox,
-         P_Wnd_Action.all.Perform_Pieces_Tree_View);
-      Gtk.Tree_View.Set_Size_Request
-        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-         150,
-         200);
+        (P_Wnd_Action.all.Performing_Scroll_VBox, P_Wnd_Action.all.Perform_Pieces_Tree_View);
+      Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Perform_Pieces_Tree_View, 150, 200);
 
-      P_Wnd_Action.all.Fighting_Piece_Action1_VBox :=
-        Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
-      P_Wnd_Action.all.Fighting_Piece_Action2_VBox :=
-        Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      Callbacks_Tubastga.Tree_View_Cb.Connect
+        (P_Wnd_Action.all.Perform_Pieces_Tree_View, "row-activated",
+         Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View'Access),
+         False);
+
+   end Initialize_Performing_Scroll_VBox;
+
+   --Performing_Scroll_VBox
+   procedure Initialize_Target_Scroll_VBox (P_Wnd_Action : access Type_Wnd_Action_Record'Class) is
+      Piece_Info : Glib.GType_Array (1 .. 3) :=
+        Glib.GType_Array'(1 => Glib.GType_Int, 2 => Gdk.Pixbuf.Get_Type, 3 => Glib.GType_String);
+      Text_Renderer   : Gtk.Cell_Renderer_Text.Gtk_Cell_Renderer_Text;
+      Pixbuf_Renderer : Gtk.Cell_Renderer_Pixbuf.Gtk_Cell_Renderer_Pixbuf;
+      Col_Piece_Name  : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
+      Col_Piece_Image : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
+      C               : Glib.Gint;
+
+   begin
+      P_Wnd_Action.all.Target_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+
+      Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Target_Pieces_List_Store, Piece_Info);
+      Gtk.Tree_View.Gtk_New
+        (P_Wnd_Action.all.Target_Pieces_Tree_View, P_Wnd_Action.all.Target_Pieces_List_Store);
+
+      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
+      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Target_Pieces_Tree_View, Col_Piece_Image);
+      Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
+      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
+      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Image, Pixbuf_Renderer, "pixbuf", 1);
+
+      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Name);
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
+      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Target_Pieces_Tree_View, Col_Piece_Name);
+      Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
+      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
+      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
+
+      Gtk.Tree_View.Set_Activate_On_Single_Click (P_Wnd_Action.all.Target_Pieces_Tree_View, True);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Target_Scroll_VBox, P_Wnd_Action.all.Target_Pieces_Tree_View);
+      Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Target_Pieces_Tree_View, 450, 210);
+
+      Callbacks_Tubastga.Tree_View_Cb.Connect
+        (P_Wnd_Action.all.Target_Pieces_Tree_View, "row-activated",
+         Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View'Access),
+         False);
+
+   end Initialize_Target_Scroll_VBox;
+
+   --Fighting_Piece_Action1_VBox
+   procedure Initialize_Fighting_Piece_Action1_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
+   begin
+      P_Wnd_Action.all.Fighting_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Move);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Move, "Move");
@@ -1124,14 +855,12 @@ package body Tubastga_Window_Pkg is
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Promote);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Promote, "Promote");
       Gtk.Button.Set_Image
-        (P_Wnd_Action.all.Btn_Promote,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\promote.png"));
+        (P_Wnd_Action.all.Btn_Promote, Gtk.Image.Gtk_Image_New_From_File ("resources\promote.png"));
 
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Demote);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Demote, "Demote");
       Gtk.Button.Set_Image
-        (P_Wnd_Action.all.Btn_Demote,
-         Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
+        (P_Wnd_Action.all.Btn_Demote, Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
 --        --
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Create_Path);
@@ -1146,8 +875,71 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Btn_Create_Path,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
-      --
-      --
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Move);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Attack);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Ranged_Attack);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Search);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Promote);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Demote);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Create_Path);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Remove_Path);
+
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Move, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Move'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Attack, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Attack'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Ranged_Attack, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Ranged_Attack'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Search, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Search'Access),
+         False);
+
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Promote, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Promote'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Demote, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Demote'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Create_Path, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Create_Path'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Path, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Path'Access),
+         False);
+   end Initialize_Fighting_Piece_Action1_VBox;
+
+   --Fighting_Piece_Action2_VBox
+   procedure Initialize_Fighting_Piece_Action2_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
+   begin
+      P_Wnd_Action.all.Fighting_Piece_Action2_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Card_1);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Card_1, "Card 1");
@@ -1155,38 +947,19 @@ package body Tubastga_Window_Pkg is
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Card_2);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Card_2, "Card 2");
 
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Card_1);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Card_2);
 
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Move);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Attack);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Ranged_Attack);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Search);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Promote);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Demote);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Create_Path);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Remove_Path);
+   end Initialize_Fighting_Piece_Action2_VBox;
 
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Card_1);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Card_2);
+   --Initialize_House_Piece_Action1_VBox
+   procedure Initialize_House_Piece_Action1_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
+   begin
+      P_Wnd_Action.all.House_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       -- Place WallN
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall1);
@@ -1230,6 +1003,60 @@ package body Tubastga_Window_Pkg is
       Gtk.Button.Set_Image
         (P_Wnd_Action.all.Btn_Place_Wall6,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
+
+      -- Place_WallN
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall1);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall2);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall3);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall4);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall5);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.House_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Place_Wall6);
+
+      -- Place WallN
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall1, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall1'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall2, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall2'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall3, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall3'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall4, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall4'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall5, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall5'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Place_Wall6, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall6'Access),
+         False);
+   end Initialize_House_Piece_Action1_VBox;
+
+   --Initialize_House_Piece_Action2_VBox
+   procedure Initialize_House_Piece_Action2_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
+   begin
+      P_Wnd_Action.all.House_Piece_Action2_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       ---
       -- Remove WallN
@@ -1275,111 +1102,89 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Btn_Remove_Wall6,
          Gtk.Image.Gtk_Image_New_From_File ("resources\button_wall6.png"));
 
-      P_Wnd_Action.all.House_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
-
-      -- Place_WallN
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall1);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall2);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall3);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall4);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall5);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action1_VBox,
-         P_Wnd_Action.all.Btn_Place_Wall6);
-
-      P_Wnd_Action.all.House_Piece_Action2_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
-
       -- Remove_WallN
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall1);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall1);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall2);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall2);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall3);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall3);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall4);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall4);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall5);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall5);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.House_Piece_Action2_VBox,
-         P_Wnd_Action.all.Btn_Remove_Wall6);
+        (P_Wnd_Action.all.House_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Remove_Wall6);
+
+      -- Remove WallN
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall1, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall1'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall2, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall2'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall3, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall3'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall4, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall4'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall5, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall5'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Remove_Wall6, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall6'Access),
+         False);
+
+   end Initialize_House_Piece_Action2_VBox;
+
+   procedure Initialize (P_Wnd_Action : access Type_Wnd_Action_Record'Class) is
+      pragma Suppress (All_Checks);
+
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Action) - enter");
+      end if;
+
+      Gtk.Window.Initialize (P_Wnd_Action, Gtk.Enums.Window_Toplevel);
+      Tubastga_Window_Pkg.Set_Title (P_Wnd_Action, -"Tubast'ga - Performing Patch");
+      Tubastga_Window_Pkg.Set_Position (P_Wnd_Action, Gtk.Enums.Win_Pos_None);
+      Tubastga_Window_Pkg.Set_Modal (P_Wnd_Action, False);
+      Tubastga_Window_Pkg.Set_Resizable (P_Wnd_Action, False);
+
+      Initialize_Performing_Scroll_VBox (P_Wnd_Action);
+      Initialize_Target_Scroll_VBox (P_Wnd_Action);
+      Initialize_Fighting_Piece_Action1_VBox (P_Wnd_Action);
+      Initialize_Fighting_Piece_Action2_VBox (P_Wnd_Action);
+      Initialize_House_Piece_Action1_VBox (P_Wnd_Action);
+      Initialize_House_Piece_Action2_VBox (P_Wnd_Action);
 
       --
 
       P_Wnd_Action.all.Performing_Content_HBox := Gtk.Box.Gtk_Hbox_New (True, Glib.Gint (2));
 
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.Performing_Scroll_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Performing_Scroll_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.Fighting_Piece_Action1_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Fighting_Piece_Action1_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.Fighting_Piece_Action2_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Fighting_Piece_Action2_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.House_Piece_Action1_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.House_Piece_Action1_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.House_Piece_Action2_VBox);
-
-      P_Wnd_Action.all.Target_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
-
-      Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Target_Pieces_List_Store, Piece_Info);
-      Gtk.Tree_View.Gtk_New
-        (P_Wnd_Action.all.Target_Pieces_Tree_View,
-         P_Wnd_Action.all.Target_Pieces_List_Store);
-
-      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
-      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
-      C :=
-        Gtk.Tree_View.Append_Column
-          (P_Wnd_Action.all.Target_Pieces_Tree_View,
-           Col_Piece_Image);
-      Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
-      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
-      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Image, Pixbuf_Renderer, "pixbuf", 1);
-
-      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Name);
-      Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
-      C :=
-        Gtk.Tree_View.Append_Column
-          (P_Wnd_Action.all.Target_Pieces_Tree_View,
-           Col_Piece_Name);
-      Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
-      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
-      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
-
-      Gtk.Tree_View.Set_Activate_On_Single_Click
-        (P_Wnd_Action.all.Target_Pieces_Tree_View,
-         True);
-      Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Target_Scroll_VBox,
-         P_Wnd_Action.all.Target_Pieces_Tree_View);
-      Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Target_Pieces_Tree_View, 450, 210);
-
-      Callbacks_Tubastga.Tree_View_Cb.Connect
-        (P_Wnd_Action.all.Target_Pieces_Tree_View,
-         "row-activated",
-         Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View'Access),
-         False);
+        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.House_Piece_Action2_VBox);
 
       P_Wnd_Action.all.Content_HBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
@@ -1390,145 +1195,8 @@ package body Tubastga_Window_Pkg is
 
       Tubastga_Window_Pkg.Show_All (P_Wnd_Action);
 
-      -- Place WallN
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall1,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall1'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall2,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall2'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall3,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall3'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall4,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall4'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall5,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall5'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Place_Wall6,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall6'Access),
-         False);
-
-      -- Remove WallN
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall1,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall1'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall2,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall2'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall3,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall3'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall4,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall4'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall5,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall5'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Wall6,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall6'Access),
-         False);
-
-      --
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Move,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Move'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Attack,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Attack'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Ranged_Attack,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Ranged_Attack'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Search,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Search'Access),
-         False);
-
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Promote,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Promote'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Demote,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Demote'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Create_Path,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Create_Path'Access),
-         False);
-      Callbacks_Tubastga.Button_Cb.Connect
-        (P_Wnd_Action.all.Btn_Remove_Path,
-         "clicked",
-         Callbacks_Tubastga.Button_Cb.To_Marshaller (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Path'Access),
-         False);
-
-      Callbacks_Tubastga.Tree_View_Cb.Connect
-        (P_Wnd_Action.all.Perform_Pieces_Tree_View,
-         "row-activated",
-         Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View'Access),
-         False);
-
-
---      Gtk.Button.Set_Image
---        (P_Wnd_Action.all.Btn_Create_Path,
---         Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
-
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Performing_Patch) - exit");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Action) - exit");
       end if;
    end Initialize;
 
