@@ -136,7 +136,8 @@ package Tubastga_Window_Pkg is
       Performing_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
       Perform_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
 
-      Fighting_Piece_Action_VBox : Gtk.Box.Gtk_Vbox;
+      Fighting_Piece_Action1_VBox : Gtk.Box.Gtk_Vbox;
+      Fighting_Piece_Action2_VBox : Gtk.Box.Gtk_Vbox;
       House_Piece_Action1_VBox    : Gtk.Box.Gtk_Vbox;
       House_Piece_Action2_VBox    : Gtk.Box.Gtk_Vbox;
 
@@ -168,7 +169,9 @@ package Tubastga_Window_Pkg is
       Target_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
 
       -- Actions
-      Btn_Card_1 : Gtk.Button.Gtk_Button;
+      Btn_Card_1, Btn_Card_2 : Gtk.Button.Gtk_Button;
+
+      Cards_Content_HBox : Gtk.Box.Gtk_Hbox;
       --
       Content_HBox : Gtk.Box.Gtk_Hbox;
    end record;

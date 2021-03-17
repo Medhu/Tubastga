@@ -47,14 +47,18 @@ package body Tubastga_Window_Pkg.Callbacks.Actions is
          Gtk.Widget.Set_Sensitive
            (Gtk.Widget.Gtk_Widget (P_Window.all.House_Piece_Action2_VBox), False);
          Gtk.Widget.Set_Sensitive
-           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action_VBox), True);
+           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action1_VBox), True);
+         Gtk.Widget.Set_Sensitive
+           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action2_VBox), True);
       elsif P_Type_Category = Piece.House_Piece then
          Gtk.Widget.Set_Sensitive
            (Gtk.Widget.Gtk_Widget (P_Window.all.House_Piece_Action1_VBox), True);
          Gtk.Widget.Set_Sensitive
            (Gtk.Widget.Gtk_Widget (P_Window.all.House_Piece_Action2_VBox), True);
          Gtk.Widget.Set_Sensitive
-           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action_VBox), False);
+           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action1_VBox), False);
+         Gtk.Widget.Set_Sensitive
+           (Gtk.Widget.Gtk_Widget (P_Window.all.Fighting_Piece_Action2_VBox), False);
       end if;
    end Activate_Action_Buttons;
 

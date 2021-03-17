@@ -1104,7 +1104,9 @@ package body Tubastga_Window_Pkg is
          150,
          200);
 
-      P_Wnd_Action.all.Fighting_Piece_Action_VBox :=
+      P_Wnd_Action.all.Fighting_Piece_Action1_VBox :=
+        Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Fighting_Piece_Action2_VBox :=
         Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Move);
@@ -1144,30 +1146,47 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Btn_Create_Path,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
+      --
+      --
+
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Card_1);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Card_1, "Card 1");
+
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Card_2);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Card_2, "Card 2");
+
+
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Move);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Attack);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Ranged_Attack);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Search);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Promote);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Demote);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Create_Path);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Fighting_Piece_Action_VBox,
+        (P_Wnd_Action.all.Fighting_Piece_Action1_VBox,
          P_Wnd_Action.all.Btn_Remove_Path);
+
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Card_1);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Fighting_Piece_Action2_VBox,
+         P_Wnd_Action.all.Btn_Card_2);
 
       -- Place WallN
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Place_Wall1);
@@ -1309,7 +1328,10 @@ package body Tubastga_Window_Pkg is
          P_Wnd_Action.all.Performing_Scroll_VBox);
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Performing_Content_HBox,
-         P_Wnd_Action.all.Fighting_Piece_Action_VBox);
+         P_Wnd_Action.all.Fighting_Piece_Action1_VBox);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.Fighting_Piece_Action2_VBox);
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Performing_Content_HBox,
          P_Wnd_Action.all.House_Piece_Action1_VBox);
@@ -1499,6 +1521,11 @@ package body Tubastga_Window_Pkg is
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
            (Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View'Access),
          False);
+
+
+--      Gtk.Button.Set_Image
+--        (P_Wnd_Action.all.Btn_Create_Path,
+--         Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.Initialize (P_Wnd_Performing_Patch) - exit");
