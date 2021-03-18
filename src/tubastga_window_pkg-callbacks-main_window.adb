@@ -56,7 +56,7 @@ with Tubastga_Window_Pkg.Effects;
 with Action;
 with Server;
 with Tubastga_Window_Pkg.Lists;
-with Tubastga_Window_Pkg.Callbacks.Actions;
+with Tubastga_Window_Pkg.Callbacks.Actions_Menu;
 with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Main_Window is
@@ -695,7 +695,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                      A_Patch :=
                        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
 
-                     Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Patch_Window
+                     Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Patch_Window
                        (The_Window.all.Wnd_Performing_Patch,
                         A_Patch);
                   else
@@ -1068,7 +1068,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   A_Patch.all.Pos,
                   Shift_LR_Pressed);
 
-               Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Patch_Window
+               Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Patch_Window
                  (The_Window.all.Wnd_Performing_Patch,
                   A_Patch);
 
@@ -1080,7 +1080,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   A_Patch.all.Pos,
                   Shift_LR_Pressed);
 
-               Tubastga_Window_Pkg.Callbacks.Actions.Set_Target_Patch_Window
+               Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Target_Patch_Window
                  (The_Window.all.Wnd_Performing_Patch,
                   A_Patch);
 

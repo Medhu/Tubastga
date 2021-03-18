@@ -17,7 +17,7 @@
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 --
-package Tubastga_Window_Pkg.Callbacks.Actions is
+package Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    -- Place WallN
    procedure On_Button_Place_Wall1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
@@ -65,4 +65,4 @@ package Tubastga_Window_Pkg.Callbacks.Actions is
    procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
                                    P_Patch                                  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
 
-end Tubastga_Window_Pkg.Callbacks.Actions;
+end Tubastga_Window_Pkg.Callbacks.Actions_Menu;

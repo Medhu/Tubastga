@@ -24,7 +24,7 @@ with Callbacks_tubastga;
 with Tubastga_Window_Intl; use Tubastga_Window_Intl;
 with Tubastga_Window_Pkg.Callbacks;
 with Tubastga_Window_Pkg.Callbacks.Main_Window;
-with Tubastga_Window_Pkg.Callbacks.Actions;
+with Tubastga_Window_Pkg.Callbacks.Actions_Menu;
 with Tubastga_Window_Pkg.Callbacks.Main_Menu;
 with Gdk.Color;
 with Text_IO;
@@ -784,7 +784,7 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Tree_View_Cb.Connect
         (P_Wnd_Action.all.Perform_Pieces_Tree_View, "row-activated",
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Tree_View'Access),
          False);
 
    end Initialize_Performing_Scroll_VBox;
@@ -828,7 +828,7 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Tree_View_Cb.Connect
         (P_Wnd_Action.all.Target_Pieces_Tree_View, "row-activated",
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Tree_View'Access),
          False);
 
    end Initialize_Target_Scroll_VBox;
@@ -894,43 +894,43 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Move, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Move'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Move'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Attack, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Attack'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Attack'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Ranged_Attack, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Ranged_Attack'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Ranged_Attack'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Search, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Search'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Search'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Promote, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Promote'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Promote'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Demote, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Demote'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Demote'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Create_Path, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Create_Path'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Create_Path'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Path, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Path'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Path'Access),
          False);
    end Initialize_Fighting_Piece_Action1_VBox;
 
@@ -955,13 +955,13 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Card_1, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_1'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Card_1'Access),
          False);
 
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Card_2, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_2'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Card_2'Access),
          False);
 
    end Initialize_Fighting_Piece_Action2_VBox;
@@ -1034,32 +1034,32 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall1, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall1'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall1'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall2, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall2'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall2'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall3, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall3'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall3'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall4, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall4'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall4'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall5, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall5'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall5'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Place_Wall6, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall6'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall6'Access),
          False);
    end Initialize_House_Piece_Action1_VBox;
 
@@ -1132,32 +1132,32 @@ package body Tubastga_Window_Pkg is
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall1, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall1'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall1'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall2, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall2'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall2'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall3, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall3'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall3'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall4, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall4'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall4'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall5, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall5'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall5'Access),
          False);
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Remove_Wall6, "clicked",
          Callbacks_Tubastga.Button_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall6'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall6'Access),
          False);
 
    end Initialize_House_Piece_Action2_VBox;

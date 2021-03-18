@@ -32,7 +32,7 @@ with Effect;
 with Hexagon.Area;
 with Tubastga_Window_Pkg.Images;
 
-package body Tubastga_Window_Pkg.Callbacks.Actions is
+package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    Verbose : constant Boolean := False;
 
@@ -105,7 +105,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions is
          A_Piece_Id := Landscape.Pieces_Here_List.Element (Trav);
          A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
 
-         Tubastga_Window_Pkg.Callbacks.Actions.Activate_Action_Buttons
+         Tubastga_Window_Pkg.Callbacks.Actions_Menu.Activate_Action_Buttons
            (P_Window, A_Piece.all.Category);
 
          Gtk.List_Store.Append (P_Window.Performing_Pieces_List_Store, List_Store_Iter);
@@ -1028,7 +1028,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions is
       end if;
    end Set_Target_Patch_Window;
 
-end Tubastga_Window_Pkg.Callbacks.Actions;
+end Tubastga_Window_Pkg.Callbacks.Actions_Menu;
 
 
 
