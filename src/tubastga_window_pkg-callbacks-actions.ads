@@ -46,6 +46,9 @@ package Tubastga_Window_Pkg.Callbacks.Actions is
    procedure On_Button_Create_Path (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Remove_Path (Object : access Gtk.Button.Gtk_Button_Record'Class);
 
+   procedure On_Button_Card_1 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Card_2 (Object : access Gtk.Button.Gtk_Button_Record'Class);
+
    procedure On_Performing_Patch_Tree_View
      (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 

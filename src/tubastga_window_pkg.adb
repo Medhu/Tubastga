@@ -952,6 +952,18 @@ package body Tubastga_Window_Pkg is
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Fighting_Piece_Action2_VBox, P_Wnd_Action.all.Btn_Card_2);
 
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Card_1, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_1'Access),
+         False);
+
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Card_2, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_2'Access),
+         False);
+
    end Initialize_Fighting_Piece_Action2_VBox;
 
    --Initialize_House_Piece_Action1_VBox
@@ -1159,7 +1171,7 @@ package body Tubastga_Window_Pkg is
       end if;
 
       Gtk.Window.Initialize (P_Wnd_Action, Gtk.Enums.Window_Toplevel);
-      Tubastga_Window_Pkg.Set_Title (P_Wnd_Action, -"Tubast'ga - Performing Patch");
+      Tubastga_Window_Pkg.Set_Title (P_Wnd_Action, -"Tubast'ga - Action");
       Tubastga_Window_Pkg.Set_Position (P_Wnd_Action, Gtk.Enums.Win_Pos_None);
       Tubastga_Window_Pkg.Set_Modal (P_Wnd_Action, False);
       Tubastga_Window_Pkg.Set_Resizable (P_Wnd_Action, False);

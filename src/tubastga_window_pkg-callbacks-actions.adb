@@ -902,6 +902,26 @@ package body Tubastga_Window_Pkg.Callbacks.Actions is
 
    end On_Button_Remove_Path;
 
+   procedure On_Button_Card_1 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
+
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_1 - clicked");
+      end if;
+
+   end On_Button_Card_1;
+
+   procedure On_Button_Card_2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
+
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_2 - clicked");
+      end if;
+
+   end On_Button_Card_2;
+
    procedure On_Target_Patch_Tree_View (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class) is
       Selected_Record : Gtk.Tree_Selection.Gtk_Tree_Selection;
       Selected_Model  : Gtk.Tree_Model.Gtk_Tree_Model;
