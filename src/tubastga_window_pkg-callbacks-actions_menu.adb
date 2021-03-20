@@ -34,7 +34,7 @@ with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
-   Verbose : constant Boolean := False;
+   Verbose : constant Boolean := True;
 
    procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Action_Access;
       P_Type_Category                          : in     Piece.Type_Category)
@@ -903,12 +903,32 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    end On_Button_Remove_Path;
 
    procedure On_Button_Card_1 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
+      Selected_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Selected_Piece_Id : Piece.Type_Piece_Id;
+      Selected_Patch    : Hexagon.Client_Map.Type_Client_Patch_Adress;
+      Selected_Pos      : Hexagon.Type_Hexagon_Position;
 
+      --The_Area : Hexagon.Area.Type_Action_Capabilities_A (1 .. 1);
+
+      use Hexagon.Client_Map;
+      use Hexagon;
    begin
       if Verbose then
          Text_IO.Put_Line
            ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_1 - clicked");
       end if;
+
+      Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
+      Selected_Piece    := Piece.Client_Piece.Find_Piece_In_List (Selected_Piece_Id);
+      Selected_Pos      := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+      Selected_Patch    :=
+        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, Selected_Pos.A, Selected_Pos.B);
+
+      Piece.Client_Piece.Grant_Piece_Effect
+        (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
+         Effect.Type_Effect'
+           (Tubastga_Game.Effect_Card_1,
+            1));
 
    end On_Button_Card_1;
 

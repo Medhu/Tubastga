@@ -20,6 +20,6 @@ rem
 
 call ..\setup
 
-rem tubastga_client player:Yulia 1> res_yulia.txt
-tubastga_client player:Yulia 
+tubastga_client player:Yulia 1> res_yulia.txt
+
 

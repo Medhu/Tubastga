@@ -80,6 +80,7 @@ package Tubastga_Game is
    --
    Effect_Attack_Start : constant Effect.Type_Effect_Name := 18;
    Effect_Defence_Done : constant Effect.Type_Effect_Name := 19;
+   Effect_Card_1       : constant Effect.Type_Effect_Name := 20;
 
    Land_Piece_Move_Landscape_Array : constant Landscape.Server.Type_List_Landscape_Access :=
      new Landscape.Type_List_Landscape'(100 => True, 101 => True, 102 => True, 103 => False);
