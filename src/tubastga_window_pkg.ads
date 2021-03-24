@@ -132,9 +132,15 @@ package Tubastga_Window_Pkg is
    type Type_Wnd_Action_Record is new Gtk.Window.Gtk_Window_Record with record
 
       Performing_Content_HBox                 : Gtk.Box.Gtk_Hbox;
-      Performing_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
+
+      Performing_Pieces_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
       Performing_Pieces_List_Store : Gtk.List_Store.Gtk_List_Store;
       Perform_Pieces_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
+
+      Performing_Piece_Effects_Scroll_VBox                  : Gtk.Box.Gtk_Vbox;
+      Performing_Piece_Effects_List_Store : Gtk.List_Store.Gtk_List_Store;
+      Perform_Piece_Effects_Tree_View     : Gtk.Tree_View.Gtk_Tree_View;
+
 
       Fighting_Piece_Action1_VBox : Gtk.Box.Gtk_Vbox;
       Fighting_Piece_Action2_VBox : Gtk.Box.Gtk_Vbox;

@@ -52,6 +52,9 @@ package Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    procedure On_Performing_Patch_Tree_View
      (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
+   procedure On_Performing_Patch_Piece_Effects_Tree_View
+     (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
+
    procedure Activate_Action_Buttons
      (P_Window        : in out Type_Wnd_Action_Access;
       P_Type_Category : in     Piece.Type_Category);
