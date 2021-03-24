@@ -662,10 +662,6 @@ package Tubastga_Game.Server_Logic is
    Stonecutter_House : constant Piece.Type_Piece_Type := 8;
    Tower_House       : constant Piece.Type_Piece_Type := 9;
    --
-   Landscape_Grass    : constant Landscape.Type_Landscape := 100;
-   Landscape_Forest   : constant Landscape.Type_Landscape := 101;
-   Landscape_Mountain : constant Landscape.Type_Landscape := 102;
-   Landscape_Water    : constant Landscape.Type_Landscape := 103;
 
    Landscapes_Type_Info_List : Landscape.Server.Type_Landscape_Type_Info_List :=
      (Landscape_Grass =>
@@ -683,18 +679,6 @@ package Tubastga_Game.Server_Logic is
         Landscape.Server.Type_Landscape_Type_Info'
           (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Water"),
            Max_Pieces_Here => 6));
-
-   Effect_Action_Point : constant Effect.Type_Effect_Name := 1;
-   Effect_Courage      : constant Effect.Type_Effect_Name := 2;
-   Effect_Captain      : constant Effect.Type_Effect_Name := 3;
-   Effect_Treasure     : constant Effect.Type_Effect_Name := 4;
-   Effect_Stops        : constant Effect.Type_Effect_Name := 5;
-   Effect_Load         : constant Effect.Type_Effect_Name := 6;
-   Effect_Unload       : constant Effect.Type_Effect_Name := 7;
-   Effect_Slot_1       : constant Effect.Type_Effect_Name := 8;
-   Effect_Slot_2       : constant Effect.Type_Effect_Name := 9;
-   Effect_Slot_3       : constant Effect.Type_Effect_Name := 10;
-   Effect_Path         : constant Effect.Type_Effect_Name := 11;
 
    procedure Tubastga_Creating_Game
      (P_Map_Name      : in Utilities.RemoteString.Type_String;
