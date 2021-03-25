@@ -763,7 +763,7 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Perform_Pieces_Tree_View, P_Wnd_Action.all.Performing_Pieces_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
-      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "Piece");
       C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Pieces_Tree_View, Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
@@ -807,7 +807,7 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, P_Wnd_Action.all.Performing_Piece_Effects_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
-      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "Effect");
       C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
@@ -852,7 +852,7 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Target_Pieces_Tree_View, P_Wnd_Action.all.Target_Pieces_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
-      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "View");
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "Piece");
       C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Target_Pieces_Tree_View, Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);

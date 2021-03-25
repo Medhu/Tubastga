@@ -143,14 +143,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
         Piece.Undefined_Piece_Id then
          declare
-            --            Piece_Cursor : Landscape.Pieces_Here_List.Cursor;
-
             A_Piece_Id : Piece.Type_Piece_Id;
             A_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
             An_Effect  : Effect.Type_Effect;
          begin
-            --Piece_Cursor := Landscape.Pieces_Here_List.Find(P_Patch.all.Pieces_Here,
-            --                                                Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces));
             A_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
             A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
 
