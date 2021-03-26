@@ -170,7 +170,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
                        (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
                     .Image_Data);
                Gtk.List_Store.Set
-                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 2, "effect");
+                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 2,
+                  Utilities.RemoteString.To_String
+                    (Tubastga_Game.Effect_Type_Info_List (An_Effect.Effect_Name).Type_Name) &
+                  " (" & An_Effect.Aux'Img & ")");
 
                Trav_Effect := Effect.Effect_List.Next (Trav_Effect);
             end loop;

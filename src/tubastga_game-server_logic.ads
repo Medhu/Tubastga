@@ -652,33 +652,6 @@ package Tubastga_Game.Server_Logic is
      (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
       P_House : in out Type_My_Tubastga_House);
 
-   Sentry_Piece      : constant Piece.Type_Piece_Type := 1;
-   Knight_Piece      : constant Piece.Type_Piece_Type := 2;
-   Bowman_Piece      : constant Piece.Type_Piece_Type := 3;
-   Ship_Piece        : constant Piece.Type_Piece_Type := 4;
-   Carrier_Piece     : constant Piece.Type_Piece_Type := 5;
-   Farm_House        : constant Piece.Type_Piece_Type := 6;
-   Lumberjack_House  : constant Piece.Type_Piece_Type := 7;
-   Stonecutter_House : constant Piece.Type_Piece_Type := 8;
-   Tower_House       : constant Piece.Type_Piece_Type := 9;
-   --
-
-   Landscapes_Type_Info_List : Landscape.Server.Type_Landscape_Type_Info_List :=
-     (Landscape_Grass =>
-        Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Grass"), Max_Pieces_Here => 6),
-      Landscape_Forest =>
-        Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Forest"),
-           Max_Pieces_Here => 6),
-      Landscape_Mountain =>
-        Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Mountain"),
-           Max_Pieces_Here => 6),
-      Landscape_Water =>
-        Landscape.Server.Type_Landscape_Type_Info'
-          (Type_Name       => Utilities.RemoteString.To_Unbounded_String ("Water"),
-           Max_Pieces_Here => 6));
 
    procedure Tubastga_Creating_Game
      (P_Map_Name      : in Utilities.RemoteString.Type_String;
@@ -714,40 +687,6 @@ package Tubastga_Game.Server_Logic is
    type Type_Attack_Defence_Types is (Attacking_Wins, Attacked_Wins);
    --
 
-   Effect_Type_Info_List : Effect.Server.Type_Effect_Type_Info_List :=
-     (Effect_Action_Point =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Action Point")),
-      Effect_Courage =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Courage")),
-      Effect_Captain =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Captain")),
-      Effect_Treasure =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Treasure")),
-      Effect_Stops =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Stop")),
-      Effect_Load =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Load")),
-      Effect_Unload =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Unload")),
-      Effect_Slot_1 =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Slot 1")),
-      Effect_Slot_2 =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Slot 2")),
-      Effect_Slot_3 =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Slot 3")),
-      Effect_Path =>
-        Effect.Server.Type_Effect_Type_Info'
-          (Type_Name => Utilities.RemoteString.To_Unbounded_String ("Path")));
 
    function Can_Load
      (P_Piece : in Type_My_Tubastga_Piece;

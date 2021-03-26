@@ -63,10 +63,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    Verbose : constant Boolean := False;
 
    type Type_Anim_State is
-     (Anim_Idle,
-      Anim_Show_Frame_Pause,
-      Anim_Get_Pieces_Report,
-      Anim_Get_Pieces_Report_Pause,
+     (Anim_Idle, Anim_Show_Frame_Pause, Anim_Get_Pieces_Report, Anim_Get_Pieces_Report_Pause,
       Anim_Show_Frame);
 
    Anim_State : Type_Anim_State := Anim_Idle;
@@ -102,12 +99,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Iter : Gtk.Text_Iter.Gtk_Text_Iter;
 
-   Pieces_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
+   Pieces_Pix                                                             : Gdk.Pixbuf.Gdk_Pixbuf;
    All_Pix, Scale_Pix, All_Minimap_Pix, Scale_Minimap_Pix, Patch_Zoom_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
 
-   All_Constructions_On_Patch,
-   All_Landscape_On_Patch,
-   All_Effects_On_Patch,
+   All_Constructions_On_Patch, All_Landscape_On_Patch, All_Effects_On_Patch,
    All_Selections_On_Patch : Gdk.Pixbuf.Gdk_Pixbuf;
 
    Now_Countdown, Last_Countdown : Integer := -1;
@@ -116,8 +111,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Last_Updates_Summary, Now : Ada.Real_Time.Time;
 
-   procedure Update_Activity_Report_Buffer
-     (P_Window        : in Type_Wnd_Main_Access;
+   procedure Update_Activity_Report_Buffer (P_Window : in Type_Wnd_Main_Access;
       P_Activity_List : in Observation.Activity.Activity_Report.Vector)
    is
       Data            : Observation.Activity.Type_Activity_Report;
@@ -141,8 +135,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
          Gtk.Text_Buffer.Get_End_Iter (P_Window.Buffer_Activity_Report, Iter);
          Gtk.Text_Buffer.Insert
-           (P_Window.Buffer_Activity_Report,
-            Iter,
+           (P_Window.Buffer_Activity_Report, Iter,
             Utilities.RemoteString.To_String (Data.Activity_Description) & ASCII.LF);
          Observation.Activity.Activity_Report.Next (Activity_Cursor);
       end loop;
@@ -171,13 +164,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
                Gtk.Text_Buffer.Get_End_Iter (P_Window.Buffer_Resources_Info, Iter);
                Gtk.Text_Buffer.Insert
-                 (P_Window.Buffer_Resources_Info,
-                  Iter,
-                  "Tower:" &
-                  A_Piece.all.Id'Img &
-                  " " &
-                  Utilities.RemoteString.To_String (A_Piece.all.Name) &
-                  " belonging to " &
+                 (P_Window.Buffer_Resources_Info, Iter,
+                  "Tower:" & A_Piece.all.Id'Img & " " &
+                  Utilities.RemoteString.To_String (A_Piece.all.Name) & " belonging to " &
                   Utilities.RemoteString.To_String
                     (Player_Name_List (Integer (A_Piece.all.Player_Id))) &
                   ASCII.LF);
@@ -186,13 +175,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                loop
                   Gtk.Text_Buffer.Get_End_Iter (P_Window.Buffer_Resources_Info, Iter);
                   Gtk.Text_Buffer.Insert
-                    (P_Window.Buffer_Resources_Info,
-                     Iter,
-                     "Resources:" &
-                     A_Piece.all.Storage.Slots (Trav_Slot).The_Goods'Img &
-                     " qty " &
-                     A_Piece.all.Storage.Slots (Trav_Slot).Quantity'Img &
-                     ASCII.LF);
+                    (P_Window.Buffer_Resources_Info, Iter,
+                     "Resources:" & A_Piece.all.Storage.Slots (Trav_Slot).The_Goods'Img & " qty " &
+                     A_Piece.all.Storage.Slots (Trav_Slot).Quantity'Img & ASCII.LF);
                end loop;
             end if;
             Trav_Towers := Piece.Client_Piece.Pieces_Client_List.Next (Trav_Towers);
@@ -212,10 +197,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Observation.Activity.Activity_Report.Clear (System_Messages);
 
             Client.Server_Adm.Get_Updates_Summary
-              (Me_Player_Id,
-               Now_Countdown,
-               Game_State,
-               System_Messages);
+              (Me_Player_Id, Now_Countdown, Game_State, System_Messages);
 
             Last_Updates_Summary := Ada.Real_Time.Clock;
          end if;
@@ -264,19 +246,14 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       All_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True,
-           Width     => 1400,
-           Height    => Glib.Gint (Game_Area_Origo_Y) + 80);
+          (Has_Alpha => True, Width => 1400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
       Pieces_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True,
-           Width     => 1400,
-           Height    => Glib.Gint (Game_Area_Origo_Y) + 80);
+          (Has_Alpha => True, Width => 1400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
       Scale_Pix       := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
       All_Minimap_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True,
-           Width     => Glib.Gint (500),
+          (Has_Alpha => True, Width => Glib.Gint (500),
            Height    => Glib.Gint (Minimap_Origo_Y) + Glib.Gint (10));
       Scale_Minimap_Pix := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
 
@@ -321,9 +298,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end On_Player_Timer_Area_Show;
 
-   procedure All_Pieces_On_Map
-     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure All_Pieces_On_Map (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                                : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav_Pieces      : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id       : Piece.Type_Piece_Id;
@@ -338,8 +314,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          A_Piece_Position :=
            Tubastga_Window_Pkg.Lists.Type_Piece_Position'(A_Piece_Id, P_Patch.all.Pos);
          Tubastga_Window_Pkg.Lists.Set_All_Piece_In_List
-           (Tubastga_Window_Pkg.Lists.All_Pieces_List,
-            A_Piece_Position);
+           (Tubastga_Window_Pkg.Lists.All_Pieces_List, A_Piece_Position);
 
          Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
       end loop;
@@ -349,9 +324,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end All_Pieces_On_Map;
 
-   procedure Draw_Map
-     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure Draw_Map (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch                       : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
    begin
       All_Pieces_On_Map (A_Client_Map, P_Patch);
@@ -372,77 +346,46 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Gdk.Pixbuf.Fill (All_Selections_On_Patch, Glib.Guint32 (0));
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Effects
-              (All_Effects_On_Patch,
-               P_Patch.all.Effects_Here);
+              (All_Effects_On_Patch, P_Patch.all.Effects_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes
-              (All_Landscape_On_Patch,
-               P_Patch.all.Landscape_Here);
+              (All_Landscape_On_Patch, P_Patch.all.Landscape_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Constructions
-              (All_Constructions_On_Patch,
-               P_Patch.all.Effects_Here);
+              (All_Constructions_On_Patch, P_Patch.all.Effects_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_All_Patch
-              (A_Client_Map,
-               P_Patch.all,
-               All_Pix,
-               All_Landscape_On_Patch,
-               All_Constructions_On_Patch,
-               All_Effects_On_Patch);
+              (A_Client_Map, P_Patch.all, All_Pix, All_Landscape_On_Patch,
+               All_Constructions_On_Patch, All_Effects_On_Patch);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Houses
-              (A_Client_Map,
-               P_Patch.all,
-               All_Pix,
-               P_Patch.all.Pieces_Here);
+              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Players
-              (A_Client_Map,
-               P_Patch.all,
-               All_Pix,
-               P_Patch.all.Pieces_Here);
+              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Pieces
-              (A_Client_Map,
-               P_Patch.all,
-               Pieces_Pix,
-               P_Patch.all.Pieces_Here);
+              (A_Client_Map, P_Patch.all, Pieces_Pix, P_Patch.all.Pieces_Here);
             --
             --
             -- Now UI Aid Selection
 
             Tubastga_Window_Pkg.FullsizeView.Draw_Patch_Selections
-              (All_Selections_On_Patch,
-               P_Patch.all,
-               LB_Selected_Pos,
-               RB_Selected_Pos);
+              (All_Selections_On_Patch, P_Patch.all, LB_Selected_Pos, RB_Selected_Pos);
 
             declare
                x, y : Glib.Gint;
             begin
                x :=
                  Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB
-                   (A_Client_Map,
-                    P_Patch.all);
+                   (A_Client_Map, P_Patch.all);
                y :=
                  Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB
-                   (A_Client_Map,
-                    P_Patch.all);
+                   (A_Client_Map, P_Patch.all);
 
                Gdk.Pixbuf.Composite
-                 (All_Selections_On_Patch,
-                  All_Pix,
-                  Glib.Gint (x),
-                  Glib.Gint (y),
-                  72,
-                  72,
-                  Glib.Gdouble (x),
-                  Glib.Gdouble (y),
-                  1.0,
-                  1.0,
-                  Gdk.Pixbuf.Interp_Nearest,
-                  255);
+                 (All_Selections_On_Patch, All_Pix, Glib.Gint (x), Glib.Gint (y), 72, 72,
+                  Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest, 255);
             end;
 
          else
@@ -454,8 +397,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    end Draw_Map;
 
    procedure On_Player_Timer_Area_Expose_Event
-     (Object      :    access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
-      P_Draw      :    Cairo.Cairo_Context;
+     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class; P_Draw : Cairo.Cairo_Context;
       P_Player_Id : in Player.Type_Player_Id)
    is
 
@@ -469,11 +411,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       if P_Player_Id = Me_Player_Id then
          Cairo.Set_Source_Rgb (P_Draw, 0.50, 0.40, 0.30);
          Cairo.Rectangle
-           (P_Draw,
-            Glib.Gdouble (0),
-            Glib.Gdouble (0),
-            Glib.Gdouble (125),
-            Glib.Gdouble (40));
+           (P_Draw, Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (125), Glib.Gdouble (40));
       end if;
 
       if P_Player_Id = 1 then
@@ -485,11 +423,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       end if;
 
       Cairo.Rectangle
-        (P_Draw,
-         Glib.Gdouble (5),
-         Glib.Gdouble (5),
-         Glib.Gdouble (60),
-         Glib.Gdouble (30));
+        (P_Draw, Glib.Gdouble (5), Glib.Gdouble (5), Glib.Gdouble (60), Glib.Gdouble (30));
       Cairo.Fill (P_Draw);
 
       Cairo.Stroke (P_Draw);
@@ -593,14 +527,11 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       end loop;
 
       Gtk.Label.Set_Text
-        (The_Window.all.Lbl_Player_1_Name,
-         Utilities.RemoteString.To_String (Player_Name_List (1)));
+        (The_Window.all.Lbl_Player_1_Name, Utilities.RemoteString.To_String (Player_Name_List (1)));
       Gtk.Label.Set_Text
-        (The_Window.all.Lbl_Player_2_Name,
-         Utilities.RemoteString.To_String (Player_Name_List (2)));
+        (The_Window.all.Lbl_Player_2_Name, Utilities.RemoteString.To_String (Player_Name_List (2)));
       Gtk.Label.Set_Text
-        (The_Window.all.Lbl_Player_3_Name,
-         Utilities.RemoteString.To_String (Player_Name_List (3)));
+        (The_Window.all.Lbl_Player_3_Name, Utilities.RemoteString.To_String (Player_Name_List (3)));
 
       Draw := P_Draw;
 
@@ -696,8 +627,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
 
                      Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Patch_Window
-                       (The_Window.all.Wnd_Performing_Patch,
-                        A_Patch);
+                       (The_Window.all.Wnd_Performing_Patch, A_Patch);
                   else
                      A_Patch := null;
                   end if;
@@ -714,11 +644,13 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Hexagon.Client_Map.Reset_Visit;
 
          Gdk.Pixbuf.Fill (All_Pix, Glib.Guint32 (0));
-         Gdk.Pixbuf.Fill (Pieces_Pix, Glib.Guint32(0));
+         Gdk.Pixbuf.Fill (Pieces_Pix, Glib.Guint32 (0));
 
-         Hexagon.Client_Map.Traverse (A_Client_Map, A_Client_Map.Origo_Patch, -- current origo for
+         Hexagon.Client_Map.Traverse
+           (A_Client_Map,
+            A_Client_Map.Origo_Patch, -- current origo for
          --this client.
-         Draw_Map'Access);
+            Draw_Map'Access);
 
          Hexagon.Client_Map.Reset_Visit;
 
@@ -741,12 +673,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             if Curr_Patch.Pos.P_Valid then
                Gtk.Text_Buffer.Set_Text
                  (The_Window.all.Buffer_Hover_Info,
-                  "Information for patch (" &
-                  Curr_Patch.Pos.A'Img &
-                  ", " &
-                  Curr_Patch.Pos.B'Img &
-                  ")" &
-                  ASCII.LF);
+                  "Information for patch (" & Curr_Patch.Pos.A'Img & ", " & Curr_Patch.Pos.B'Img &
+                  ")" & ASCII.LF);
 
                Trav_Pieces := Landscape.Pieces_Here_List.First (Curr_Patch.Pieces_Here);
                while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
@@ -758,17 +686,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                       (Piece.Type_Piece (Tubastga_Window_Pkg.Type_Client_Piece (Curr_Piece.all)));
 
                   Gtk.Text_Buffer.Insert
-                    (The_Window.Buffer_Hover_Info,
-                     Iter,
-                     "Player: " &
-                     Curr_Piece.Player_Id'Img &
-                     " Observed piece: " &
-                     Curr_Piece.Type_Of_Piece'Img &
-                     " Piece Id:" &
-                     Curr_Piece.Id'Img &
-                     " " &
-                     Utilities.RemoteString.To_String (Curr_Name) &
-                     ASCII.LF);
+                    (The_Window.Buffer_Hover_Info, Iter,
+                     "Player: " & Curr_Piece.Player_Id'Img & " Observed piece: " &
+                     Curr_Piece.Type_Of_Piece'Img & " Piece Id:" & Curr_Piece.Id'Img & " " &
+                     Utilities.RemoteString.To_String (Curr_Name) & ASCII.LF);
                   Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
                end loop;
 
@@ -779,27 +700,22 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
                if Curr_Piece /= null then
                   Gtk.Text_Buffer.Insert
-                    (The_Window.Buffer_Hover_Info,
-                     Iter,
+                    (The_Window.Buffer_Hover_Info, Iter,
                      "Currently selected Piece :" & Curr_Piece.Id'Img & ASCII.LF);
 
                end if;
 
                Gtk.Text_Buffer.Get_End_Iter (The_Window.Buffer_Hover_Info, Iter);
                Gtk.Text_Buffer.Insert
-                 (The_Window.Buffer_Hover_Info,
-                  Iter,
+                 (The_Window.Buffer_Hover_Info, Iter,
                   "Observed landscape: " & Format_Landscape (Curr_Patch.Landscape_Here) & ASCII.LF);
 
                Gtk.Text_Buffer.Get_End_Iter (The_Window.Buffer_Hover_Info, Iter);
                Gtk.Text_Buffer.Insert
-                 (The_Window.Buffer_Hover_Info,
-                  Iter,
-                  "Patch Effects: " & ASCII.LF);
+                 (The_Window.Buffer_Hover_Info, Iter, "Patch Effects: " & ASCII.LF);
 
                Tubastga_Window_Pkg.Effects.Format_Patch_Effects
-                 (The_Window.Buffer_Hover_Info,
-                  Curr_Patch.all);
+                 (The_Window.Buffer_Hover_Info, Curr_Patch.all);
                --
                --
                --
@@ -810,69 +726,46 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       Gdk.Pixbuf.Fill (Scale_Pix, Glib.Guint32 (0));
       Gdk.Pixbuf.Composite
-        (All_Pix,
-         Scale_Pix,
-         Glib.Gint (0.0),
-         Glib.Gint (0.0),
-         Glib.Gint (700.0),
-         Glib.Gint (730.0),
-         Glib.Gdouble (0),
-         Glib.Gdouble (0),
-         Glib.Gdouble (Map_Scale),
-         Glib.Gdouble (Map_Scale),
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (All_Pix, Scale_Pix, Glib.Gint (0.0), Glib.Gint (0.0), Glib.Gint (700.0), Glib.Gint (730.0),
+         Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (Map_Scale), Glib.Gdouble (Map_Scale),
+         Gdk.Pixbuf.Interp_Nearest, 255);
       Gdk.Pixbuf.Composite
-        (Pieces_Pix,
-         Scale_Pix,
-         Glib.Gint (0.0),
-         Glib.Gint (0.0),
-         Glib.Gint (700.0),
-         Glib.Gint (730.0),
-         Glib.Gdouble (0),
-         Glib.Gdouble (0),
-         Glib.Gdouble (Map_Scale),
-         Glib.Gdouble (Map_Scale),
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (Pieces_Pix, Scale_Pix, Glib.Gint (0.0), Glib.Gint (0.0), Glib.Gint (700.0),
+         Glib.Gint (730.0), Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (Map_Scale),
+         Glib.Gdouble (Map_Scale), Gdk.Pixbuf.Interp_Nearest, 255);
       Gdk.Cairo.Set_Source_Pixbuf (P_Draw, Scale_Pix, Glib.Gdouble (0), Glib.Gdouble (0));
       Cairo.Paint (P_Draw);
 
       Gdk.Pixbuf.Composite
-        (All_Minimap_Pix,
-         Scale_Minimap_Pix,
-         Glib.Gint (0),
-         Glib.Gint (0),
-         140,
-         360,
-         Glib.Gdouble (0),
-         Glib.Gdouble (0),
-         Glib.Gdouble (1.0),
-         Glib.Gdouble (1.0),
-         Gdk.Pixbuf.Interp_Nearest,
-         255);
+        (All_Minimap_Pix, Scale_Minimap_Pix, Glib.Gint (0), Glib.Gint (0), 140, 360,
+         Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0), Glib.Gdouble (1.0),
+         Gdk.Pixbuf.Interp_Nearest, 255);
       Gdk.Cairo.Set_Source_Pixbuf
-        (P_Draw,
-         Scale_Minimap_Pix,
-         Glib.Gdouble (500),
-         Glib.Gdouble (250));
+        (P_Draw, Scale_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (250));
 
       declare
-         Trav : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
-         Target_Pos : Hexagon.Type_Hexagon_Position;
-         Performing_Pos : Hexagon.Type_Hexagon_Position;
+         LB_Trav, RB_Trav : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
+         Target_Pos       : Hexagon.Type_Hexagon_Position;
+         Performing_Pos   : Hexagon.Type_Hexagon_Position;
       begin
-         Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (LB_Selected_Pos);
-         Performing_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
+         LB_Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (LB_Selected_Pos);
+         RB_Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (RB_Selected_Pos);
 
-         Trav := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.First (RB_Selected_Pos);
-         Target_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (Trav);
+         if Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Has_Element (LB_Trav) then
+            Performing_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (LB_Trav);
 
-         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
-           (A_Client_Map,
-            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Performing_Pos.A, Performing_Pos.B).all,
-            Hexagon.Client_Map.Get_Patch_Adress_From_AB(A_Client_Map, Target_Pos.A, Target_Pos.B).all,
-            All_Pix);
+            if Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Has_Element (RB_Trav) then
+               Target_Pos := Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Element (RB_Trav);
+
+               Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+                 (A_Client_Map,
+                  Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                    (A_Client_Map, Performing_Pos.A, Performing_Pos.B).all,
+                  Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                    (A_Client_Map, Target_Pos.A, Target_Pos.B).all,
+                  All_Pix);
+            end if;
+         end if;
       end;
 
       Cairo.Paint (P_Draw);
@@ -881,18 +774,15 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       Cairo.Set_Source_Rgb (P_Draw, 0.0, 0.0, 1.0);
       Cairo.Move_To (P_Draw, 430.0, 20.0);
       Cairo.Select_Font_Face
-        (P_Draw,
-         "courier",
-         Cairo.Cairo_Font_Slant_Normal,
-         Cairo.Cairo_Font_Weight_Bold);
+        (P_Draw, "courier", Cairo.Cairo_Font_Slant_Normal, Cairo.Cairo_Font_Weight_Bold);
       Cairo.Set_Font_Size (P_Draw, 20.0);
       Cairo.Show_Text (P_Draw, "Tubast'ga");
 
       --
       -- Helper lines....
 --        Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (0));
-  --      Cairo.Line_To (P_Draw, Gdouble (100.0), Gdouble (1000));
-    --    Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (682.0 / 0.65 * Map_Scale));
+      --      Cairo.Line_To (P_Draw, Gdouble (100.0), Gdouble (1000));
+      --    Cairo.Move_To (P_Draw, Gdouble (0), Gdouble (682.0 / 0.65 * Map_Scale));
       --  Cairo.Line_To (P_Draw, Gdouble (700), Gdouble (682.0 / 0.65 * Map_Scale));
 
       --Player Pos
@@ -989,9 +879,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       A_Pos   := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
       A_Patch := Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
       Piece.Client_Piece.Create_Piece
-        (Me_Player_Id,
-         Action.Type_Action_Type (1),
-         A_Piece,
+        (Me_Player_Id, Action.Type_Action_Type (1), A_Piece,
          Tubastga_UI_Aux.Convert_UI_State_To_Piece (Tubastga_UI_Aux.UI_State),
          Tubastga_UI_Aux.Convert_UI_State_To_Category (Tubastga_UI_Aux.UI_State),
          Landscape.Type_Patch (A_Patch.all));
@@ -1011,9 +899,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end Place_Piece;
 
-   function On_Map_Area_Motion_Notify_Event
-     (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Motion_Notify_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      Params                                        : Gtk.Arguments.Gtk_Args) return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
       X    : Glib.Gdouble;
@@ -1029,9 +916,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Map_Area_Motion_Notify_Event;
 
-   function On_Map_Area_Button_Press_Event
-     (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Button_Press_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      Params                                       : Gtk.Arguments.Gtk_Args) return Boolean
    is
       Arg1    : Gdk.Event.Gdk_Event                         := To_Event (Params, 1);
       X       : Glib.Gdouble;
@@ -1064,32 +950,25 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
                A_Patch := Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
                Tubastga_Window_Pkg.Lists.Set_Last_Selected_Pos
-                 (LB_Selected_Pos,
-                  A_Patch.all.Pos,
-                  Shift_LR_Pressed);
+                 (LB_Selected_Pos, A_Patch.all.Pos, Shift_LR_Pressed);
 
                Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Patch_Window
-                 (The_Window.all.Wnd_Performing_Patch,
-                  A_Patch);
+                 (The_Window.all.Wnd_Performing_Patch, A_Patch);
 
             elsif Gdk.Event.Get_Button (Arg1) = Right_Mouse_Button then
 
                A_Patch := Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
                Tubastga_Window_Pkg.Lists.Set_Last_Selected_Pos
-                 (RB_Selected_Pos,
-                  A_Patch.all.Pos,
-                  Shift_LR_Pressed);
+                 (RB_Selected_Pos, A_Patch.all.Pos, Shift_LR_Pressed);
 
                Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Target_Patch_Window
-                 (The_Window.all.Wnd_Performing_Patch,
-                  A_Patch);
+                 (The_Window.all.Wnd_Performing_Patch, A_Patch);
 
             end if;
 
             -- are we trying to place a piece?
             if Tubastga_UI_Aux.UI_State in
-                Tubastga_UI_Aux.Place_Sentry .. Tubastga_UI_Aux.Place_Stonecutter
-            then
+                Tubastga_UI_Aux.Place_Sentry .. Tubastga_UI_Aux.Place_Stonecutter then
                Place_Piece;
                Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Done;
             end if;
@@ -1107,9 +986,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Map_Area_Button_Press_Event;
 
-   function On_Map_Area_Scroll_Event
-     (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Scroll_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      Params                                 : Gtk.Arguments.Gtk_Args) return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
@@ -1138,8 +1016,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return False;
    end On_Map_Area_Scroll_Event;
 
-   procedure On_Button_Place_Sentry
-     (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
+   procedure On_Button_Place_Sentry (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
    is
    begin
       if Verbose then
@@ -1151,8 +1028,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end On_Button_Place_Sentry;
 
-   procedure On_Button_Place_Bowman
-     (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
+   procedure On_Button_Place_Bowman (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
    is
    begin
       if Verbose then
@@ -1164,8 +1040,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end On_Button_Place_Bowman;
 
-   procedure On_Button_Place_Carrier
-     (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
+   procedure On_Button_Place_Carrier (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
    is
    begin
       if Verbose then
@@ -1218,8 +1093,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end On_Button_Place_Lumberjack;
 
-   procedure On_Button_Place_Knight
-     (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
+   procedure On_Button_Place_Knight (Object : access Gtk.Tool_Button.Gtk_Tool_Button_Record'Class)
    is
    begin
       if Verbose then
@@ -1240,9 +1114,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Stonecutter;
    end On_Button_Place_Stonecutter;
 
-   function On_Keyboard_Key_Press
-     (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Keyboard_Key_Press (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      Params                              : Gtk.Arguments.Gtk_Args) return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
@@ -1272,8 +1145,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                else
                   TAB_Cursor :=
                     Tubastga_Window_Pkg.Lists.Find_Piece_In_All_Piece_List
-                      (Tubastga_Window_Pkg.Lists.All_Pieces_List,
-                       Current_TAB_Piece_Id);
+                      (Tubastga_Window_Pkg.Lists.All_Pieces_List, Current_TAB_Piece_Id);
                end if;
 
                TAB_Cursor := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (TAB_Cursor);
@@ -1289,12 +1161,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (TAB_Cursor);
 
                   Tubastga_Window_Pkg.Lists.Set_Last_Selected_Piece
-                    (LB_Selected_Pieces,
-                     A_Piece_Position.Actual_Piece_Id,
-                     Shift_LR_Pressed);
+                    (LB_Selected_Pieces, A_Piece_Position.Actual_Piece_Id, Shift_LR_Pressed);
                   Tubastga_Window_Pkg.ScrolledView.Scroll_To_Patch
-                    (A_Client_Map,
-                     A_Piece_Position.Actual_Pos);
+                    (A_Client_Map, A_Piece_Position.Actual_Pos);
                end if;
             end;
 
@@ -1358,9 +1227,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Keyboard_Key_Press;
 
-   function On_Keyboard_Key_Release
-     (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Keyboard_Key_Release (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      Params                                : Gtk.Arguments.Gtk_Args) return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
