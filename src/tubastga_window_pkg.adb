@@ -746,7 +746,8 @@ package body Tubastga_Window_Pkg is
    end Gtk_New;
 
    --Performing_Pieces_Scroll_VBox
-   procedure Initialize_Performing_Pieces_Scroll_VBox (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   procedure Initialize_Performing_Pieces_Scroll_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
    is
       Piece_Info : Glib.GType_Array (1 .. 3) :=
         Glib.GType_Array'(1 => Glib.GType_Int, 2 => Gdk.Pixbuf.Get_Type, 3 => Glib.GType_String);
@@ -790,7 +791,8 @@ package body Tubastga_Window_Pkg is
    end Initialize_Performing_Pieces_Scroll_VBox;
 
    --Performing_Pieces_Effects_Scroll_VBox
-   procedure Initialize_Performing_Piece_Effects_Scroll_VBox (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   procedure Initialize_Performing_Piece_Effects_Scroll_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
    is
       Piece_Info : Glib.GType_Array (1 .. 3) :=
         Glib.GType_Array'(1 => Glib.GType_Int, 2 => Gdk.Pixbuf.Get_Type, 3 => Glib.GType_String);
@@ -800,39 +802,47 @@ package body Tubastga_Window_Pkg is
       Col_Piece_Image : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
       C               : Glib.Gint;
    begin
-      P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox :=
+        Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Performing_Piece_Effects_List_Store, Piece_Info);
       Gtk.Tree_View.Gtk_New
-        (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, P_Wnd_Action.all.Performing_Piece_Effects_List_Store);
+        (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View,
+         P_Wnd_Action.all.Performing_Piece_Effects_List_Store);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "Effect");
-      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, Col_Piece_Image);
+      C :=
+        Gtk.Tree_View.Append_Column
+          (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, Col_Piece_Image);
       Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Image, Pixbuf_Renderer, "pixbuf", 1);
 
       Gtk.Tree_View_Column.Gtk_New (Col_Piece_Name);
       Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
-      C := Gtk.Tree_View.Append_Column (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, Col_Piece_Name);
+      C :=
+        Gtk.Tree_View.Append_Column
+          (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, Col_Piece_Name);
       Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
       Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
       Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
 
-      Gtk.Tree_View.Set_Activate_On_Single_Click (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, True);
+      Gtk.Tree_View.Set_Activate_On_Single_Click
+        (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, True);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox, P_Wnd_Action.all.Perform_Piece_Effects_Tree_View);
+        (P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox,
+         P_Wnd_Action.all.Perform_Piece_Effects_Tree_View);
       Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, 150, 200);
 
       Callbacks_Tubastga.Tree_View_Cb.Connect
         (P_Wnd_Action.all.Perform_Piece_Effects_Tree_View, "row-activated",
          Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
-           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Piece_Effects_Tree_View'Access),
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Piece_Effects_Tree_View'
+              Access),
          False);
 
    end Initialize_Performing_Piece_Effects_Scroll_VBox;
-
 
    --Performing_Target_Scroll_VBox
    procedure Initialize_Target_Scroll_VBox (P_Wnd_Action : access Type_Wnd_Action_Record'Class) is
@@ -845,7 +855,7 @@ package body Tubastga_Window_Pkg is
       C               : Glib.Gint;
 
    begin
-      P_Wnd_Action.all.Target_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+      P_Wnd_Action.all.Target_Pieces_Scroll_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Target_Pieces_List_Store, Piece_Info);
       Gtk.Tree_View.Gtk_New
@@ -867,7 +877,7 @@ package body Tubastga_Window_Pkg is
 
       Gtk.Tree_View.Set_Activate_On_Single_Click (P_Wnd_Action.all.Target_Pieces_Tree_View, True);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Target_Scroll_VBox, P_Wnd_Action.all.Target_Pieces_Tree_View);
+        (P_Wnd_Action.all.Target_Pieces_Scroll_VBox, P_Wnd_Action.all.Target_Pieces_Tree_View);
       Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Target_Pieces_Tree_View, 450, 210);
 
       Callbacks_Tubastga.Tree_View_Cb.Connect
@@ -877,6 +887,60 @@ package body Tubastga_Window_Pkg is
          False);
 
    end Initialize_Target_Scroll_VBox;
+
+   --Target_Piece_Effects_Scroll_VBox
+   procedure Initialize_Target_Piece_Effects_Scroll_VBox
+     (P_Wnd_Action : access Type_Wnd_Action_Record'Class)
+   is
+      Piece_Info : Glib.GType_Array (1 .. 3) :=
+        Glib.GType_Array'(1 => Glib.GType_Int, 2 => Gdk.Pixbuf.Get_Type, 3 => Glib.GType_String);
+      Text_Renderer   : Gtk.Cell_Renderer_Text.Gtk_Cell_Renderer_Text;
+      Pixbuf_Renderer : Gtk.Cell_Renderer_Pixbuf.Gtk_Cell_Renderer_Pixbuf;
+      Col_Piece_Name  : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
+      Col_Piece_Image : Gtk.Tree_View_Column.Gtk_Tree_View_Column;
+      C               : Glib.Gint;
+   begin
+      P_Wnd_Action.all.Target_Piece_Effects_Scroll_VBox :=
+        Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
+
+      Gtk.List_Store.Gtk_New (P_Wnd_Action.all.Target_Piece_Effects_List_Store, Piece_Info);
+      Gtk.Tree_View.Gtk_New
+        (P_Wnd_Action.all.Target_Piece_Effects_Tree_View,
+         P_Wnd_Action.all.Target_Piece_Effects_List_Store);
+
+      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Image);
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Image, "Effect");
+      C :=
+        Gtk.Tree_View.Append_Column
+          (P_Wnd_Action.all.Target_Piece_Effects_Tree_View, Col_Piece_Image);
+      Gtk.Cell_Renderer_Pixbuf.Gtk_New (Pixbuf_Renderer);
+      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Image, Pixbuf_Renderer, True);
+      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Image, Pixbuf_Renderer, "pixbuf", 1);
+
+      Gtk.Tree_View_Column.Gtk_New (Col_Piece_Name);
+      Gtk.Tree_View_Column.Set_Title (Col_Piece_Name, "Name");
+      C :=
+        Gtk.Tree_View.Append_Column
+          (P_Wnd_Action.all.Target_Piece_Effects_Tree_View, Col_Piece_Name);
+      Gtk.Cell_Renderer_Text.Gtk_New (Text_Renderer);
+      Gtk.Tree_View_Column.Pack_Start (Col_Piece_Name, Text_Renderer, True);
+      Gtk.Tree_View_Column.Add_Attribute (Col_Piece_Name, Text_Renderer, "text", 2);
+
+      Gtk.Tree_View.Set_Activate_On_Single_Click
+        (P_Wnd_Action.all.Target_Piece_Effects_Tree_View, True);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Target_Piece_Effects_Scroll_VBox,
+         P_Wnd_Action.all.Target_Piece_Effects_Tree_View);
+      Gtk.Tree_View.Set_Size_Request (P_Wnd_Action.all.Target_Piece_Effects_Tree_View, 150, 200);
+
+      Callbacks_Tubastga.Tree_View_Cb.Connect
+        (P_Wnd_Action.all.Target_Piece_Effects_Tree_View, "row-activated",
+         Callbacks_Tubastga.Tree_View_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Piece_Effects_Tree_View'
+              Access),
+         False);
+
+   end Initialize_Target_Piece_Effects_Scroll_VBox;
 
    --Fighting_Piece_Action1_VBox
    procedure Initialize_Fighting_Piece_Action1_VBox
@@ -1224,6 +1288,7 @@ package body Tubastga_Window_Pkg is
       Initialize_Performing_Pieces_Scroll_VBox (P_Wnd_Action);
       Initialize_Performing_Piece_Effects_Scroll_VBox (P_Wnd_Action);
       Initialize_Target_Scroll_VBox (P_Wnd_Action);
+      Initialize_Target_Piece_Effects_Scroll_VBox (P_Wnd_Action);
       Initialize_Fighting_Piece_Action1_VBox (P_Wnd_Action);
       Initialize_Fighting_Piece_Action2_VBox (P_Wnd_Action);
       Initialize_House_Piece_Action1_VBox (P_Wnd_Action);
@@ -1236,7 +1301,8 @@ package body Tubastga_Window_Pkg is
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Performing_Pieces_Scroll_VBox);
       Gtk.Box.Pack_Start
-        (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox);
+        (P_Wnd_Action.all.Performing_Content_HBox,
+         P_Wnd_Action.all.Performing_Piece_Effects_Scroll_VBox);
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Performing_Content_HBox, P_Wnd_Action.all.Fighting_Piece_Action1_VBox);
       Gtk.Box.Pack_Start
@@ -1249,7 +1315,14 @@ package body Tubastga_Window_Pkg is
       P_Wnd_Action.all.Content_HBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
       Gtk.Box.Pack_Start (P_Wnd_Action.all.Content_HBox, P_Wnd_Action.all.Performing_Content_HBox);
-      Gtk.Box.Pack_Start (P_Wnd_Action.all.Content_HBox, P_Wnd_Action.all.Target_Scroll_VBox);
+
+      P_Wnd_Action.all.Target_Content_HBox := Gtk.Box.Gtk_Hbox_New (True, Glib.Gint (2));
+
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Target_Content_HBox, P_Wnd_Action.all.Target_Pieces_Scroll_VBox);
+      Gtk.Box.Pack_Start
+        (P_Wnd_Action.all.Target_Content_HBox, P_Wnd_Action.all.Target_Piece_Effects_Scroll_VBox);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Content_HBox, P_Wnd_Action.all.Target_Content_HBox);
 
       Tubastga_Window_Pkg.Add (P_Wnd_Action, P_Wnd_Action.all.Content_HBox);
 

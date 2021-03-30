@@ -55,17 +55,18 @@ package Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    procedure On_Performing_Patch_Piece_Effects_Tree_View
      (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
-   procedure Activate_Action_Buttons
-     (P_Window        : in out Type_Wnd_Action_Access;
-      P_Type_Category : in     Piece.Type_Category);
+   procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Action_Access;
+      P_Type_Category                          : in     Piece.Type_Category);
 
-   procedure Set_Selected_Patch_Window
-     (P_Window : in out Type_Wnd_Action_Access;
-      P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
+   procedure Set_Selected_Performing_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
+      P_Patch : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
+
+   procedure Set_Selected_Target_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
+      P_Patch : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
 
    procedure On_Target_Patch_Tree_View (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
-   procedure Set_Target_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
-                                   P_Patch                                  : in     Hexagon.Client_Map.Type_Client_Patch_Adress);
+   procedure On_Target_Patch_Piece_Effects_Tree_View
+     (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class);
 
 end Tubastga_Window_Pkg.Callbacks.Actions_Menu;
