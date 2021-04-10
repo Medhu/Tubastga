@@ -628,7 +628,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
 
                      Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Performing_Patch_Window
-                       (The_Window.all.Wnd_Performing_Patch, A_Patch);
+                       (The_Window.all.Wnd_Action, A_Patch);
                   else
                      A_Patch := null;
                   end if;
@@ -653,7 +653,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                        Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
 
                      Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Target_Patch_Window
-                       (The_Window.all.Wnd_Performing_Patch, A_Patch);
+                       (The_Window.all.Wnd_Action, A_Patch);
                   else
                      A_Patch := null;
                   end if;
@@ -979,7 +979,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                  (LB_Selected_Pos, A_Patch.all.Pos, Shift_LR_Pressed);
 
                Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Performing_Patch_Window
-                 (The_Window.all.Wnd_Performing_Patch, A_Patch);
+                 (The_Window.all.Wnd_Action, A_Patch);
 
             elsif Gdk.Event.Get_Button (Arg1) = Right_Mouse_Button then
 
@@ -991,7 +991,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                Text_IO.Put_Line (".");
 
                Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Target_Patch_Window
-                 (The_Window.all.Wnd_Performing_Patch, A_Patch);
+                 (The_Window.all.Wnd_Action, A_Patch);
 
             end if;
 

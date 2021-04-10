@@ -410,7 +410,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
         (The_Window,
          Glib.UTF8_String'("Tubast'ga - " & Utilities.RemoteString.To_String (My_Name)));
       Set_Title
-        (The_Window.all.Wnd_Performing_Patch,
+        (The_Window.all.Wnd_Action,
          Glib.UTF8_String'
            ("Tubast'ga - Action - " & Utilities.RemoteString.To_String (My_Name)));
 
@@ -459,7 +459,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Menu is
 
       Set_Title (The_Window, Glib.UTF8_String'("Tubast'ga"));
       Set_Title
-        (The_Window.all.Wnd_Performing_Patch,
+        (The_Window.all.Wnd_Action,
          Glib.UTF8_String'("Tubast'ga - Action"));
 
       Refresh_Server_Configuration (The_Window.all.Dlg_Main_Menu);

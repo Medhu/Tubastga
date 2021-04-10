@@ -20,10 +20,8 @@
 with Text_IO;
 
 package body tubastga_window_pkg.lists is
-   procedure Set_Last_Selected_Pos
-     (P_Selected_List : in out Pos_List_Pkg.Vector;
-      P_Pos           : in     Hexagon.Type_Hexagon_Position;
-      P_Shift_LR      : in     Boolean)
+   procedure Set_Last_Selected_Pos (P_Selected_List : in out Pos_List_Pkg.Vector;
+      P_Pos : in     Hexagon.Type_Hexagon_Position; P_Shift_LR : in Boolean)
    is
       Does_Exist : Pos_List_Pkg.Cursor;
 
@@ -40,6 +38,10 @@ package body tubastga_window_pkg.lists is
       end if;
 
       Pos_List_Pkg.Append (P_Selected_List, P_Pos);
+
+   exception
+      when others =>
+         Text_IO.Put_Line ("exception: Set_Last_Selected_Pos");
    end Set_Last_Selected_Pos;
 
    function Get_Last_Selected_Pos
@@ -57,6 +59,12 @@ package body tubastga_window_pkg.lists is
       end if;
 
       return A_Selection;
+
+   exception
+      when others =>
+         Text_IO.Put_Line ("exception: Get_Last_Selected_Pos");
+         return A_Selection;
+
    end Get_Last_Selected_Pos;
 
    function Get_Last_Selected_Piece
@@ -76,12 +84,16 @@ package body tubastga_window_pkg.lists is
       end if;
 
       return Piece_Last_Focus;
+
+   exception
+      when others =>
+         Text_IO.Put_Line ("exception: Get_Last_Selected_Piece");
+         return Piece_Last_Focus;
+
    end Get_Last_Selected_Piece;
 
-   procedure Set_Last_Selected_Piece
-     (P_Selected_List : in out Piece_List_Pkg.Vector;
-      P_Piece_Id      : in     Piece.Type_Piece_Id;
-      P_Shift_LR      : in     Boolean)
+   procedure Set_Last_Selected_Piece (P_Selected_List : in out Piece_List_Pkg.Vector;
+      P_Piece_Id : in     Piece.Type_Piece_Id; P_Shift_LR : in Boolean)
    is
       Does_Exist : Piece_List_Pkg.Cursor;
 
@@ -98,10 +110,14 @@ package body tubastga_window_pkg.lists is
       end if;
 
       Piece_List_Pkg.Append (P_Selected_List, P_Piece_Id);
+
+   exception
+      when others =>
+         Text_IO.Put_Line ("exception: Set_Last_Selected_Piece");
+
    end Set_Last_Selected_Piece;
 
-   function Find_Piece_In_All_Piece_List
-     (P_List     : in All_Pieces_List_Pkg.Vector;
+   function Find_Piece_In_All_Piece_List (P_List : in All_Pieces_List_Pkg.Vector;
       P_Piece_Id : in Piece.Type_Piece_Id) return All_Pieces_List_Pkg.Cursor
    is
       Trav       : All_Pieces_List_Pkg.Cursor;
@@ -129,9 +145,8 @@ package body tubastga_window_pkg.lists is
 
    end Find_Piece_In_All_Piece_List;
 
-   procedure Set_All_Piece_In_List
-     (P_List           : in out All_Pieces_List_Pkg.Vector;
-      P_Piece_Position : in     Type_Piece_Position)
+   procedure Set_All_Piece_In_List (P_List : in out All_Pieces_List_Pkg.Vector;
+      P_Piece_Position                     : in     Type_Piece_Position)
    is
       Does_Exist : All_Pieces_List_Pkg.Cursor;
 

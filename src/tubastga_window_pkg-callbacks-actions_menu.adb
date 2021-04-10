@@ -92,7 +92,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          return;
       end if;
 
-      Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Perform_Pieces_Tree_View);
+      Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Performing_Pieces_Tree_View);
 
       Gtk.Tree_Selection.Get_Selected (Selected_Record, Selected_Model, Selected_Iter);
 
@@ -130,7 +130,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
         Piece.Undefined_Piece_Id then
 
-         Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Perform_Pieces_Tree_View);
+         Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Performing_Pieces_Tree_View);
 
          if A_Path /= Gtk.Tree_Model.Null_Gtk_Tree_Path then
             Gtk.Tree_Selection.Select_Path (Selected_Record, A_Path);
