@@ -520,6 +520,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall1;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall1 - exception");
+         raise;
    end On_Button_Place_Wall1;
 
    procedure On_Button_Place_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -547,6 +551,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall2;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall2 - exception");
+         raise;
    end On_Button_Place_Wall2;
 
    procedure On_Button_Place_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -574,6 +582,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall3;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall3 - exception");
+         raise;
    end On_Button_Place_Wall3;
 
    procedure On_Button_Place_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -601,6 +613,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall4;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall4 - exception");
+         raise;
    end On_Button_Place_Wall4;
 
    procedure On_Button_Place_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -628,6 +644,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall5;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall5 - exception");
+         raise;
    end On_Button_Place_Wall5;
 
    procedure On_Button_Place_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -655,6 +675,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Wall6;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Place_Wall6 - exception");
+         raise;
    end On_Button_Place_Wall6;
    --
    --
@@ -685,6 +709,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall1;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall1 - exception");
+         raise;
    end On_Button_Remove_Wall1;
 
    procedure On_Button_Remove_Wall2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -713,6 +741,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall2;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall2 - exception");
+         raise;
    end On_Button_Remove_Wall2;
 
    procedure On_Button_Remove_Wall3 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -741,6 +773,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall3;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall3 - exception");
+         raise;
    end On_Button_Remove_Wall3;
 
    procedure On_Button_Remove_Wall4 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -769,6 +805,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall4;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall4 - exception");
+         raise;
    end On_Button_Remove_Wall4;
 
    procedure On_Button_Remove_Wall5 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -797,6 +837,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall5;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall5 - exception");
+         raise;
    end On_Button_Remove_Wall5;
 
    procedure On_Button_Remove_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -825,6 +869,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Remove_Wall6;
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Remove_Wall6 - exception");
+         raise;
    end On_Button_Remove_Wall6;
 
    procedure On_Button_Move (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -854,6 +902,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Move - exception");
+         raise;
    end On_Button_Move;
 
    procedure On_Button_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -898,6 +950,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Attack - exception");
+         raise;
    end On_Button_Attack;
 
    procedure On_Button_Ranged_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -941,6 +997,11 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
             Piece.Type_Piece (Selected_Piece_RB.all));
 
       end if;
+
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Ranged_Attack - exception");
+         raise;
    end On_Button_Ranged_Attack;
 
    procedure On_Button_Promote (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -968,6 +1029,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
             Effect.Type_Effect'(Tubastga_Game.Effect_Captain, 1));
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Promote - exception");
+         raise;
    end On_Button_Promote;
 
    procedure On_Button_Demote (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -995,6 +1060,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
             Tubastga_Game.Effect_Captain);
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Demote - exception");
+         raise;
    end On_Button_Demote;
 
    procedure On_Button_Search (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -1033,6 +1102,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Search - exception");
+         raise;
    end On_Button_Search;
 
    procedure On_Button_Create_Path (Object : access Gtk.Button.Gtk_Button_Record'Class) is
