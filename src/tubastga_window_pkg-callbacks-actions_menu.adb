@@ -1214,6 +1214,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
          Effect.Type_Effect'(Tubastga_Game.Effect_Card_1, 1));
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Card_1 - exception");
+         raise;
    end On_Button_Card_1;
 
    procedure On_Button_Card_2 (Object : access Gtk.Button.Gtk_Button_Record'Class) is
@@ -1223,6 +1227,10 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_2 - clicked");
       end if;
 
+   exception
+      when others =>
+         Text_IO.Put_Line("On_Button_Card_2 - exception");
+         raise;
    end On_Button_Card_2;
 
    procedure On_Target_Patch_Tree_View (Object : access Gtk.Tree_View.Gtk_Tree_View_Record'Class) is
