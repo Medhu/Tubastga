@@ -33,7 +33,7 @@ package body Tubastga_Window_Pkg.ZoomedView is
 
    procedure Scroll_Map
      (P_Client_Map       : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Scroll_Direction : in     Tubastga_Window_Pkg.Callbacks.Main_Window.Type_Scroll_Direction)
+      P_Scroll_Direction : in     Tubastga_Window_Pkg.ScrolledView.Type_Scroll_Direction)
    is
    begin
       Tubastga_Window_Pkg.ScrolledView.Scroll_Map(P_Client_Map, P_Scroll_Direction);

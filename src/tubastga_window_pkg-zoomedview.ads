@@ -22,6 +22,7 @@ with Glib;
 with Tubastga_Window_Pkg;
 with Tubastga_Window_Pkg.Callbacks;
 with Tubastga_Window_Pkg.Callbacks.Main_Window;
+with Tubastga_Window_Pkg.ScrolledView;
 
 package Tubastga_Window_Pkg.ZoomedView is
 
@@ -34,6 +35,6 @@ package Tubastga_Window_Pkg.ZoomedView is
 
    procedure Scroll_Map
      (P_Client_Map       : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Scroll_Direction : in     Tubastga_Window_Pkg.Callbacks.Main_Window.Type_Scroll_Direction);
+      P_Scroll_Direction : in     Tubastga_Window_Pkg.ScrolledView.Type_Scroll_Direction);
 
 end Tubastga_Window_Pkg.ZoomedView;

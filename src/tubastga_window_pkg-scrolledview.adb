@@ -23,7 +23,7 @@ package body Tubastga_Window_Pkg.ScrolledView is
 
    procedure Scroll_Map
      (P_Client_Map       : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Scroll_Direction : in     Tubastga_Window_Pkg.Callbacks.Main_Window.Type_Scroll_Direction)
+      P_Scroll_Direction : in     Tubastga_Window_Pkg.ScrolledView.Type_Scroll_Direction)
    is
       A, B : Hexagon.Type_Hexagon_Numbers;
 
@@ -33,13 +33,13 @@ package body Tubastga_Window_Pkg.ScrolledView is
       A := P_Client_Map.Origo_Patch.Pos.A;
       B := P_Client_Map.Origo_Patch.Pos.B;
       --
-      if P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Up and P_Client_Map.Origo_Patch.Pos.B < 100 then
+      if P_Scroll_Direction = Tubastga_Window_Pkg.ScrolledView.Up and P_Client_Map.Origo_Patch.Pos.B < 100 then
          B := P_Client_Map.Origo_Patch.Pos.B + 1;
-      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Down and P_Client_Map.Origo_Patch.Pos.B > 1 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.ScrolledView.Down and P_Client_Map.Origo_Patch.Pos.B > 1 then
          B := P_Client_Map.Origo_Patch.Pos.B - 1;
-      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Right and P_Client_Map.Origo_Patch.Pos.A < 100 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.ScrolledView.Right and P_Client_Map.Origo_Patch.Pos.A < 100 then
          A := P_Client_Map.Origo_Patch.Pos.A + 1;
-      elsif P_Scroll_Direction = Tubastga_Window_Pkg.Callbacks.Main_Window.Left and P_Client_Map.Origo_Patch.Pos.A > 1 then
+      elsif P_Scroll_Direction = Tubastga_Window_Pkg.ScrolledView.Left and P_Client_Map.Origo_Patch.Pos.A > 1 then
          A := P_Client_Map.Origo_Patch.Pos.A - 1;
       end if;
 

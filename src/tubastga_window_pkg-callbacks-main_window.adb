@@ -1197,16 +1197,16 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             end;
 
          when Gdk.Types.Keysyms.GDK_Up =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Up);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
 
          when Gdk.Types.Keysyms.GDK_Down =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Down);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
 
          when Gdk.Types.Keysyms.GDK_Left =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Left);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
 
          when Gdk.Types.Keysyms.GDK_Right =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Right);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
 
          when Gdk.Types.Keysyms.GDK_space =>
             null;
@@ -1224,16 +1224,16 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             null;
 
          when Gdk.Types.Keysyms.GDK_uparrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Up);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
 
          when Gdk.Types.Keysyms.GDK_downarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Down);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
 
          when Gdk.Types.Keysyms.GDK_leftarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Left);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
 
          when Gdk.Types.Keysyms.GDK_rightarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Right);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
 
          when Gdk.Types.Keysyms.GDK_Escape =>
             Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Done;

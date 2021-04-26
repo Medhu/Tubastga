@@ -1,0 +1,35 @@
+with "gtkada";
+with "SisyfosPolyorb";
+
+project TubastgaEditor is
+
+   type Runtime_Type is
+      ("full");
+   Runtime : Runtime_Type := external ("RUNTIME");
+   type Gtkada_Kind_Type is
+      ("static", "relocatable");
+   Library_Type : Gtkada_Kind_Type := external ("LIBRARY_TYPE");
+
+   case Runtime is
+
+      when "full" =>
+
+         case Library_Type is
+
+            when "static" =>
+               for Main use ("tubastgaeditor_window.adb");
+               for Source_Dirs use (".", "src", "src\polyorb\client", "src\polyorb\server");
+               for Object_Dir use "build";
+               for Exec_Dir use "tubastga_editor";
+
+            when "relocatable" =>
+               for Main use ("mapeditor_window.adb");
+               for Source_Dirs use (".\**");
+         end case;
+   end case;
+
+   package Compiler is
+   end Compiler;
+
+end TubastgaEditor;
+

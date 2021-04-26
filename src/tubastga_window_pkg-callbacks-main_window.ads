@@ -6,7 +6,6 @@ with Tubastga_Window_Pkg.Lists;
 with Utilities;
 with Player;
 package Tubastga_Window_Pkg.Callbacks.Main_Window is
-   type Type_Scroll_Direction is (Up, Down, Left, Right);
 
    function Periodic_Updates_Summary return Boolean;
 
