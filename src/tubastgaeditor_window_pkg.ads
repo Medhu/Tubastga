@@ -45,11 +45,6 @@ with Landscape;
 
 package TubastgaEditor_Window_Pkg is
 
-   Landscape_Grass    : constant Landscape.Type_Landscape := 100;
-   Landscape_Forest   : constant Landscape.Type_Landscape := 101;
-   Landscape_Mountain : constant Landscape.Type_Landscape := 102;
-   Landscape_Water    : constant Landscape.Type_Landscape := 103;
-
    type Type_Graphic_Data is record
       Filename                  : Ada.Strings.Unbounded.Unbounded_String;
       Image_Data                : Gdk.Pixbuf.Gdk_Pixbuf;
