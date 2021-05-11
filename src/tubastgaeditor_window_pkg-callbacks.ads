@@ -33,7 +33,14 @@ package TubastgaEditor_Window_Pkg.Callbacks is
 
    procedure Exit_Main (Object : access Gtk_Widget_Record'Class);
 
-   procedure On_Button_Landscape (Object : access Gtk_Button_Record'Class);
+   procedure On_Button_Landscape_Grass
+     (Object : access Gtk_Button_Record'Class);
+   procedure On_Button_Landscape_Forest
+     (Object : access Gtk_Button_Record'Class);
+   procedure On_Button_Landscape_Water
+     (Object : access Gtk_Button_Record'Class);
+   procedure On_Button_Landscape_Mountain
+     (Object : access Gtk_Button_Record'Class);
 
    procedure On_Button_FillAllLandscape
      (Object : access Gtk_Button_Record'Class);

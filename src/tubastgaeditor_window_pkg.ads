@@ -45,34 +45,14 @@ with Landscape;
 
 package TubastgaEditor_Window_Pkg is
 
-   type Type_Graphic_Data is record
-      Filename                  : Ada.Strings.Unbounded.Unbounded_String;
-      Image_Data                : Gdk.Pixbuf.Gdk_Pixbuf;
-      Image_Height, Image_Width : Glib.Gint;
-   end record;
-
-   type Type_Landscape_Info is record
-      btnLandscape         : Gtk_Button;
-      Graphic_Data         : Type_Graphic_Data;
-      Minimap_Graphic_Data : Type_Graphic_Data;
-      Button_Text          : Ada.Strings.Unbounded.Unbounded_String;
-   end record;
-
-   function Hash_Map (P_Map : Landscape.Type_Landscape) return Ada.Containers.Hash_Type;
-
-   function Equivalent_Keys (Left, Right : Landscape.Type_Landscape) return Boolean;
-
-   package Landscape_Info_Pkg is new Ada.Containers.Hashed_Maps
-     (Landscape.Type_Landscape,
-      Type_Landscape_Info,
-      Hash_Map,
-      Equivalent_Keys);
-
    type Window1_Record is new Gtk_Window_Record with record
       Table1   : Gtk_Table;
       Map_Area : Gtk_Drawing_Area;
 
-      Landscape_Info : Landscape_Info_Pkg.Map;
+      btnLandscapeGrass    : Gtk_Button;
+      btnLandscapeForest   : Gtk_Button;
+      btnLandscapeWater    : Gtk_Button;
+      btnLandscapeMountain : Gtk_Button;
 
       btnFillAll : Gtk_Button;
 

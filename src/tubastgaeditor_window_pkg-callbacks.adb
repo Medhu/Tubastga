@@ -51,6 +51,7 @@ with Tubastga_Window_Pkg.Images;
 with Tubastga_Window_Pkg.ScrolledView;
 with Tubastga_Window_Pkg.FullsizeView;
 with Tubastga_Window_Pkg.ZoomedView;
+with Tubastga_Game;
 
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
@@ -462,37 +463,73 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       return True;
    end On_Map_Area_Motion_Notify_Event;
 
-   procedure On_Button_Landscape (Object : access Gtk_Button_Record'Class) is
-
-      Trav_Landscape : Landscape_Info_Pkg.Cursor;
-
+   procedure On_Button_Landscape_Grass (Object : access Gtk_Button_Record'Class) is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape - clicked");
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Grass - clicked");
       end if;
 
       TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
 
-      Trav_Landscape :=
-        Landscape_Info_Pkg.First (The_Window.all.Landscape_Info);
-      while Landscape_Info_Pkg.Has_Element (Trav_Landscape) loop
-
-         if Landscape_Info_Pkg.Element (Trav_Landscape).btnLandscape = Object
-         then
-            TubastgaEditor_UI_Aux.UI_Paint_Landscape :=
-              Landscape_Info_Pkg.Key (Trav_Landscape);
-         end if;
-
-         Trav_Landscape := Landscape_Info_Pkg.Next (Trav_Landscape);
-      end loop;
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Grass;
 
       if Verbose then
          Text_IO.Put_Line
-           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape - ScenarioEditor_UI_Aux.UI_Paint_Landscape=" &
-            TubastgaEditor_UI_Aux.UI_Paint_Landscape'Img);
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Grass - exit");
       end if;
-   end On_Button_Landscape;
+   end On_Button_Landscape_Grass;
+
+   procedure On_Button_Landscape_Forest (Object : access Gtk_Button_Record'Class) is
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Forest - clicked");
+      end if;
+
+      TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
+
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Forest;
+
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Forrest - exit");
+      end if;
+   end On_Button_Landscape_Forest;
+
+   procedure On_Button_Landscape_Water (Object : access Gtk_Button_Record'Class) is
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Water - clicked");
+      end if;
+
+      TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
+
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Water;
+
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Water - exit");
+      end if;
+   end On_Button_Landscape_Water;
+
+   procedure On_Button_Landscape_Mountain (Object : access Gtk_Button_Record'Class) is
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Mountain - clicked");
+      end if;
+
+      TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
+
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Mountain;
+
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Mountain - exit");
+      end if;
+   end On_Button_Landscape_Mountain;
 
    procedure On_Button_FillAllLandscape
      (Object : access Gtk_Button_Record'Class)
