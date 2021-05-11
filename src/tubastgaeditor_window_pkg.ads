@@ -58,12 +58,12 @@ package TubastgaEditor_Window_Pkg is
       Button_Text          : Ada.Strings.Unbounded.Unbounded_String;
    end record;
 
-   function Hash_Map (P_Map : Positive) return Ada.Containers.Hash_Type;
+   function Hash_Map (P_Map : Landscape.Type_Landscape) return Ada.Containers.Hash_Type;
 
-   function Equivalent_Keys (Left, Right : Positive) return Boolean;
+   function Equivalent_Keys (Left, Right : Landscape.Type_Landscape) return Boolean;
 
    package Landscape_Info_Pkg is new Ada.Containers.Hashed_Maps
-     (Positive,
+     (Landscape.Type_Landscape,
       Type_Landscape_Info,
       Hash_Map,
       Equivalent_Keys);

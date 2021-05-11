@@ -16,6 +16,8 @@
 --      You should have received a copy of the GNU General Public License
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
+with Landscape;
+
 
 package TubastgaEditor_UI_Aux is
    UI_Problem : exception;
@@ -29,7 +31,7 @@ package TubastgaEditor_UI_Aux is
    type Type_Pencil_Width is (Width1, Width2, Width3);
 
    UI_State : Type_UI_State;
-   UI_Paint_Landscape : Positive;
+   UI_Paint_Landscape : Landscape.Type_Landscape;
 
    UI_Pencil_Width : Type_Pencil_Width := Width1;
    UI_Selecting : Boolean := False;

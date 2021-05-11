@@ -28,7 +28,7 @@ use TubastgaEditor_Window_Pkg.Callbacks;
 with Tubastga_Window_Pkg.Images;
 with Gdk.Event; use Gdk.Event;
 with Text_IO;
-
+with Tubastga_Game;
 --
 --
 with Gdk.Event;  use Gdk.Event;
@@ -50,12 +50,13 @@ package body TubastgaEditor_Window_Pkg is
 
    Verbose : constant Boolean := True;
 
-   function Hash_Map (P_Map : Positive) return Ada.Containers.Hash_Type is
+   function Hash_Map (P_Map : Landscape.Type_Landscape) return Ada.Containers.Hash_Type is
    begin
       return Ada.Containers.Hash_Type (P_Map);
    end Hash_Map;
 
-   function Equivalent_Keys (Left, Right : Positive) return Boolean is
+   function Equivalent_Keys (Left, Right : Landscape.Type_Landscape) return Boolean is
+      use Landscape;
    begin
       return Left = Right;
    end Equivalent_Keys;
@@ -80,7 +81,7 @@ package body TubastgaEditor_Window_Pkg is
       Trav_Landscape                        : Landscape_Info_Pkg.Cursor;
       Top_Border_Attach, Left_Border_Attach : Integer;
       A_Landscape                           : Type_Landscape_Info;
-      A_Key                                 : Positive;
+      A_Key                                 : Landscape.Type_Landscape;
 
    begin
       Gtk.Window.Initialize (Window1, Window_Toplevel);
@@ -109,7 +110,7 @@ package body TubastgaEditor_Window_Pkg is
 
       TubastgaEditor_Window_Pkg.Landscape_Info_Pkg.Insert
         (Window1.all.Landscape_Info,
-         100,
+         Tubastga_Game.Landscape_Grass,
          TubastgaEditor_Window_Pkg.Type_Landscape_Info'
            (null,
             Type_Graphic_Data'
