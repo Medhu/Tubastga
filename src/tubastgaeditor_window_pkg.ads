@@ -61,7 +61,6 @@ package TubastgaEditor_Window_Pkg is
       btnWidth3 : Gtk_Button;
 
       --
-      btnScenarioConfig : Gtk_Button;
       btnSave           : Gtk_Button;
       btnLoad           : Gtk_Button;
 

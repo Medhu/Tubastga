@@ -151,15 +151,6 @@ package body TubastgaEditor_Window_Pkg is
          Right_Attach => 2, Top_Attach => 10, Bottom_Attach => 11,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
-      --
-      Gtk_New (Window1.btnScenarioConfig, -"Scenario Config");
-      Set_Relief (Window1.btnScenarioConfig, Relief_Normal);
-
-      Attach
-        (Window1.Table1, Window1.btnScenarioConfig, Left_Attach => 0,
-         Right_Attach => 1, Top_Attach => 18, Bottom_Attach => 19,
-         Xoptions => Fill, Xpadding => 0, Ypadding => 0);
-
       Gtk_New (Window1.btnSave, -"Save");
       Set_Relief (Window1.btnSave, Relief_Normal);
 
