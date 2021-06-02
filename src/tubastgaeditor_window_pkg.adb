@@ -69,7 +69,7 @@ package body TubastgaEditor_Window_Pkg is
 
    begin
       Gtk.Window.Initialize (Window1, Window_Toplevel);
-      Set_Title (Window1, -"Scenario Editor");
+      Set_Title (Window1, -"Tubastga Scenario Editor");
       Set_Position (Window1, Win_Pos_None);
       Set_Modal (Window1, False);
       Set_Resizable (Window1, True);
