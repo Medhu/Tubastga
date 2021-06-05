@@ -41,6 +41,7 @@ with Landscape;
 with Hexagon;
 with Hexagon.Client_Map;
 with Hexagon.Server_Map;
+with Hexagon.Server_Navigation;
 with Map_Builder;
 with Ada.Containers.Vectors;
 with Ada.Streams.Stream_IO;
@@ -64,6 +65,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
    All_Constructions_On_Patch, All_Effects_On_Patch,
    All_Landscape_On_Patch : Gdk.Pixbuf.Gdk_Pixbuf;
+
+   A_Land_Navigation : Hexagon.Server_Navigation.Type_Navigation;
+   A_Sea_Navigation  : Hexagon.Server_Navigation.Type_Navigation;
 
    A_Client_Map           : Hexagon.Client_Map.Type_Client_Map_Info;
    Server_Map_Origo_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
@@ -267,6 +271,14 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
             end loop;
          end loop;
 
+         Hexagon.Server_Navigation.Load_Navigation
+           (Ada.Strings.Unbounded.To_Unbounded_String
+              ("D:\Ada\Git\Tubastga\tubastga_server\scenarios\land_navigation\scenario_battle.dat"),
+            A_Land_Navigation);
+         Hexagon.Server_Navigation.Load_Navigation
+           (Ada.Strings.Unbounded.To_Unbounded_String
+              ("D:\Ada\Git\Tubastga\tubastga_server\scenarios\water_navigation\scenario_battle.dat"),
+            A_Sea_Navigation);
       end if;
 
       Queue_Draw (The_Window);
@@ -325,6 +337,48 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
    end On_Map_Area_Show;
 
+   procedure Draw_Navigation
+     (P_Navigation      : in Hexagon.Server_Navigation.Type_Navigation;
+      P_Navigation_Node : in Hexagon.Server_Navigation.Type_Navigation_Node)
+   is
+      Neighbour    : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
+      Neighbour_Id : Hexagon.Server_Navigation.Type_Navigation_Node_Id;
+
+      Trav_Neighbour : Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg
+        .Cursor;
+
+   begin
+      Trav_Neighbour :=
+        Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.First
+          (P_Navigation_Node.Neighbours);
+      while Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg
+          .Has_Element
+          (Trav_Neighbour)
+      loop
+
+         Neighbour_Id :=
+           Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Element
+             (Trav_Neighbour);
+
+         Neighbour :=
+           Hexagon.Server_Navigation.Get_Navigation_Node_By_Id
+             (P_Navigation, Neighbour_Id);
+
+         Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+           (A_Client_Map,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB
+              (A_Client_Map, P_Navigation_Node.Pos.A,
+               P_Navigation_Node.Pos.B).all,
+            Hexagon.Client_Map.Get_Patch_Adress_From_AB
+              (A_Client_Map, Neighbour.all.Pos.A, Neighbour.all.Pos.B).all,
+            All_Pix);
+
+         Trav_Neighbour :=
+           Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Next
+             (Trav_Neighbour);
+      end loop;
+   end Draw_Navigation;
+
    function On_Map_Area_Expose_Event
      (Object : access Gtk_Drawing_Area_Record'Class;
       P_Draw : Cairo.Cairo_Context) return Boolean
@@ -344,6 +398,43 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       Hexagon.Client_Map.Traverse
         (A_Client_Map, A_Client_Map.Origo_Patch, Draw_Map'Access);
 
+      declare
+         Land_Navigation : Hexagon.Server_Navigation
+           .Type_Navigation_Node_Access;
+
+         Water_Navigation : Hexagon.Server_Navigation
+           .Type_Navigation_Node_Access;
+         use Hexagon.Client_Map;
+         use Hexagon.Server_Navigation;
+      begin
+         Land_Navigation  := null;
+         Water_Navigation := null;
+
+         if Button_Pressed_Patch /= null then
+            Text_IO.Put_Line ("Naboer:");
+            Land_Navigation :=
+              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                (A_Land_Navigation,
+                 Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos));
+
+            Water_Navigation :=
+              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                (A_Sea_Navigation,
+                 Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos));
+
+            if Land_Navigation /= null then
+               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                 (A_Land_Navigation, Land_Navigation.all);
+            elsif Water_Navigation /= null then
+               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                 (A_Sea_Navigation, Water_Navigation.all);
+
+            end if;
+
+         end if;
+
+      end;
+
       Hexagon.Client_Map.Reset_Visit;
 
       Gdk.Pixbuf.Fill (Scale_Pix, Glib.Guint32 (0));
@@ -356,6 +447,11 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       Gdk.Cairo.Set_Source_Pixbuf
         (P_Draw, Scale_Pix, Glib.Gdouble (0), Glib.Gdouble (0));
 
+      Cairo.Paint (P_Draw);
+
+      --
+
+      --
       Cairo.Paint (P_Draw);
 
       Cairo.Stroke (P_Draw);
@@ -394,6 +490,17 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       Button_Pressed_Patch :=
         Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
       Hexagon.Client_Map.Put (Button_Pressed_Patch.all);
+
+--      Text_IO.Put_Line("Naboer:");
+--      N := Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+--        (A_Navigation, Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos) );
+--      Trav_Neighbour := Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.First(N.all.Neighbours);
+--      while Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Has_Element(Trav_Neighbour) loop
+
+--         Text_IO.Put_Line("Naboer:" &
+--                         Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Element(Trav_Neighbour)'Img );
+--         Trav_Neighbour := Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Next(Trav_Neighbour);
+--      end loop;
 
       Button_Server_Pressed_Patch :=
         Hexagon.Server_Map.Get_Patch_Adress_From_AB
@@ -463,7 +570,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       return True;
    end On_Map_Area_Motion_Notify_Event;
 
-   procedure On_Button_Landscape_Grass (Object : access Gtk_Button_Record'Class) is
+   procedure On_Button_Landscape_Grass
+     (Object : access Gtk_Button_Record'Class)
+   is
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -472,7 +581,8 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
 
-      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Grass;
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape :=
+        Tubastga_Game.Landscape_Grass;
 
       if Verbose then
          Text_IO.Put_Line
@@ -480,7 +590,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       end if;
    end On_Button_Landscape_Grass;
 
-   procedure On_Button_Landscape_Forest (Object : access Gtk_Button_Record'Class) is
+   procedure On_Button_Landscape_Forest
+     (Object : access Gtk_Button_Record'Class)
+   is
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -489,7 +601,8 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
 
-      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Forest;
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape :=
+        Tubastga_Game.Landscape_Forest;
 
       if Verbose then
          Text_IO.Put_Line
@@ -497,7 +610,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       end if;
    end On_Button_Landscape_Forest;
 
-   procedure On_Button_Landscape_Water (Object : access Gtk_Button_Record'Class) is
+   procedure On_Button_Landscape_Water
+     (Object : access Gtk_Button_Record'Class)
+   is
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -506,7 +621,8 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
 
-      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Water;
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape :=
+        Tubastga_Game.Landscape_Water;
 
       if Verbose then
          Text_IO.Put_Line
@@ -514,7 +630,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       end if;
    end On_Button_Landscape_Water;
 
-   procedure On_Button_Landscape_Mountain (Object : access Gtk_Button_Record'Class) is
+   procedure On_Button_Landscape_Mountain
+     (Object : access Gtk_Button_Record'Class)
+   is
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -523,7 +641,8 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.Place_Landscape;
 
-      TubastgaEditor_UI_Aux.UI_Paint_Landscape := Tubastga_Game.Landscape_Mountain;
+      TubastgaEditor_UI_Aux.UI_Paint_Landscape :=
+        Tubastga_Game.Landscape_Mountain;
 
       if Verbose then
          Text_IO.Put_Line
