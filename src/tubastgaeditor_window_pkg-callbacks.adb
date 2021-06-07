@@ -57,6 +57,9 @@ with Tubastga_Game;
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
 
+   Left_Mouse_Button  : constant Glib.Guint := 1;
+   Right_Mouse_Button : constant Glib.Guint := 3;
+
    type Type_Patches_List is array (1 .. 19) of Hexagon.Type_Hexagon_Position;
 
    use Gtk.Arguments;
@@ -77,8 +80,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    Png_Width         : constant Glib.Gint := 72;
    Png_Height        : constant Glib.Gint := 72;
 
-   Map_Scale            : Float := 0.50;
-   Button_Pressed_Patch : Hexagon.Client_Map.Type_Client_Patch_Adress;
+   Map_Scale                  : Float := 0.50;
+   Left_Button_Pressed_Patch  : Hexagon.Client_Map.Type_Client_Patch_Adress;
+   Right_Button_Pressed_Patch : Hexagon.Client_Map.Type_Client_Patch_Adress;
 
    The_Window : Window1_Access;
 
@@ -404,23 +408,26 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
          Water_Navigation : Hexagon.Server_Navigation
            .Type_Navigation_Node_Access;
+
          use Hexagon.Client_Map;
          use Hexagon.Server_Navigation;
       begin
          Land_Navigation  := null;
          Water_Navigation := null;
 
-         if Button_Pressed_Patch /= null then
+         if Left_Button_Pressed_Patch /= null then
             Text_IO.Put_Line ("Naboer:");
             Land_Navigation :=
               Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
                 (A_Land_Navigation,
-                 Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos));
+                 Hexagon.Type_Hexagon_Position'
+                   (Left_Button_Pressed_Patch.all.Pos));
 
             Water_Navigation :=
               Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
                 (A_Sea_Navigation,
-                 Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos));
+                 Hexagon.Type_Hexagon_Position'
+                   (Left_Button_Pressed_Patch.all.Pos));
 
             if Land_Navigation /= null then
                TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
@@ -433,6 +440,30 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
          end if;
 
+         if Right_Button_Pressed_Patch /= null then
+            Text_IO.Put_Line ("Naboer:");
+            Land_Navigation :=
+              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                (A_Land_Navigation,
+                 Hexagon.Type_Hexagon_Position'
+                   (Right_Button_Pressed_Patch.all.Pos));
+
+            Water_Navigation :=
+              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                (A_Sea_Navigation,
+                 Hexagon.Type_Hexagon_Position'
+                   (Right_Button_Pressed_Patch.all.Pos));
+
+            if Land_Navigation /= null then
+               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                 (A_Land_Navigation, Land_Navigation.all);
+            elsif Water_Navigation /= null then
+               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                 (A_Sea_Navigation, Water_Navigation.all);
+
+            end if;
+
+         end if;
       end;
 
       Hexagon.Client_Map.Reset_Visit;
@@ -447,11 +478,6 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       Gdk.Cairo.Set_Source_Pixbuf
         (P_Draw, Scale_Pix, Glib.Gdouble (0), Glib.Gdouble (0));
 
-      Cairo.Paint (P_Draw);
-
-      --
-
-      --
       Cairo.Paint (P_Draw);
 
       Cairo.Stroke (P_Draw);
@@ -469,10 +495,12 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
      (Object : access Gtk_Widget_Record'Class;
       Params : Gtk.Arguments.Gtk_Args) return Boolean
    is
-      Arg1                        : Gdk_Event := To_Event (Params, 1);
-      X                           : Gdouble;
-      Y                           : Gdouble;
-      Button_Server_Pressed_Patch : Hexagon.Server_Map
+      Arg1                             : Gdk_Event := To_Event (Params, 1);
+      X                                : Gdouble;
+      Y                                : Gdouble;
+      Left_Button_Server_Pressed_Patch : Hexagon.Server_Map
+        .Type_Server_Patch_Adress;
+      Right_Button_Server_Pressed_Patch : Hexagon.Server_Map
         .Type_Server_Patch_Adress;
 
       Paint_Patches : Type_Patches_List;
@@ -486,65 +514,75 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       --end if;
 
       Get_Coords (Arg1, X, Y);
+      --
+      --
 
-      Button_Pressed_Patch :=
-        Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
-      Hexagon.Client_Map.Put (Button_Pressed_Patch.all);
+      if Gdk.Event.Get_Button (Arg1) = Left_Mouse_Button then
+         Left_Button_Pressed_Patch :=
+           Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
+         Hexagon.Client_Map.Put (Left_Button_Pressed_Patch.all);
 
---      Text_IO.Put_Line("Naboer:");
---      N := Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
---        (A_Navigation, Hexagon.Type_Hexagon_Position'(Button_Pressed_Patch.all.Pos) );
---      Trav_Neighbour := Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.First(N.all.Neighbours);
---      while Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Has_Element(Trav_Neighbour) loop
+         Left_Button_Server_Pressed_Patch :=
+           Hexagon.Server_Map.Get_Patch_Adress_From_AB
+             (Left_Button_Pressed_Patch.Pos.A,
+              Left_Button_Pressed_Patch.Pos.B);
+         Hexagon.Client_Map.Put (Left_Button_Pressed_Patch.all);
 
---         Text_IO.Put_Line("Naboer:" &
---                         Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Element(Trav_Neighbour)'Img );
---         Trav_Neighbour := Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Next(Trav_Neighbour);
---      end loop;
+         if TubastgaEditor_UI_Aux.UI_State =
+           TubastgaEditor_UI_Aux.Place_Landscape then
 
-      Button_Server_Pressed_Patch :=
-        Hexagon.Server_Map.Get_Patch_Adress_From_AB
-          (Button_Pressed_Patch.Pos.A, Button_Pressed_Patch.Pos.B);
-      Hexagon.Client_Map.Put (Button_Pressed_Patch.all);
+            Paint_Patches :=
+              Get_Paint_Patches
+                (Left_Button_Server_Pressed_Patch.all,
+                 TubastgaEditor_UI_Aux.UI_Pencil_Width);
 
-      if TubastgaEditor_UI_Aux.UI_State = TubastgaEditor_UI_Aux.Place_Landscape
-      then
+            for Trav in Paint_Patches'First .. Paint_Patches'Last loop
 
-         Paint_Patches :=
-           Get_Paint_Patches
-             (Button_Server_Pressed_Patch.all,
-              TubastgaEditor_UI_Aux.UI_Pencil_Width);
+               if Paint_Patches (Trav).P_Valid then
 
-         for Trav in Paint_Patches'First .. Paint_Patches'Last loop
+                  A_Client_Map.Map
+                    (Integer (Paint_Patches (Trav).A),
+                     Integer (Paint_Patches (Trav).B)).all
+                    .Landscape_Here :=
+                    Landscape.Type_Landscape
+                      (TubastgaEditor_UI_Aux.UI_Paint_Landscape);
 
-            if Paint_Patches (Trav).P_Valid then
+               end if;
 
-               A_Client_Map.Map
-                 (Integer (Paint_Patches (Trav).A),
-                  Integer (Paint_Patches (Trav).B)).all
-                 .Landscape_Here :=
-                 Landscape.Type_Landscape
-                   (TubastgaEditor_UI_Aux.UI_Paint_Landscape);
+            end loop;
 
-            end if;
+            Queue_Draw (The_Window);
 
-         end loop;
+         end if;
 
-         Queue_Draw (The_Window);
+         if TubastgaEditor_UI_Aux.UI_State =
+           TubastgaEditor_UI_Aux.Place_FillAllLandscape then
+            --
+            Map_Builder.Fill_Area
+              (A_Client_Map,
+               Hexagon.Type_Hexagon_Numbers
+                 (Hexagon.Server_Map.A_Map'First (1)),
+               Hexagon.Type_Hexagon_Numbers
+                 (Hexagon.Server_Map.A_Map'Last (1)),
+               Hexagon.Type_Hexagon_Numbers
+                 (Hexagon.Server_Map.A_Map'First (2)),
+               Hexagon.Type_Hexagon_Numbers
+                 (Hexagon.Server_Map.A_Map'Last (2)),
+               Landscape.Type_Landscape
+                 (TubastgaEditor_UI_Aux.UI_Paint_Landscape));
 
-      end if;
+         end if;
 
-      if TubastgaEditor_UI_Aux.UI_State =
-        TubastgaEditor_UI_Aux.Place_FillAllLandscape then
-         --
-         Map_Builder.Fill_Area
-           (A_Client_Map,
-            Hexagon.Type_Hexagon_Numbers (Hexagon.Server_Map.A_Map'First (1)),
-            Hexagon.Type_Hexagon_Numbers (Hexagon.Server_Map.A_Map'Last (1)),
-            Hexagon.Type_Hexagon_Numbers (Hexagon.Server_Map.A_Map'First (2)),
-            Hexagon.Type_Hexagon_Numbers (Hexagon.Server_Map.A_Map'Last (2)),
-            Landscape.Type_Landscape
-              (TubastgaEditor_UI_Aux.UI_Paint_Landscape));
+      elsif Gdk.Event.Get_Button (Arg1) = Right_Mouse_Button then
+         Right_Button_Pressed_Patch :=
+           Tubastga_Window_Pkg.ZoomedView.Selected_Patch (A_Client_Map, X, Y);
+         Hexagon.Client_Map.Put (Right_Button_Pressed_Patch.all);
+
+         Right_Button_Server_Pressed_Patch :=
+           Hexagon.Server_Map.Get_Patch_Adress_From_AB
+             (Right_Button_Pressed_Patch.Pos.A,
+              Right_Button_Pressed_Patch.Pos.B);
+         Hexagon.Client_Map.Put (Right_Button_Pressed_Patch.all);
 
       end if;
 
