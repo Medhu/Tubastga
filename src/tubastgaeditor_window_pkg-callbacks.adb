@@ -53,6 +53,10 @@ with Tubastga_Window_Pkg.ScrolledView;
 with Tubastga_Window_Pkg.FullsizeView;
 with Tubastga_Window_Pkg.ZoomedView;
 with Tubastga_Game;
+with Tubastga_Game.Server_Logic;
+with Action;
+with Status;
+with Landscape.Server;
 
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
@@ -83,6 +87,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    Map_Scale                  : Float := 0.50;
    Left_Button_Pressed_Patch  : Hexagon.Client_Map.Type_Client_Patch_Adress;
    Right_Button_Pressed_Patch : Hexagon.Client_Map.Type_Client_Patch_Adress;
+   A_Path                     : Hexagon.Server_Navigation.Path_Pkg.Vector;
 
    The_Window : Window1_Access;
 
@@ -464,6 +469,56 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
             end if;
 
          end if;
+
+         if Left_Button_Pressed_Patch /= null and
+           Right_Button_Pressed_Patch /= null then
+            declare
+               A_Piece : Tubastga_Game.Server_Logic
+                 .Type_My_Tubastga_Piece_Access_Class;
+               Ret_Status         : Status.Type_Status;
+               Trav_Path          : Hexagon.Server_Navigation.Path_Pkg.Cursor;
+               Prev_Pos, Curr_Pos : Hexagon.Type_Hexagon_Position;
+            begin
+               A_Piece :=
+                 new Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+
+               Hexagon.Server_Navigation.Find_Path
+                 (A_Land_Navigation, Player.Undefined_Player_Id,
+                  Action.Type_Action_Type (1), A_Piece.all,
+                  Left_Button_Pressed_Patch.all.Pos,
+                  Right_Button_Pressed_Patch.all.Pos, Ret_Status, A_Path);
+
+               Trav_Path := Hexagon.Server_Navigation.Path_Pkg.First (A_Path);
+               Prev_Pos  :=
+                 Hexagon.Server_Navigation.Path_Pkg.Element (Trav_Path).all
+                   .Pos;
+               Trav_Path :=
+                 Hexagon.Server_Navigation.Path_Pkg.Next (Trav_Path);
+               while Hexagon.Server_Navigation.Path_Pkg.Has_Element (Trav_Path)
+               loop
+                  Curr_Pos :=
+                    Hexagon.Server_Navigation.Path_Pkg.Element (Trav_Path).all
+                      .Pos;
+
+--                  Text_IO.Put_Line(Hexagon.To_String(Hexagon.Server_Navigation.Path_Pkg.Element(Trav_Path).all.Pos));
+                  Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+                    (A_Client_Map,
+                     Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                       (A_Client_Map, Prev_Pos.A, Prev_Pos.B).all,
+                     Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                       (A_Client_Map, Curr_Pos.A, Curr_Pos.B).all,
+                     All_Pix);
+
+                  Prev_Pos := Curr_Pos;
+
+                  Trav_Path :=
+                    Hexagon.Server_Navigation.Path_Pkg.Next (Trav_Path);
+               end loop;
+
+            end;
+
+         end if;
+
       end;
 
       Hexagon.Client_Map.Reset_Visit;
@@ -833,4 +888,5 @@ begin
       end loop;
    end loop;
 
+   Landscape.Server.Init (Tubastga_Game.Landscapes_Type_Info_List);
 end TubastgaEditor_Window_Pkg.Callbacks;
