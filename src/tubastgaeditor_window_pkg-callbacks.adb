@@ -473,6 +473,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          if Left_Button_Pressed_Patch /= null and
            Right_Button_Pressed_Patch /= null then
             declare
+               Number_Of_Steps : Integer;
                A_Piece : Tubastga_Game.Server_Logic
                  .Type_My_Tubastga_Piece_Access_Class;
                Ret_Status         : Status.Type_Status;
@@ -482,12 +483,14 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
                A_Piece :=
                  new Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
 
+               Hexagon.Server_Navigation.Path_Pkg.Clear(A_Path);
                Hexagon.Server_Navigation.Find_Path
                  (A_Land_Navigation, Player.Undefined_Player_Id,
                   Action.Type_Action_Type (1), A_Piece.all,
                   Left_Button_Pressed_Patch.all.Pos,
                   Right_Button_Pressed_Patch.all.Pos, Ret_Status, A_Path);
 
+               Number_Of_Steps := Integer(Hexagon.Server_Navigation.Path_Pkg.Length (A_Path));
                Trav_Path := Hexagon.Server_Navigation.Path_Pkg.First (A_Path);
                Prev_Pos  :=
                  Hexagon.Server_Navigation.Path_Pkg.Element (Trav_Path).all
@@ -509,6 +512,12 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
                        (A_Client_Map, Curr_Pos.A, Curr_Pos.B).all,
                      All_Pix);
 
+                  Text_IO.Put_Line("Number_Of_Steps:" & Number_Of_Steps'Img
+                                   & "Prev:"
+                                   & Hexagon.To_String(Prev_Pos)
+                                   & " Curr:"
+                                   & Hexagon.To_String(Curr_Pos));
+                  Number_Of_Steps := Number_Of_Steps - 1;
                   Prev_Pos := Curr_Pos;
 
                   Trav_Path :=
