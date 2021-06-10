@@ -639,6 +639,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
               Right_Button_Pressed_Patch.Pos.B);
          Hexagon.Client_Map.Put (Right_Button_Pressed_Patch.all);
 
+         Queue_Draw (The_Window);
       end if;
 
       if Verbose then
