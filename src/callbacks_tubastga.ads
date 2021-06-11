@@ -25,6 +25,7 @@ with Gtk.Button;
 with Gtk.Spin_Button;
 with Gtk.Box;
 with Gtk.Tree_View;
+with Gtk.Check_Button;
 
 package Callbacks_tubastga is
 

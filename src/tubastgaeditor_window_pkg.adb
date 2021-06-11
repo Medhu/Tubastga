@@ -167,6 +167,23 @@ package body TubastgaEditor_Window_Pkg is
          Top_Attach => 20, Bottom_Attach => 21, Xoptions => Fill,
          Xpadding                                     => 0, Ypadding => 0);
 
+      Gtk_New(Window1.chkPath, "Show Path");
+      Set_Relief (Window1.chkPath, Relief_Normal);
+
+      Attach
+        (Window1.Table1, Window1.chkPath, Left_Attach => 1, Right_Attach => 2,
+         Top_Attach => 19, Bottom_Attach => 20, Xoptions => Fill,
+         Xpadding                                     => 0, Ypadding => 0);
+
+      Gtk_New(Window1.chkNavigation, "Show Navigation");
+      Set_Relief (Window1.chkNavigation, Relief_Normal);
+
+      Attach
+        (Window1.Table1, Window1.chkNavigation, Left_Attach => 1, Right_Attach => 2,
+         Top_Attach => 20, Bottom_Attach => 21, Xoptions => Fill,
+         Xpadding                                     => 0, Ypadding => 0);
+
+
       Add (Window1, Window1.Table1);
       --
 
@@ -235,6 +252,14 @@ package body TubastgaEditor_Window_Pkg is
       Button_Cb.Connect
         (Window1.btnLoad, "pressed",
          Button_Cb.To_Marshaller (On_Button_Load'Access), False);
+
+      Button_Cb.Connect
+        (Window1.chkPath, "pressed",
+         Button_Cb.To_Marshaller (On_Button_Check_Path'Access), False);
+
+      Button_Cb.Connect
+        (Window1.chkNavigation, "pressed",
+         Button_Cb.To_Marshaller (On_Button_Check_Navigation'Access), False);
 
       Window_Cb.Connect
         (Window1, "destroy", Window_Cb.To_Marshaller (Exit_Main'Access));

@@ -41,6 +41,7 @@ with Gtk.Text_View;    use Gtk.Text_View;
 with Gtk.Text_Buffer;  use Gtk.Text_Buffer;
 with Gtk.Combo_Box;
 with Gtk.Cell_Renderer_Text;
+with Gtk.Check_Button; use Gtk.Check_Button;
 with Landscape;
 
 package TubastgaEditor_Window_Pkg is
@@ -63,6 +64,9 @@ package TubastgaEditor_Window_Pkg is
       --
       btnSave           : Gtk_Button;
       btnLoad           : Gtk_Button;
+      --
+      chkPath           : Gtk_Check_Button;
+      chkNavigation     : Gtk_Check_Button;
 
       dlgFileOpen,
       dlgFileSave : Gtk.File_Chooser_Dialog.Gtk_File_Chooser_Dialog;

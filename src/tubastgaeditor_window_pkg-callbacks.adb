@@ -57,6 +57,7 @@ with Tubastga_Game.Server_Logic;
 with Action;
 with Status;
 with Landscape.Server;
+with Gtk.Toggle_Button;
 
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
@@ -294,6 +295,37 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
    end On_Button_Load;
 
+   procedure On_Button_Check_Path (Object : access Gtk_Button_Record'Class) is
+
+      use Gtk.Dialog;
+   begin
+--      if Verbose then
+      Text_IO.Put_Line
+        ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Check_Path - clicked");
+--      end if;
+
+      if Gtk.Toggle_Button.Get_Active
+          (Gtk.Toggle_Button.Gtk_Toggle_Button (Object)) then
+         Text_IO.Put_Line ("Active True");
+      else
+         Text_IO.Put_Line ("Active False");
+      end if;
+
+   end On_Button_Check_Path;
+
+   procedure On_Button_Check_Navigation
+     (Object : access Gtk_Button_Record'Class)
+   is
+
+      use Gtk.Dialog;
+   begin
+--      if Verbose then
+      Text_IO.Put_Line
+        ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Check_Navigation - clicked");
+--      end if;
+
+   end On_Button_Check_Navigation;
+
    procedure Exit_Main (Object : access Gtk_Widget_Record'Class) is
    begin
       Destroy (Object);
@@ -460,63 +492,74 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          Land_Navigation  := null;
          Water_Navigation := null;
 
-         if Left_Button_Pressed_Patch /= null then
-            Text_IO.Put_Line ("Naboer:");
-            Land_Navigation :=
-              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Land_Navigation,
-                 Hexagon.Type_Hexagon_Position'
-                   (Left_Button_Pressed_Patch.all.Pos));
+         if Gtk.Toggle_Button.Get_Active
+             (Gtk.Toggle_Button.Gtk_Toggle_Button
+                (The_Window.all.chkNavigation))
+         then
+            Text_IO.Put_Line ("Active True");
+            if Left_Button_Pressed_Patch /= null then
+               Text_IO.Put_Line ("Naboer:");
+               Land_Navigation :=
+                 Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                   (A_Land_Navigation,
+                    Hexagon.Type_Hexagon_Position'
+                      (Left_Button_Pressed_Patch.all.Pos));
 
-            Water_Navigation :=
-              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Sea_Navigation,
-                 Hexagon.Type_Hexagon_Position'
-                   (Left_Button_Pressed_Patch.all.Pos));
+               Water_Navigation :=
+                 Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                   (A_Sea_Navigation,
+                    Hexagon.Type_Hexagon_Position'
+                      (Left_Button_Pressed_Patch.all.Pos));
 
-            if Land_Navigation /= null then
-               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
-                 (A_Land_Navigation, Land_Navigation.all);
-            elsif Water_Navigation /= null then
-               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
-                 (A_Sea_Navigation, Water_Navigation.all);
+               if Land_Navigation /= null then
+                  TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                    (A_Land_Navigation, Land_Navigation.all);
+               elsif Water_Navigation /= null then
+                  TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                    (A_Sea_Navigation, Water_Navigation.all);
 
-            end if;
-
-         end if;
-
-         if Right_Button_Pressed_Patch /= null then
-            Text_IO.Put_Line ("Naboer:");
-            Land_Navigation :=
-              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Land_Navigation,
-                 Hexagon.Type_Hexagon_Position'
-                   (Right_Button_Pressed_Patch.all.Pos));
-
-            Water_Navigation :=
-              Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Sea_Navigation,
-                 Hexagon.Type_Hexagon_Position'
-                   (Right_Button_Pressed_Patch.all.Pos));
-
-            if Land_Navigation /= null then
-               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
-                 (A_Land_Navigation, Land_Navigation.all);
-            elsif Water_Navigation /= null then
-               TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
-                 (A_Sea_Navigation, Water_Navigation.all);
+               end if;
 
             end if;
 
+            if Right_Button_Pressed_Patch /= null then
+               Text_IO.Put_Line ("Naboer:");
+               Land_Navigation :=
+                 Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                   (A_Land_Navigation,
+                    Hexagon.Type_Hexagon_Position'
+                      (Right_Button_Pressed_Patch.all.Pos));
+
+               Water_Navigation :=
+                 Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+                   (A_Sea_Navigation,
+                    Hexagon.Type_Hexagon_Position'
+                      (Right_Button_Pressed_Patch.all.Pos));
+
+               if Land_Navigation /= null then
+                  TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                    (A_Land_Navigation, Land_Navigation.all);
+               elsif Water_Navigation /= null then
+                  TubastgaEditor_Window_Pkg.Callbacks.Draw_Navigation
+                    (A_Sea_Navigation, Water_Navigation.all);
+
+               end if;
+
+            end if;
          end if;
 
-         if Left_Button_Pressed_Patch /= null and
-           Right_Button_Pressed_Patch /= null then
+         if Gtk.Toggle_Button.Get_Active
+             (Gtk.Toggle_Button.Gtk_Toggle_Button (The_Window.all.chkPath))
+         then
 
-            Draw_Path
-              (A_Land_Navigation, Left_Button_Pressed_Patch.all.Pos,
-               Right_Button_Pressed_Patch.all.Pos);
+            if Left_Button_Pressed_Patch /= null and
+              Right_Button_Pressed_Patch /= null then
 
+               Draw_Path
+                 (A_Land_Navigation, Left_Button_Pressed_Patch.all.Pos,
+                  Right_Button_Pressed_Patch.all.Pos);
+
+            end if;
          end if;
 
       end;
