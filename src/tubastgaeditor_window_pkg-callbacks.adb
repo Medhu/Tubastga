@@ -427,6 +427,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       A_Piece : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
       Ret_Status         : Status.Type_Status;
       Trav_Path          : Hexagon.Server_Navigation.Path_Pkg.Cursor;
+      A_Patch            : Hexagon.Client_Map.Type_Client_Patch_Adress;
       Prev_Pos, Curr_Pos : Hexagon.Type_Hexagon_Position;
    begin
       A_Piece := new Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
@@ -444,7 +445,10 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          Curr_Pos :=
            Hexagon.Server_Navigation.Path_Pkg.Element (Trav_Path).all.Pos;
 
---                  Text_IO.Put_Line(Hexagon.To_String(Hexagon.Server_Navigation.Path_Pkg.Element(Trav_Path).all.Pos));
+         A_Patch :=
+           Hexagon.Client_Map.Get_Patch_Adress_From_AB
+             (A_Client_Map, Prev_Pos.A, Prev_Pos.B);
+
          Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
            (A_Client_Map,
             Hexagon.Client_Map.Get_Patch_Adress_From_AB
@@ -452,6 +456,12 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
             Hexagon.Client_Map.Get_Patch_Adress_From_AB
               (A_Client_Map, Curr_Pos.A, Curr_Pos.B).all,
             All_Pix);
+
+         Text_IO.Put_Line
+           ("X:" &
+            Hexagon.Client_Map.Get_Absolute_X_From_AB (A_Patch.all)'Img &
+            " Y:" &
+            Hexagon.Client_Map.Get_Absolute_Y_From_AB (A_Patch.all)'Img);
 
          Prev_Pos := Curr_Pos;
 
