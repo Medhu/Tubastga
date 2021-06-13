@@ -37,7 +37,7 @@ project TubastgaSocketClient is
          case Runtime is
 
             when "full" =>
-               for Source_Dirs use ("src", "src/socket/client");
+               for Source_Dirs use ("game/src", "game/src/socket/client");
                for Main use ("Tubastga_window.adb");
                for Exec_Dir use "tubastga_client";
 

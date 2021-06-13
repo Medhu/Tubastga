@@ -24,7 +24,7 @@ project TubastgaPolyORB is
 
    type Gtkada_Kind_Type is
       ("static", "relocatable");
-   for Source_Dirs use ("src", "src/polyorb/server", "src/polyorb/client");
+   for Source_Dirs use ("game/src", "game/src/polyorb/server", "game/src/polyorb/client");
 
 
    package Dsa is

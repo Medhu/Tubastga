@@ -36,7 +36,7 @@ project TubastgaSocketServer is
          case Runtime is
 
             when "full" =>
-               for Source_Dirs use (".", "src", "src\socket\server");
+               for Source_Dirs use (".", "game\src", "game\src\socket\server");
                for Main use ("tubastga_server_starter.adb");
                for Exec_Dir use "tubastga_server";
          end case;
