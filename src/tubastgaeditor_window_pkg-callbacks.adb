@@ -58,6 +58,7 @@ with Action;
 with Status;
 with Landscape.Server;
 with Gtk.Toggle_Button;
+with Ada.Directories;
 
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
@@ -249,9 +250,16 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    end On_Button_Save;
 
    procedure On_Button_Load (Object : access Gtk_Button_Record'Class) is
-      Response : Gtk.Dialog.Gtk_Response_Type;
+      Response                 : Gtk.Dialog.Gtk_Response_Type;
+      Scenario_Full_Path       : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Name            : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Path            : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Land_Navigation : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Sea_Navigation  : Ada.Strings.Unbounded.Unbounded_String;
+      Tmp                      : Ada.Strings.Unbounded.Unbounded_String;
 
       use Gtk.Dialog;
+      use Ada.Strings.Unbounded;
    begin
       if Verbose then
          Text_IO.Put_Line
@@ -262,12 +270,42 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
         Gtk.Dialog.Run (Gtk.Dialog.Gtk_Dialog (The_Window.all.dlgFileOpen));
       Gtk.Dialog.Hide (Gtk.Dialog.Gtk_Dialog (The_Window.all.dlgFileOpen));
 
+      Scenario_Full_Path :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (Gtk.File_Chooser_Dialog.Get_Filename (The_Window.all.dlgFileOpen));
+
+      Text_IO.Put_Line
+        ("Scenario_Full_Path:" &
+         Ada.Strings.Unbounded.To_String (Scenario_Full_Path));
+
+      Scenario_Path :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (Ada.Directories.Containing_Directory
+             (Ada.Strings.Unbounded.To_String (Scenario_Full_Path)));
+      Scenario_Name :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (Ada.Directories.Simple_Name
+             (Ada.Strings.Unbounded.To_String (Scenario_Full_Path)));
+
+      Scenario_Land_Navigation :=
+        Scenario_Path & "\..\land_navigation\" & Scenario_Name;
+      Scenario_Sea_Navigation :=
+        Scenario_Path & "\..\water_navigation\" & Scenario_Name;
+
+      Text_IO.Put_Line
+        ("Scenario_Path:" & Ada.Strings.Unbounded.To_String (Scenario_Path));
+      Text_IO.Put_Line
+        ("Scenario_Name:" & Ada.Strings.Unbounded.To_String (Scenario_Name));
+      Text_IO.Put_Line
+        ("Scenario_Land_Navigation:" &
+         Ada.Strings.Unbounded.To_String (Scenario_Land_Navigation));
+      Text_IO.Put_Line
+        ("Scenario_Sea_Navigation:" &
+         Ada.Strings.Unbounded.To_String (Scenario_Sea_Navigation));
+
       if Response = Gtk.Dialog.Gtk_Response_OK then
          Hexagon.Server_Map.Load_Map
-           (Ada.Strings.Unbounded.To_Unbounded_String
-              (Gtk.File_Chooser_Dialog.Get_Filename
-                 (The_Window.all.dlgFileOpen)),
-            Hexagon.Server_Map.A_Map);
+           (Scenario_Path & "\" & Scenario_Name, Hexagon.Server_Map.A_Map);
 
          Hexagon.Client_Map.Init_Client_Map (A_Client_Map);
          for X in 1 .. 100 loop
@@ -282,13 +320,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          end loop;
 
          Hexagon.Server_Navigation.Load_Navigation
-           (Ada.Strings.Unbounded.To_Unbounded_String
-              ("D:\Ada\Git\Tubastga\tubastga_server\scenarios\land_navigation\scenario_battle.dat"),
-            A_Land_Navigation);
+           (Scenario_Land_Navigation, A_Land_Navigation);
          Hexagon.Server_Navigation.Load_Navigation
-           (Ada.Strings.Unbounded.To_Unbounded_String
-              ("D:\Ada\Git\Tubastga\tubastga_server\scenarios\water_navigation\scenario_battle.dat"),
-            A_Sea_Navigation);
+           (Scenario_Sea_Navigation, A_Sea_Navigation);
       end if;
 
       Queue_Draw (The_Window);
