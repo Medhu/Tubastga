@@ -16,7 +16,7 @@
 --      You should have received a copy of the GNU General Public License
 --      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
-
+with Text_IO;
 with Tubastga_Window_Pkg.FullsizeView;
 
 package body Tubastga_Window_Pkg.ScrolledView is
