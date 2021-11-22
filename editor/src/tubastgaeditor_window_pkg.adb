@@ -84,15 +84,48 @@ package body TubastgaEditor_Window_Pkg is
 
       Attach
         (Window1.Table1, Window1.Map_Area, Left_Attach => 2,
-         Right_Attach => 10, Top_Attach => 0, Bottom_Attach => 19,
+         Right_Attach => 10, Top_Attach => 3, Bottom_Attach => 19,
          Xpadding                                      => 0, Ypadding => 0);
 
+      Gtk_New (Window1.btnLoad, -"Load");
+      Set_Relief (Window1.btnLoad, Relief_Normal);
+      Attach(Window1.Table1, Window1.all.btnLoad, Left_Attach => 0,
+             Right_Attach => 1, Top_Attach => 0, Bottom_Attach => 1,
+             Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+      Gtk_New (Window1.btnSave, -"Save");
+      Set_Relief (Window1.btnSave, Relief_Normal);
+      Attach
+        (Window1.Table1, Window1.btnSave, Left_Attach => 1, Right_Attach => 2,
+         Top_Attach => 0, Bottom_Attach => 1, Xoptions => Fill,
+         Xpadding                                     => 0, Ypadding => 0);
+
+      Gtk_New (Window1.all.lblMapPath, "Map path");
+      Attach(Window1.Table1, Window1.all.lblMapPath, Left_Attach => 2,
+             Right_Attach => 10, Top_Attach => 0, Bottom_Attach => 1,
+             Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+
+
+      Gtk_New (Window1.all.lblLandNavigationPath, "Land Navigation path");
+      Attach(Window1.Table1, Window1.all.lblLandNavigationPath, Left_Attach => 2,
+             Right_Attach => 10, Top_Attach => 1, Bottom_Attach => 2,
+             Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+      Gtk_New (Window1.all.lblSeaNavigationPath, "Sea Navigation path");
+      Attach(Window1.Table1, Window1.all.lblSeaNavigationPath, Left_Attach => 2,
+             Right_Attach => 10, Top_Attach => 2, Bottom_Attach => 3,
+             Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+      --1->3
+      --2->4
+      --3->5
       Gtk_New (Window1.all.btnLandscapeGrass, "Grass");
       Set_Relief (Window1.all.btnLandscapeGrass, Relief_Normal);
 
       Attach
         (Window1.Table1, Window1.btnLandscapeGrass, Left_Attach => 0,
-         Right_Attach => 1, Top_Attach => 0, Bottom_Attach => 1,
+         Right_Attach => 1, Top_Attach => 3, Bottom_Attach => 4,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
       Gtk_New (Window1.all.btnLandscapeForest, "Forest");
@@ -100,7 +133,7 @@ package body TubastgaEditor_Window_Pkg is
 
       Attach
         (Window1.Table1, Window1.btnLandscapeForest, Left_Attach => 1,
-         Right_Attach => 2, Top_Attach => 0, Bottom_Attach => 1,
+         Right_Attach => 2, Top_Attach => 3, Bottom_Attach => 4,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
       Gtk_New (Window1.all.btnLandscapeWater, "Water");
@@ -108,7 +141,7 @@ package body TubastgaEditor_Window_Pkg is
 
       Attach
         (Window1.Table1, Window1.btnLandscapeWater, Left_Attach => 0,
-         Right_Attach => 1, Top_Attach => 1, Bottom_Attach => 2,
+         Right_Attach => 1, Top_Attach => 4, Bottom_Attach => 5,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
       Gtk_New (Window1.all.btnLandscapeMountain, "Mountain");
@@ -116,7 +149,7 @@ package body TubastgaEditor_Window_Pkg is
 
       Attach
         (Window1.Table1, Window1.btnLandscapeMountain, Left_Attach => 1,
-         Right_Attach => 2, Top_Attach => 1, Bottom_Attach => 2,
+         Right_Attach => 2, Top_Attach => 4, Bottom_Attach => 5,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
       Gtk_New (Window1.btnWidth1, -"Width 1");
@@ -150,22 +183,6 @@ package body TubastgaEditor_Window_Pkg is
         (Window1.Table1, Window1.btnFillAll, Left_Attach => 1,
          Right_Attach => 2, Top_Attach => 10, Bottom_Attach => 11,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
-
-      Gtk_New (Window1.btnSave, -"Save");
-      Set_Relief (Window1.btnSave, Relief_Normal);
-
-      Attach
-        (Window1.Table1, Window1.btnSave, Left_Attach => 0, Right_Attach => 1,
-         Top_Attach => 19, Bottom_Attach => 20, Xoptions => Fill,
-         Xpadding                                     => 0, Ypadding => 0);
-
-      Gtk_New (Window1.btnLoad, -"Load");
-      Set_Relief (Window1.btnLoad, Relief_Normal);
-
-      Attach
-        (Window1.Table1, Window1.btnLoad, Left_Attach => 0, Right_Attach => 1,
-         Top_Attach => 20, Bottom_Attach => 21, Xoptions => Fill,
-         Xpadding                                     => 0, Ypadding => 0);
 
       Gtk_New(Window1.chkPath, "Show Path");
       Set_Relief (Window1.chkPath, Relief_Normal);

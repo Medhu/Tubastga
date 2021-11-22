@@ -43,12 +43,17 @@ with Gtk.Combo_Box;
 with Gtk.Cell_Renderer_Text;
 with Gtk.Check_Button; use Gtk.Check_Button;
 with Landscape;
+with Gtk.Box;
 
 package TubastgaEditor_Window_Pkg is
 
    type Window1_Record is new Gtk_Window_Record with record
       Table1   : Gtk_Table;
       Map_Area : Gtk_Drawing_Area;
+
+      lblMapPath            : Gtk_Label;
+      lblLandNavigationPath : Gtk_Label;
+      lblSeaNavigationPath  : Gtk_Label;
 
       btnLandscapeGrass    : Gtk_Button;
       btnLandscapeForest   : Gtk_Button;

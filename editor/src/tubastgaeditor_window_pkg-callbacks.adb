@@ -89,6 +89,10 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    Png_Width         : constant Glib.Gint := 72;
    Png_Height        : constant Glib.Gint := 72;
 
+   Scenario_Map                  : Ada.Strings.Unbounded.Unbounded_String;
+   Scenario_Land_Navigation_Path : Ada.Strings.Unbounded.Unbounded_String;
+   Scenario_Sea_Navigation_Path  : Ada.Strings.Unbounded.Unbounded_String;
+
    type Type_Navigation_Info is record
       Navigation_Delta_Position : Hexagon.Area.Type_Hexagon_Delta_Position;
       From_Pos, To_Pos          : Hexagon.Type_Hexagon_Position;
@@ -235,18 +239,80 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
       return Ret;
    end Get_Paint_Patches;
 
+   procedure Validate_Paths
+     (P_Scenario_Path : in Ada.Strings.Unbounded.Unbounded_String;
+      P_Scenario_Land_Navigation_Path : in Ada.Strings.Unbounded
+        .Unbounded_String;
+      P_Scenario_Sea_Navigation_Path : in Ada.Strings.Unbounded
+        .Unbounded_String;
+      P_Ret : out Boolean)
+   is
+   begin
+      Text_IO.Put_Line
+        ("Scenario_Path:" & Ada.Strings.Unbounded.To_String (P_Scenario_Path));
+
+      Text_IO.Put_Line
+        ("Scenario_Land_Navigation:" &
+         Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_Path));
+      Text_IO.Put_Line
+        ("Scenario_Sea_Navigation:" &
+         Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_Path));
+
+      P_Ret := True;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_Path)) then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblMapPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Path) & " Ok");
+
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblMapPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Path) & " Not Found");
+         P_Ret := False;
+      end if;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_Path))
+      then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblLandNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_Path) &
+            " Ok");
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblLandNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_Path) &
+            " Not Found");
+         P_Ret := False;
+      end if;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_Path))
+      then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblSeaNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_Path) &
+            " Ok");
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblSeaNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_Path) &
+            " Not Found");
+         P_Ret := False;
+      end if;
+
+   end Validate_Paths;
+
    ----------------------------------------
    -- On_Map_Area_Button_Press_Event --
    ----------------------------------------
 
    procedure On_Button_Save (Object : access Gtk_Button_Record'Class) is
-      Response                 : Gtk.Dialog.Gtk_Response_Type;
-      Scenario_Full_Path       : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Name            : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Path            : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Land_Navigation : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Sea_Navigation  : Ada.Strings.Unbounded.Unbounded_String;
+      Response           : Gtk.Dialog.Gtk_Response_Type;
+      Scenario_Full_Path : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Name      : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Path      : Ada.Strings.Unbounded.Unbounded_String;
 
+      Ret : Boolean;
       use Gtk.Dialog;
       use Ada.Strings.Unbounded;
    begin
@@ -261,57 +327,122 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       Scenario_Full_Path :=
         Ada.Strings.Unbounded.To_Unbounded_String
-          (Gtk.File_Chooser_Dialog.Get_Filename (The_Window.all.dlgFileOpen));
+          (Gtk.File_Chooser_Dialog.Get_Filename (The_Window.all.dlgFileSave));
 
       Text_IO.Put_Line
-        ("Scenario_Full_Path:" &
+        ("Save Scenario_Full_Path:" &
          Ada.Strings.Unbounded.To_String (Scenario_Full_Path));
 
       Scenario_Path :=
         Ada.Strings.Unbounded.To_Unbounded_String
           (Ada.Directories.Containing_Directory
              (Ada.Strings.Unbounded.To_String (Scenario_Full_Path)));
+
       Scenario_Name :=
         Ada.Strings.Unbounded.To_Unbounded_String
           (Ada.Directories.Simple_Name
              (Ada.Strings.Unbounded.To_String (Scenario_Full_Path)));
 
-      Scenario_Land_Navigation :=
-        Scenario_Path & "\..\land_navigation\" & Scenario_Name;
-      Scenario_Sea_Navigation :=
-        Scenario_Path & "\..\water_navigation\" & Scenario_Name;
+      --text_io.put_line("===> " & Ada.Directories.Kind(Ada.Strings.Unbounded.To_String(Scenario_Path & "\..\land_navigation\"))'Img);
 
-      Text_IO.Put_Line
-        ("Scenario_Path:" & Ada.Strings.Unbounded.To_String (Scenario_Path));
-      Text_IO.Put_Line
-        ("Scenario_Name:" & Ada.Strings.Unbounded.To_String (Scenario_Name));
-      Text_IO.Put_Line
-        ("Scenario_Land_Navigation:" &
-         Ada.Strings.Unbounded.To_String (Scenario_Land_Navigation));
-      Text_IO.Put_Line
-        ("Scenario_Sea_Navigation:" &
-         Ada.Strings.Unbounded.To_String (Scenario_Sea_Navigation));
+      Scenario_Land_Navigation_Path := Scenario_Path & "\..\land_navigation\";
+      Scenario_Sea_Navigation_Path  := Scenario_Path & "\..\water_navigation\";
 
-      if Response = Gtk.Dialog.Gtk_Response_OK then
---         Hexagon.Server_Map.Save_Map
---           (Scenario_Path & "\" & Scenario_Name, Hexagon.Server_Map.A_Map);
-         null;
---         Hexagon.Server_Navigation.Save_Navigation
---           (Scenario_Land_Navigation, A_Land_Navigation);
---         Hexagon.Server_Navigation.Save_Navigation
---           (Scenario_Sea_Navigation, A_Sea_Navigation);
+      Validate_Paths
+        (Scenario_Path, Scenario_Land_Navigation_Path,
+         Scenario_Sea_Navigation_Path, Ret);
 
+      if Ret then
+         if Response = Gtk.Dialog.Gtk_Response_OK then
+
+            Hexagon.Server_Map.Save_Map
+              (Scenario_Path & "\" & Scenario_Name, Hexagon.Server_Map.A_Map);
+            null;
+            Hexagon.Server_Navigation.Save_Navigation
+              (Scenario_Land_Navigation_Path & "\" & Scenario_Name,
+               A_Land_Navigation);
+            Hexagon.Server_Navigation.Save_Navigation
+              (Scenario_Sea_Navigation_Path & "\" & Scenario_Name,
+               A_Sea_Navigation);
+
+         end if;
       end if;
 
    end On_Button_Save;
 
+   procedure Validate_Files
+     (P_Scenario_File : in Ada.Strings.Unbounded.Unbounded_String;
+      P_Scenario_Land_Navigation_File : in Ada.Strings.Unbounded
+        .Unbounded_String;
+      P_Scenario_Sea_Navigation_File : in Ada.Strings.Unbounded
+        .Unbounded_String;
+      P_Ret : out Boolean)
+   is
+   begin
+      Text_IO.Put_Line
+        ("Scenario_Path:" & Ada.Strings.Unbounded.To_String (P_Scenario_File));
+
+      Text_IO.Put_Line
+        ("Scenario_Land_Navigation:" &
+         Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_File));
+
+      Text_IO.Put_Line
+        ("Scenario_Sea_Navigation:" &
+         Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_File));
+
+      P_Ret := True;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_File)) then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblMapPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_File) & " Ok");
+
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblMapPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_File) & " Not Found");
+         P_Ret := False;
+      end if;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_File))
+      then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblLandNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_File) &
+            " Ok");
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblLandNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Land_Navigation_File) &
+            " Not Found");
+         P_Ret := False;
+      end if;
+      if Ada.Directories.Exists
+          (Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_File))
+      then
+         Gtk.Label.Set_Label
+           (The_Window.all.lblSeaNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_File) &
+            " Ok");
+      else
+         Gtk.Label.Set_Label
+           (The_Window.all.lblSeaNavigationPath,
+            Ada.Strings.Unbounded.To_String (P_Scenario_Sea_Navigation_File) &
+            " Not Found");
+         P_Ret := False;
+      end if;
+
+   end Validate_Files;
+
    procedure On_Button_Load (Object : access Gtk_Button_Record'Class) is
-      Response                 : Gtk.Dialog.Gtk_Response_Type;
-      Scenario_Full_Path       : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Name            : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Path            : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Land_Navigation : Ada.Strings.Unbounded.Unbounded_String;
-      Scenario_Sea_Navigation  : Ada.Strings.Unbounded.Unbounded_String;
+      Response                      : Gtk.Dialog.Gtk_Response_Type;
+      Scenario_Full_Path            : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Name                 : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Path                 : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Land_Navigation_File : Ada.Strings.Unbounded.Unbounded_String;
+      Scenario_Sea_Navigation_File  : Ada.Strings.Unbounded.Unbounded_String;
+
+      Ret : Boolean;
 
       use Gtk.Dialog;
       use Ada.Strings.Unbounded;
@@ -342,42 +473,42 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
           (Ada.Directories.Simple_Name
              (Ada.Strings.Unbounded.To_String (Scenario_Full_Path)));
 
-      Scenario_Land_Navigation :=
-        Scenario_Path & "\..\land_navigation\" & Scenario_Name;
-      Scenario_Sea_Navigation :=
-        Scenario_Path & "\..\water_navigation\" & Scenario_Name;
+      Scenario_Map                  := Scenario_Path & "\" & Scenario_Name;
+      Scenario_Land_Navigation_Path := Scenario_Path & "\..\land_navigation\";
+      Scenario_Sea_Navigation_Path  := Scenario_Path & "\..\water_navigation\";
 
-      Text_IO.Put_Line
-        ("Scenario_Path:" & Ada.Strings.Unbounded.To_String (Scenario_Path));
-      Text_IO.Put_Line
-        ("Scenario_Name:" & Ada.Strings.Unbounded.To_String (Scenario_Name));
-      Text_IO.Put_Line
-        ("Scenario_Land_Navigation:" &
-         Ada.Strings.Unbounded.To_String (Scenario_Land_Navigation));
-      Text_IO.Put_Line
-        ("Scenario_Sea_Navigation:" &
-         Ada.Strings.Unbounded.To_String (Scenario_Sea_Navigation));
+      Scenario_Land_Navigation_File :=
+        Scenario_Land_Navigation_Path & Scenario_Name;
+      Scenario_Sea_Navigation_File :=
+        Scenario_Sea_Navigation_Path & Scenario_Name;
 
-      if Response = Gtk.Dialog.Gtk_Response_OK then
-         Hexagon.Server_Map.Load_Map
-           (Scenario_Path & "\" & Scenario_Name, Hexagon.Server_Map.A_Map);
+      Validate_Files
+        (Scenario_Map, Scenario_Land_Navigation_File,
+         Scenario_Sea_Navigation_File, Ret);
 
-         Hexagon.Client_Map.Init_Client_Map (A_Client_Map);
-         for X in 1 .. 100 loop
-            for Y in 1 .. 100 loop
-               A_Client_Map.Map (X, Y).all.Pos :=
-                 Hexagon.Server_Map.A_Map (X, Y).all.Pos;
-               A_Client_Map.Map (X, Y).all.Landscape_Here :=
-                 Hexagon.Server_Map.A_Map (X, Y).all.Landscape_Here;
+      if Ret then
+         if Response = Gtk.Dialog.Gtk_Response_OK then
+            Hexagon.Server_Map.Load_Map
+              (Scenario_Map, Hexagon.Server_Map.A_Map);
 
-               Hexagon.Client_Map.Set_Origo_Patch (A_Client_Map, 1, 1);
+            Hexagon.Client_Map.Init_Client_Map (A_Client_Map);
+            for X in 1 .. 100 loop
+               for Y in 1 .. 100 loop
+                  A_Client_Map.Map (X, Y).all.Pos :=
+                    Hexagon.Server_Map.A_Map (X, Y).all.Pos;
+                  A_Client_Map.Map (X, Y).all.Landscape_Here :=
+                    Hexagon.Server_Map.A_Map (X, Y).all.Landscape_Here;
+
+                  Hexagon.Client_Map.Set_Origo_Patch (A_Client_Map, 1, 1);
+               end loop;
             end loop;
-         end loop;
 
-         Hexagon.Server_Navigation.Load_Navigation
-           (Scenario_Land_Navigation, A_Land_Navigation);
-         Hexagon.Server_Navigation.Load_Navigation
-           (Scenario_Sea_Navigation, A_Sea_Navigation);
+            Hexagon.Server_Navigation.Load_Navigation
+              (Scenario_Land_Navigation_File, A_Land_Navigation);
+            Hexagon.Server_Navigation.Load_Navigation
+              (Scenario_Sea_Navigation_File, A_Sea_Navigation);
+         end if;
+
       end if;
 
       Queue_Draw (The_Window);
@@ -467,67 +598,6 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
    end On_Map_Area_Show;
 
-   procedure Draw_Navigation
-     (P_Navigation      : in Hexagon.Server_Navigation.Type_Navigation;
-      P_Navigation_Node : in Hexagon.Server_Navigation.Type_Navigation_Node)
-   is
-      Current_TAB : Hexagon.Server_Map.Type_Server_Patch_Adress;
-      --Neighbour_Id : Hexagon.Server_Navigation.Type_Navigation_Node_Id;
-
-      Trav_Neighbour : Neighbour_List_Pkg.Cursor;
-
-      --Local_Index : Integer;
-      use Hexagon.Area;
-   begin
-      Text_IO.Put_Line ("Draw_Navigation - enter");
-      Text_IO.Put_Line
-        ("We are on Pos:" & P_Navigation_Node.Pos.A'Img & ", " &
-         P_Navigation_Node.Pos.B'Img);
-      Text_IO.Put_Line
-        ("Current TAB pos:" & Navigation_TAB.Navigation_Delta_Position.A'Img &
-         ", " & Navigation_TAB.Navigation_Delta_Position.B'Img);
-
-      Trav_Neighbour := Neighbour_List_Pkg.First (Template_Neighbours);
-      while Neighbour_List_Pkg.Has_Element (Trav_Neighbour) loop
-         Current_TAB :=
-           Hexagon.Server_Map.Get_Patch_Adress_From_AB
-             (Hexagon.Type_Hexagon_Numbers
-                (Integer (P_Navigation_Node.Pos.A) +
-                 Integer (Neighbour_List_Pkg.Element (Trav_Neighbour).A)),
-              Hexagon.Type_Hexagon_Numbers
-                (Integer (P_Navigation_Node.Pos.B) +
-                 Integer (Neighbour_List_Pkg.Element (Trav_Neighbour).B)));
-
-         if Navigation_TAB.Navigation_Delta_Position /=
-           Neighbour_List_Pkg.Element (Trav_Neighbour) then
-
-            Text_IO.Put_Line
-              (" A:" & Current_TAB.all.Pos.A'Img & ", B:" &
-               Current_TAB.all.Pos.B'Img);
-
-         elsif Navigation_TAB.Navigation_Delta_Position =
-           Neighbour_List_Pkg.Element (Trav_Neighbour) then
-            Text_IO.Put_Line
-              (">>A:" & Current_TAB.all.Pos.A'Img & ", B:" &
-               Current_TAB.all.Pos.B'Img);
-
-            Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
-              (A_Client_Map,
-               Hexagon.Client_Map.Get_Patch_Adress_From_AB
-                 (A_Client_Map, P_Navigation_Node.Pos.A,
-                  P_Navigation_Node.Pos.B).all,
-               Hexagon.Client_Map.Get_Patch_Adress_From_AB
-                 (A_Client_Map, Current_TAB.all.Pos.A,
-                  Current_TAB.all.Pos.B).all,
-               All_Pix);
-         end if;
-
-         Trav_Neighbour := Neighbour_List_Pkg.Next (Trav_Neighbour);
-      end loop;
-
-      Text_IO.Put_Line ("Draw_Navigation - exit");
-   end Draw_Navigation;
-
    procedure Draw_Path
      (P_Navigation : in Hexagon.Server_Navigation.Type_Navigation;
       P_From, P_To : in Hexagon.Type_Hexagon_Position)
@@ -593,76 +663,130 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
    end Draw_Path;
 
+   procedure Draw_Navigation
+     (P_Navigation      : in Hexagon.Server_Navigation.Type_Navigation;
+      P_Navigation_Node : in Hexagon.Server_Navigation.Type_Navigation_Node)
+   is
+      Current_TAB : Hexagon.Server_Map.Type_Server_Patch_Adress;
+
+      Trav_Neighbour : Neighbour_List_Pkg.Cursor;
+
+      use Hexagon.Area;
+   begin
+      Text_IO.Put_Line ("Draw_Navigation - enter");
+
+      Trav_Neighbour := Neighbour_List_Pkg.First (Template_Neighbours);
+      while Neighbour_List_Pkg.Has_Element (Trav_Neighbour) loop
+         Current_TAB :=
+           Hexagon.Server_Map.Get_Patch_Adress_From_AB
+             (Hexagon.Type_Hexagon_Numbers
+                (Integer (P_Navigation_Node.Pos.A) +
+                 Integer (Neighbour_List_Pkg.Element (Trav_Neighbour).A)),
+              Hexagon.Type_Hexagon_Numbers
+                (Integer (P_Navigation_Node.Pos.B) +
+                 Integer (Neighbour_List_Pkg.Element (Trav_Neighbour).B)));
+
+         if Navigation_TAB.Navigation_Delta_Position =
+           Neighbour_List_Pkg.Element (Trav_Neighbour) then
+
+            Tubastga_Window_Pkg.FullsizeView.Draw_Arrow
+              (A_Client_Map,
+               Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                 (A_Client_Map, P_Navigation_Node.Pos.A,
+                  P_Navigation_Node.Pos.B).all,
+               Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                 (A_Client_Map, Current_TAB.all.Pos.A,
+                  Current_TAB.all.Pos.B).all,
+               All_Pix);
+         end if;
+
+         Trav_Neighbour := Neighbour_List_Pkg.Next (Trav_Neighbour);
+      end loop;
+
+      Text_IO.Put_Line ("Draw_Navigation - exit");
+   end Draw_Navigation;
+
    procedure Draw_Navigation_List (P_Draw : Cairo.Cairo_Context) is
       Trav         : Neighbour_List_Pkg.Cursor;
       Is_Neighbour : Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg
         .Cursor;
 
+      From_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      To_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+
       use Hexagon.Area;
+      use Hexagon.Server_Navigation;
    begin
-      Text_IO.Put_Line ("Draw_Navigation_List - enter");
+--      Text_IO.Put_Line ("Draw_Navigation_List - enter");
 
       Cairo.Set_Font_Size (P_Draw, Gdouble (20));
-      cairo.Set_Line_Width (P_Draw, Gdouble (1));
-      Text_IO.Put_Line
-        ("Navigation_TAB:" & Navigation_TAB.Navigation_Delta_Position.A'Img &
-         ", " & Navigation_TAB.Navigation_Delta_Position.B'Img);
+      Cairo.Set_Line_Width (P_Draw, Gdouble (1));
 
-      Trav := Neighbour_List_Pkg.First (Template_Neighbours);
-      while Neighbour_List_Pkg.Has_Element (Trav) loop
+      From_Navigation_Node :=
+        Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
+          (A_Land_Navigation, Navigation_TAB.From_Pos);
 
-         Is_Neighbour :=
-           Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Find
-             (Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Land_Navigation, Navigation_TAB.From_Pos).all
-                .Neighbours,
+      if From_Navigation_Node /= null then
+         Trav := Neighbour_List_Pkg.First (Template_Neighbours);
+         while Neighbour_List_Pkg.Has_Element (Trav) loop
+
+            To_Navigation_Node :=
               Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
-                (A_Land_Navigation, Navigation_TAB.To_Pos).all
-                .Id);
+                (A_Land_Navigation, Navigation_TAB.To_Pos);
 
-         if Navigation_TAB.Navigation_Delta_Position /=
-           Neighbour_List_Pkg.Element (Trav) then
-            Cairo.Set_Source_Rgb
-              (P_Draw, Gdouble (0), Gdouble (0), Gdouble (0));
+            Is_Neighbour :=
+              Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg.Find
+                (From_Navigation_Node.all.Neighbours,
+                 To_Navigation_Node.all.Id);
 
-            Cairo.Move_To
-              (P_Draw, Gdouble (300),
-               Gdouble (400 + Neighbour_List_Pkg.To_Index (Trav) * 20));
-            Cairo.Show_Text
-              (P_Draw,
-               UTF8_String'
-                 (Hexagon.Area.To_String (Neighbour_List_Pkg.Element (Trav))));
-
-         elsif Navigation_TAB.Navigation_Delta_Position =
-           Neighbour_List_Pkg.Element (Trav) then
-
-            if Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg
-                .Has_Element
-                (Is_Neighbour) then
+            if Navigation_TAB.Navigation_Delta_Position /=
+              Neighbour_List_Pkg.Element (Trav) then
                Cairo.Set_Source_Rgb
-                 (P_Draw, Gdouble (0), Gdouble (1), Gdouble (0));
-            else
-               Cairo.Set_Source_Rgb
-                 (P_Draw, Gdouble (1), Gdouble (0), Gdouble (0));
+                 (P_Draw, Gdouble (0), Gdouble (0), Gdouble (0));
+
+               Cairo.Move_To
+                 (P_Draw, Gdouble (300),
+                  Gdouble (400 + Neighbour_List_Pkg.To_Index (Trav) * 20));
+               Cairo.Show_Text
+                 (P_Draw,
+                  UTF8_String'
+                    (Hexagon.Area.To_String
+                       (Neighbour_List_Pkg.Element (Trav))));
+
+            elsif Navigation_TAB.Navigation_Delta_Position =
+              Neighbour_List_Pkg.Element (Trav) then
+
+               if Hexagon.Server_Navigation.Navigation_Neighbours_List_Pkg
+                   .Has_Element
+                   (Is_Neighbour) then
+                  Cairo.Set_Source_Rgb
+                    (P_Draw, Gdouble (0), Gdouble (1), Gdouble (0));
+               else
+                  Cairo.Set_Source_Rgb
+                    (P_Draw, Gdouble (1), Gdouble (0), Gdouble (0));
+               end if;
+
+               Cairo.Move_To
+                 (P_Draw, Gdouble (300),
+                  Gdouble (400 + Neighbour_List_Pkg.To_Index (Trav) * 20));
+               Cairo.Show_Text
+                 (P_Draw,
+                  UTF8_String'
+                    (Hexagon.To_String (Navigation_TAB.From_Pos) & " to " &
+                     Hexagon.Area.To_String
+                       (Neighbour_List_Pkg.Element (Trav)) &
+                     " " & Hexagon.To_String (Navigation_TAB.To_Pos) &
+                     " + To Add or - To Remove"));
+
             end if;
 
-            Cairo.Move_To
-              (P_Draw, Gdouble (300),
-               Gdouble (400 + Neighbour_List_Pkg.To_Index (Trav) * 20));
-            Cairo.Show_Text
-              (P_Draw,
-               UTF8_String'
-                 (Hexagon.To_String (Navigation_TAB.From_Pos) & " to " &
-                  Hexagon.Area.To_String (Neighbour_List_Pkg.Element (Trav)) &
-                  " " & Hexagon.To_String (Navigation_TAB.To_Pos) &
-                  " + To Add or - To Remove"));
+            Trav := Neighbour_List_Pkg.Next (Trav);
+         end loop;
+      end if;
 
-         end if;
-
-         Trav := Neighbour_List_Pkg.Next (Trav);
-      end loop;
-
-      Text_IO.Put_Line ("Draw_Navigation_List - exit");
+--      Text_IO.Put_Line ("Draw_Navigation_List - exit");
    end Draw_Navigation_List;
 
    function On_Map_Area_Expose_Event
@@ -727,8 +851,6 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
             end if;
 
-            Text_IO.Put_Line ("------");
-
             if Right_Button_Pressed_Patch /= null then
                Text_IO.Put_Line ("Naboer:");
                Land_Navigation :=
@@ -754,7 +876,6 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
             end if;
          end if;
-         Text_IO.Put_Line ("------");
 
          if Gtk.Toggle_Button.Get_Active
              (Gtk.Toggle_Button.Gtk_Toggle_Button (The_Window.all.chkPath))
@@ -772,8 +893,6 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       end;
 
-      Text_IO.Put_Line ("------");
-
       Hexagon.Client_Map.Reset_Visit;
 
       Gdk.Pixbuf.Fill (Scale_Pix, Glib.Guint32 (0));
@@ -788,15 +907,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       Cairo.Paint (P_Draw);
 
-      Text_IO.Put_Line ("Draw_Navigation_List a");
-
       Draw_Navigation_List (P_Draw);
 
-      Text_IO.Put_Line ("Draw_Navigation_List b");
-
       Cairo.Stroke (P_Draw);
-
-      Text_IO.Put_Line ("------");
 
       if Verbose then
          Text_IO.Put_Line
@@ -1054,6 +1167,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    is
       Arg1 : Gdk_Event := To_Event (Params, 1);
 
+      use Hexagon.Client_Map;
    begin
 
       Text_IO.Put ("Key Pressed:");
@@ -1100,43 +1214,45 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
             TubastgaEditor_UI_Aux.UI_Selecting := True;
 
          when GDK_Tab =>
-            declare
-               Current : Neighbour_List_Pkg.Cursor;
-            begin
-               Text_IO.Put_Line
-                 ("GDK_Tab -enter  old TAB:" &
-                  Navigation_TAB.Navigation_Delta_Position.A'Img & ", " &
-                  Navigation_TAB.Navigation_Delta_Position.B'Img);
+            if Left_Button_Pressed_Patch /= null then
+               declare
+                  Current : Neighbour_List_Pkg.Cursor;
+               begin
+                  Text_IO.Put_Line
+                    ("GDK_Tab -enter  old TAB:" &
+                     Navigation_TAB.Navigation_Delta_Position.A'Img & ", " &
+                     Navigation_TAB.Navigation_Delta_Position.B'Img);
 
-               Navigation_TAB.From_Pos := Left_Button_Pressed_Patch.all.Pos;
+                  Navigation_TAB.From_Pos := Left_Button_Pressed_Patch.all.Pos;
 
-               Current :=
-                 Neighbour_List_Pkg.Find
-                   (Template_Neighbours,
-                    Navigation_TAB.Navigation_Delta_Position);
-               Current := Neighbour_List_Pkg.Next (Current);
+                  Current :=
+                    Neighbour_List_Pkg.Find
+                      (Template_Neighbours,
+                       Navigation_TAB.Navigation_Delta_Position);
+                  Current := Neighbour_List_Pkg.Next (Current);
 
-               if not Neighbour_List_Pkg.Has_Element (Current) then
-                  Current := Neighbour_List_Pkg.First (Template_Neighbours);
-               end if;
+                  if not Neighbour_List_Pkg.Has_Element (Current) then
+                     Current := Neighbour_List_Pkg.First (Template_Neighbours);
+                  end if;
 
-               Navigation_TAB.Navigation_Delta_Position :=
-                 Neighbour_List_Pkg.Element (Current);
-               Navigation_TAB.To_Pos.A :=
-                 (Hexagon.Type_Hexagon_Numbers
-                    (Integer (Left_Button_Pressed_Patch.all.Pos.A) +
-                     Integer (Neighbour_List_Pkg.Element (Current).A)));
+                  Navigation_TAB.Navigation_Delta_Position :=
+                    Neighbour_List_Pkg.Element (Current);
+                  Navigation_TAB.To_Pos.A :=
+                    (Hexagon.Type_Hexagon_Numbers
+                       (Integer (Left_Button_Pressed_Patch.all.Pos.A) +
+                        Integer (Neighbour_List_Pkg.Element (Current).A)));
 
-               Navigation_TAB.To_Pos.B :=
-                 (Hexagon.Type_Hexagon_Numbers
-                    (Integer (Left_Button_Pressed_Patch.all.Pos.B) +
-                     Integer (Neighbour_List_Pkg.Element (Current).B)));
+                  Navigation_TAB.To_Pos.B :=
+                    (Hexagon.Type_Hexagon_Numbers
+                       (Integer (Left_Button_Pressed_Patch.all.Pos.B) +
+                        Integer (Neighbour_List_Pkg.Element (Current).B)));
 
-               Text_IO.Put_Line
-                 ("GDK Tab - exit new TAB:" &
-                  Navigation_TAB.Navigation_Delta_Position.A'Img & ", " &
-                  Navigation_TAB.Navigation_Delta_Position.B'Img);
-            end;
+                  Text_IO.Put_Line
+                    ("GDK Tab - exit new TAB:" &
+                     Navigation_TAB.Navigation_Delta_Position.A'Img & ", " &
+                     Navigation_TAB.Navigation_Delta_Position.B'Img);
+               end;
+            end if;
 
          when GDK_minus =>
             Text_IO.Put_Line ("GDK Minus");
