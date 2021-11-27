@@ -24,7 +24,7 @@ with Tubastga_Window_Pkg.FullsizeView;
 with Gtk.Tree_Selection;
 with Gtk.Tree_Model;
 with Gtk.Enums;
-with GtkAda.Dialogs;
+with Gtkada.Dialogs;
 with Action;
 with Tubastga_Game;
 with Tubastga_UI_Aux;
@@ -36,8 +36,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    Verbose : constant Boolean := False;
 
-   procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Action_Access;
-      P_Type_Category                          : in     Piece.Type_Category)
+   procedure Activate_Action_Buttons
+     (P_Window : in out Type_Wnd_Action_Access; P_Type_Category : in Piece.Type_Category)
    is
       use Piece;
    begin
@@ -62,8 +62,9 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
    end Activate_Action_Buttons;
 
-   procedure Set_Selected_Performing_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
-      P_Patch : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure Set_Selected_Performing_Patch_Window
+     (P_Window : in out Type_Wnd_Action_Access;
+      P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav       : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id : Piece.Type_Piece_Id;
@@ -85,7 +86,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Performing_Patch_Window - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Performing_Patch_Window - enter");
       end if;
 
       if P_Patch = null then
@@ -97,7 +98,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       Gtk.Tree_Selection.Get_Selected (Selected_Record, Selected_Model, Selected_Iter);
 
       if Selected_Model /= Gtk.Tree_Model.Null_Gtk_Tree_Model and
-        Selected_Iter /= Gtk.Tree_Model.Null_Iter then
+        Selected_Iter /= Gtk.Tree_Model.Null_Iter
+      then
          A_Path := Gtk.Tree_Model.Get_Path (Selected_Model, Selected_Iter);
       end if;
 
@@ -128,7 +130,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end loop;
 
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
-        Piece.Undefined_Piece_Id then
+        Piece.Undefined_Piece_Id
+      then
 
          Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Performing_Pieces_Tree_View);
 
@@ -140,50 +143,55 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       --
       --
-      Text_IO.Put_Line("-- Effect haandtering");
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
-        Piece.Undefined_Piece_Id then
+        Piece.Undefined_Piece_Id
+      then
          declare
             A_Piece_Id : Piece.Type_Piece_Id;
             A_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
             An_Effect  : Effect.Type_Effect;
+
+            use Piece.Client_Piece;
          begin
             A_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
             A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
 
-            Text_IO.Put_Line("A_Piece_Id:" & A_Piece_Id'Img);
-            Gtk.List_Store.Clear (P_Window.all.Performing_Piece_Effects_List_Store);
-            Trav_Effect := Effect.Effect_List.First (A_Piece.all.Effects_On_Piece);
+            if A_Piece /= null then
 
-            while Effect.Effect_List.Has_Element (Trav_Effect) loop
+               Gtk.List_Store.Clear (P_Window.all.Performing_Piece_Effects_List_Store);
+               Trav_Effect := Effect.Effect_List.First (A_Piece.all.Effects_On_Piece);
 
-               An_Effect := Effect.Effect_List.Element (Trav_Effect);
+               while Effect.Effect_List.Has_Element (Trav_Effect) loop
 
-               Gtk.List_Store.Append
-                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter);
-               Gtk.List_Store.Set
-                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 0,
-                  Glib.Gint (An_Effect.Effect_Name));
-               Gtk.List_Store.Set
-                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 1,
-                  Tubastga_Window_Pkg.Images.Get_Image
-                    (Tubastga_Window_Pkg.Images.All_Images,
-                     Tubastga_Window_Pkg.Images.Find_Piece_Image
-                       (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
-                    .Image_Data);
-               Gtk.List_Store.Set
-                 (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 2,
-                  Utilities.RemoteString.To_String
-                    (Tubastga_Game.Effect_Type_Info_List (An_Effect.Effect_Name).Type_Name) &
-                  " (" & An_Effect.Aux'Img & ")");
+                  An_Effect := Effect.Effect_List.Element (Trav_Effect);
 
-               Trav_Effect := Effect.Effect_List.Next (Trav_Effect);
-            end loop;
+                  Gtk.List_Store.Append
+                    (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter);
+                  Gtk.List_Store.Set
+                    (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 0,
+                     Glib.Gint (An_Effect.Effect_Name));
+                  Gtk.List_Store.Set
+                    (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 1,
+                     Tubastga_Window_Pkg.Images.Get_Image
+                       (Tubastga_Window_Pkg.Images.All_Images,
+                        Tubastga_Window_Pkg.Images.Find_Piece_Image
+                          (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
+                       .Image_Data);
+                  Gtk.List_Store.Set
+                    (P_Window.Performing_Piece_Effects_List_Store, List_Store_Iter, 2,
+                     Utilities.RemoteString.To_String
+                       (Tubastga_Game.Effect_Type_Info_List (An_Effect.Effect_Name).Type_Name) &
+                     " (" & An_Effect.Aux'Img & ")");
+
+                  Trav_Effect := Effect.Effect_List.Next (Trav_Effect);
+               end loop;
+
+            end if;
 
          exception
             when others =>
-               Text_IO.Put_Line("Effect Exception ");
-               Text_IO.Put_Line("A_Piece_Id:" & A_Piece_Id'Img);
+               Text_IO.Put_Line ("Effect Exception ");
+               Text_IO.Put_Line ("A_Piece_Id:" & A_Piece_Id'Img);
                raise;
          end;
 
@@ -191,12 +199,13 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Performing_Patch_Window - exit");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Performing_Patch_Window - exit");
       end if;
    end Set_Selected_Performing_Patch_Window;
 
-   procedure Set_Selected_Target_Patch_Window (P_Window : in out Type_Wnd_Action_Access;
-      P_Patch : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure Set_Selected_Target_Patch_Window
+     (P_Window : in out Type_Wnd_Action_Access;
+      P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav       : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id : Piece.Type_Piece_Id;
@@ -218,7 +227,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Target_Patch_Window - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Target_Patch_Window - enter");
       end if;
 
       if P_Patch = null then
@@ -230,7 +239,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       Gtk.Tree_Selection.Get_Selected (Selected_Record, Selected_Model, Selected_Iter);
 
       if Selected_Model /= Gtk.Tree_Model.Null_Gtk_Tree_Model and
-        Selected_Iter /= Gtk.Tree_Model.Null_Iter then
+        Selected_Iter /= Gtk.Tree_Model.Null_Iter
+      then
          A_Path := Gtk.Tree_Model.Get_Path (Selected_Model, Selected_Iter);
       end if;
 
@@ -258,7 +268,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end loop;
 
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces) /=
-        Piece.Undefined_Piece_Id then
+        Piece.Undefined_Piece_Id
+      then
 
          Selected_Record := Gtk.Tree_View.Get_Selection (P_Window.all.Target_Pieces_Tree_View);
 
@@ -269,7 +280,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
 
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces) /=
-        Piece.Undefined_Piece_Id then
+        Piece.Undefined_Piece_Id
+      then
          declare
             A_Piece_Id : Piece.Type_Piece_Id;
             A_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
@@ -309,7 +321,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.Set_Selected_Target_Patch_Window - exit");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Target_Patch_Window - exit");
       end if;
    end Set_Selected_Target_Patch_Window;
 
@@ -325,7 +337,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Tree_View - enter");
       end if;
 
       Selected_Record := Gtk.Tree_View.Get_Selection (Object);
@@ -341,7 +353,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Tree_View - exit ");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Tree_View - exit ");
       end if;
    end On_Performing_Patch_Tree_View;
 
@@ -357,7 +369,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Piece_Effects_Tree_View - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Piece_Effects_Tree_View - enter");
       end if;
 
       Selected_Record := Gtk.Tree_View.Get_Selection (Object);
@@ -373,7 +385,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Performing_Patch_Piece_Effects_Tree_View - exit ");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Performing_Patch_Piece_Effects_Tree_View - exit ");
       end if;
    end On_Performing_Patch_Piece_Effects_Tree_View;
 
@@ -389,7 +401,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Piece_Effects_Tree_View - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Piece_Effects_Tree_View - enter");
       end if;
 
       Selected_Record := Gtk.Tree_View.Get_Selection (Object);
@@ -405,19 +417,19 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Piece_Effects_Tree_View - exit ");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Piece_Effects_Tree_View - exit ");
       end if;
    end On_Target_Patch_Piece_Effects_Tree_View;
 
    function Validate_Search (P_Searching_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
-      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Tmp : Gtkada.Dialogs.Message_Dialog_Buttons;
       Ret : Boolean := True;
 
       use Piece;
    begin
 
       if P_Searching_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the searching");
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose a piece to perform the searching");
          Ret := False;
 
       end if;
@@ -427,14 +439,14 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    function Validate_Promote_Demote (P_Promoting_Piece_Id : in Piece.Type_Piece_Id) return Boolean
    is
-      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Tmp : Gtkada.Dialogs.Message_Dialog_Buttons;
       Ret : Boolean := True;
 
       use Piece;
    begin
 
       if P_Promoting_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
          Ret := False;
 
       end if;
@@ -443,14 +455,14 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    end Validate_Promote_Demote;
 
    function Validate_Construct (P_Constructing_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
-      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Tmp : Gtkada.Dialogs.Message_Dialog_Buttons;
       Ret : Boolean := True;
 
       use Piece;
    begin
 
       if P_Constructing_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose a piece to perform the construction");
          Ret := False;
 
       end if;
@@ -459,14 +471,14 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    end Validate_Construct;
 
    function Validate_Move (P_Moving_Piece_Id : in Piece.Type_Piece_Id) return Boolean is
-      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Tmp : Gtkada.Dialogs.Message_Dialog_Buttons;
       Ret : Boolean := True;
 
       use Piece;
    begin
 
       if P_Moving_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a piece to move");
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose a piece to move");
          Ret := False;
 
       end if;
@@ -477,25 +489,28 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    function Validate_Attack
      (P_Attacking_Piece_Id, P_Attacked_Piece_Id : in Piece.Type_Piece_Id) return Boolean
    is
-      Tmp : GtkAda.Dialogs.Message_Dialog_Buttons;
+      Tmp : Gtkada.Dialogs.Message_Dialog_Buttons;
       Ret : Boolean := True;
 
       use Piece;
    begin
 
       if P_Attacking_Piece_Id = Piece.Undefined_Piece_Id and
-        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose an attacker and a target");
+        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id
+      then
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose an attacker and a target");
          Ret := False;
 
       elsif P_Attacking_Piece_Id = Piece.Undefined_Piece_Id and
-        P_Attacked_Piece_Id /= Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose an attacker");
+        P_Attacked_Piece_Id /= Piece.Undefined_Piece_Id
+      then
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose an attacker");
          Ret := False;
 
       elsif P_Attacking_Piece_Id /= Piece.Undefined_Piece_Id and
-        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id then
-         Tmp := GtkAda.Dialogs.Message_Dialog ("Please choose a target");
+        P_Attacked_Piece_Id = Piece.Undefined_Piece_Id
+      then
+         Tmp := Gtkada.Dialogs.Message_Dialog ("Please choose a target");
          Ret := False;
 
       end if;
@@ -511,7 +526,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall1 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall1 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -530,7 +545,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall1 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall1 - exception");
          raise;
    end On_Button_Place_Wall1;
 
@@ -542,7 +557,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall2 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall2 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -561,7 +576,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall2 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall2 - exception");
          raise;
    end On_Button_Place_Wall2;
 
@@ -573,7 +588,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall3 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall3 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -592,7 +607,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall3 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall3 - exception");
          raise;
    end On_Button_Place_Wall3;
 
@@ -604,7 +619,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall4 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall4 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -623,7 +638,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall4 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall4 - exception");
          raise;
    end On_Button_Place_Wall4;
 
@@ -635,7 +650,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall5 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall5 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -654,7 +669,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall5 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall5 - exception");
          raise;
    end On_Button_Place_Wall5;
 
@@ -666,7 +681,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Place_Wall6 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Place_Wall6 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -685,7 +700,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Place_Wall6 - exception");
+         Text_IO.Put_Line ("On_Button_Place_Wall6 - exception");
          raise;
    end On_Button_Place_Wall6;
    --
@@ -700,7 +715,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall1 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall1 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -719,7 +734,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall1 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall1 - exception");
          raise;
    end On_Button_Remove_Wall1;
 
@@ -732,7 +747,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall2 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall2 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -751,7 +766,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall2 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall2 - exception");
          raise;
    end On_Button_Remove_Wall2;
 
@@ -764,7 +779,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall3 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall3 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -783,7 +798,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall3 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall3 - exception");
          raise;
    end On_Button_Remove_Wall3;
 
@@ -796,7 +811,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall4 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall4 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -815,7 +830,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall4 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall4 - exception");
          raise;
    end On_Button_Remove_Wall4;
 
@@ -828,7 +843,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall5 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall5 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -847,7 +862,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall5 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall5 - exception");
          raise;
    end On_Button_Remove_Wall5;
 
@@ -860,7 +875,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Wall6 - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Wall6 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -879,7 +894,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Remove_Wall6 - exception");
+         Text_IO.Put_Line ("On_Button_Remove_Wall6 - exception");
          raise;
    end On_Button_Remove_Wall6;
 
@@ -892,7 +907,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Move - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Move - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -912,7 +927,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Move - exception");
+         Text_IO.Put_Line ("On_Button_Move - exception");
          raise;
    end On_Button_Move;
 
@@ -930,7 +945,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Attack - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Attack - clicked");
       end if;
 
       Selected_Piece_Id_LB :=
@@ -960,7 +975,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Attack - exception");
+         Text_IO.Put_Line ("On_Button_Attack - exception");
          raise;
    end On_Button_Attack;
 
@@ -978,7 +993,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Ranged_Attack - clicked");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Ranged_Attack - clicked");
       end if;
 
       Selected_Piece_Id_LB :=
@@ -1008,7 +1023,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Ranged_Attack - exception");
+         Text_IO.Put_Line ("On_Button_Ranged_Attack - exception");
          raise;
    end On_Button_Ranged_Attack;
 
@@ -1020,7 +1035,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       Selected_Pos      : Hexagon.Type_Hexagon_Position;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Promote - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Promote - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -1039,7 +1054,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Promote - exception");
+         Text_IO.Put_Line ("On_Button_Promote - exception");
          raise;
    end On_Button_Promote;
 
@@ -1051,7 +1066,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       Selected_Pos      : Hexagon.Type_Hexagon_Position;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Demote - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Demote - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -1070,7 +1085,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Demote - exception");
+         Text_IO.Put_Line ("On_Button_Demote - exception");
          raise;
    end On_Button_Demote;
 
@@ -1084,7 +1099,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       An_Effect     : Effect.Type_Effect;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Search - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Search - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -1112,7 +1127,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Search - exception");
+         Text_IO.Put_Line ("On_Button_Search - exception");
          raise;
    end On_Button_Search;
 
@@ -1125,7 +1140,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Create_Path - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Create_Path - clicked");
       end if;
 
       declare
@@ -1157,7 +1172,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
            (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
             Effect.Type_Effect'
               (Tubastga_Game.Effect_Path,
-               Integer (Me_Player_Id) * 1000000 + Integer (Selected_Piece.all.Id) * 10 + 0),
+               Integer (Me_Player_Id) * 1_000_000 + Integer (Selected_Piece.all.Id) * 10 + 0),
             The_Area);
       end;
 
@@ -1176,7 +1191,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       use Hexagon;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Remove_Path - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Remove_Path - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -1192,7 +1207,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
         (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
          Effect.Type_Effect'
            (Tubastga_Game.Effect_Path,
-            (Integer (Me_Player_Id) * 1000000 + Integer (Selected_Piece.all.Id) * 10 + 1)),
+            (Integer (Me_Player_Id) * 1_000_000 + Integer (Selected_Piece.all.Id) * 10 + 1)),
          The_Area);
 
    end On_Button_Remove_Path;
@@ -1209,7 +1224,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       use Hexagon;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_1 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Card_1 - clicked");
       end if;
 
       Selected_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
@@ -1224,7 +1239,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Card_1 - exception");
+         Text_IO.Put_Line ("On_Button_Card_1 - exception");
          raise;
    end On_Button_Card_1;
 
@@ -1232,12 +1247,12 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions.On_Button_Card_2 - clicked");
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Card_2 - clicked");
       end if;
 
    exception
       when others =>
-         Text_IO.Put_Line("On_Button_Card_2 - exception");
+         Text_IO.Put_Line ("On_Button_Card_2 - exception");
          raise;
    end On_Button_Card_2;
 
@@ -1251,7 +1266,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View - enter");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Tree_View - enter");
       end if;
 
       Selected_Record := Gtk.Tree_View.Get_Selection (Object);
@@ -1262,12 +1277,11 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
       A_Piece_Id := Piece.Type_Piece_Id (Gtk.Tree_Model.Get_Int (Selected_Model, Selected_Iter, 0));
 
-      Text_IO.Put_Line ("On_Target_Patch_Tree_View A_Piece_Id:" & A_Piece_Id'Img);
       Tubastga_Window_Pkg.Lists.Set_Last_Selected_Piece (RB_Selected_Pieces, A_Piece_Id, False);
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Window_Pkg.Callbacks.Actions.On_Target_Patch_Tree_View - exit ");
+           ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Target_Patch_Tree_View - exit ");
       end if;
    end On_Target_Patch_Tree_View;
 
