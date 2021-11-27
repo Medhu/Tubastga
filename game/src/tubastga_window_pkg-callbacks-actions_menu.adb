@@ -34,7 +34,7 @@ with Tubastga_Window_Pkg.Images;
 
 package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
-   Verbose : constant Boolean := True;
+   Verbose : constant Boolean := False;
 
    procedure Activate_Action_Buttons (P_Window : in out Type_Wnd_Action_Access;
       P_Type_Category                          : in     Piece.Type_Category)
@@ -139,7 +139,8 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
 
       --
-      --****
+      --
+      Text_IO.Put_Line("-- Effect haandtering");
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
         Piece.Undefined_Piece_Id then
          declare
@@ -150,6 +151,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
             A_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
             A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
 
+            Text_IO.Put_Line("A_Piece_Id:" & A_Piece_Id'Img);
             Gtk.List_Store.Clear (P_Window.all.Performing_Piece_Effects_List_Store);
             Trav_Effect := Effect.Effect_List.First (A_Piece.all.Effects_On_Piece);
 
@@ -177,6 +179,12 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
                Trav_Effect := Effect.Effect_List.Next (Trav_Effect);
             end loop;
+
+         exception
+            when others =>
+               Text_IO.Put_Line("Effect Exception ");
+               Text_IO.Put_Line("A_Piece_Id:" & A_Piece_Id'Img);
+               raise;
          end;
 
       end if;

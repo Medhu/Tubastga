@@ -24,53 +24,59 @@ with Player;
 with Text_IO;
 with Tubastga_Window_Pkg.Images;
 with Cairo;
-with gdk.Cairo;
+with Gdk.Cairo;
 with Ada.Numerics.Generic_Elementary_Functions;
-
 
 package body Tubastga_Window_Pkg.FullsizeView is
    Verbose : constant Boolean := False;
 
    Game_Area_Origo_X : constant Integer   := 50;
-   Game_Area_Origo_Y : constant Integer   := 1050;
+   Game_Area_Origo_Y : constant Integer   := 1_050;
    Png_Width         : constant Glib.Gint := 72;
    Png_Height        : constant Glib.Gint := 72;
 
    use Glib;
 
-   function Get_All_Pix_Patch_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Patch_X_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
    begin
-      return Glib.Gint
+      return
+        Glib.Gint
           (Game_Area_Origo_X + Hexagon.Client_Map.Get_X_From_AB (P_Client_Map, P_Patch) - 20);
    end Get_All_Pix_Patch_X_From_AB;
 
-   function Get_All_Pix_Patch_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Patch_Y_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
    begin
-      return Glib.Gint
+      return
+        Glib.Gint
           (Game_Area_Origo_Y - Hexagon.Client_Map.Get_Y_From_AB (P_Client_Map, P_Patch) - 22);
    end Get_All_Pix_Patch_Y_From_AB;
 
-   function Get_All_Pix_Player_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Player_X_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) + 15;
    end Get_All_Pix_Player_X_From_AB;
 
-   function Get_All_Pix_Player_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
+   function Get_All_Pix_Player_Y_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch) return Glib.Gint
    is
       use Glib;
    begin
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch) + 2;
    end Get_All_Pix_Player_Y_From_AB;
 
-   function Get_All_Pix_Piece_X_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+   function Get_All_Pix_Piece_X_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint
    is
       use Glib;
@@ -78,7 +84,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
       return Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch);-- -13;
    end Get_All_Pix_Piece_X_From_AB;
 
-   function Get_All_Pix_Piece_Y_From_AB (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+   function Get_All_Pix_Piece_Y_From_AB
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint
    is
       use Glib;
@@ -86,8 +93,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
       return Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch); -- - 25;
    end Get_All_Pix_Piece_Y_From_AB;
 
-   procedure Draw_Effects (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Effect_List                 : in     Effect.Effect_List.Map)
+   procedure Draw_Effects
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Effect_List : in Effect.Effect_List.Map)
    is
       Trav : Effect.Effect_List.Cursor;
 
@@ -108,8 +115,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end loop;
    end Draw_Effects;
 
-   procedure Draw_Constructions (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Construction_List                 : in     Effect.Effect_List.Map)
+   procedure Draw_Constructions
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Construction_List : in Effect.Effect_List.Map)
    is
       Trav : Effect.Effect_List.Cursor;
 
@@ -180,8 +187,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end loop;
    end Draw_Constructions;
 
-   procedure Draw_Landscapes (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Landscape                      : in     Landscape.Type_Landscape)
+   procedure Draw_Landscapes
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Landscape : in Landscape.Type_Landscape)
    is
       Landscape_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
@@ -204,10 +211,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Landscapes;
 
-   procedure Draw_Arrow (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_From_Patch                    : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_To_Patch                      : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview                  : in out Gdk.Pixbuf.Gdk_Pixbuf)
+   procedure Draw_Arrow
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_From_Patch   : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_To_Patch     : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       From_x : Glib.Gint;
       From_y : Glib.Gint;
@@ -218,8 +226,9 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       package Math is new Ada.Numerics.Generic_Elementary_Functions (Float);
 
-      procedure Draw_Line (P_From_x : in Glib.Gint; P_From_y : in Glib.Gint; P_To_x : in Glib.Gint;
-         P_To_y                     : in Glib.Gint; P_Linebuf : in out Gdk.Pixbuf.Gdk_Pixbuf)
+      procedure Draw_Line
+        (P_From_x : in Glib.Gint; P_From_y : in Glib.Gint; P_To_x : in Glib.Gint;
+         P_To_y   : in Glib.Gint; P_Linebuf : in out Gdk.Pixbuf.Gdk_Pixbuf)
       is
          d_x : Float;
          d_y : Float;
@@ -239,13 +248,13 @@ package body Tubastga_Window_Pkg.FullsizeView is
             use Real_IO;
          begin
 
-            n := 1000;
+            n := 1_000;
             while n > 0 loop
 
                begin
 
-                  x := Float (P_From_x) + (d_x / 1000.0) * Float (n);
-                  y := Float (P_From_y) + (d_y / 1000.0) * Float (n);
+                  x := Float (P_From_x) + (d_x / 1_000.0) * Float (n);
+                  y := Float (P_From_y) + (d_y / 1_000.0) * Float (n);
 
                   x := Float'Rounding (x);
                   y := Float'Rounding (y);
@@ -271,67 +280,83 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       end Draw_Line;
 
+      use Hexagon;
    begin
       if Verbose then
          Text_IO.Put_Line ("Tubatsga_Window_Pkg.Fullsizeview.Draw_Arrow - enter");
       end if;
 
-      -- 1. Create a Pixbuf area around the arrow
-      -- 2. Draw the arrow in the "arrow-pixbuf".
-      -- 3. paint the arrow back in the P_Fullsizeview.
-      From_x :=
-        Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_From_Patch) +
-        Png_Width / 2;
-      From_y :=
-        Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_From_Patch) +
-        Png_Height / 2;
+      if P_From_Patch.Pos.P_Valid and P_To_Patch.Pos.P_Valid and P_From_Patch.Pos /= P_To_Patch.Pos
+      then
+         -- 1. Create a Pixbuf area around the arrow 2. Draw the arrow in the "arrow-pixbuf". 3.
+         -- paint the arrow back in the P_Fullsizeview.
+         From_x :=
+           Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB
+             (P_Client_Map, P_From_Patch) +
+           Png_Width / 2;
+         From_y :=
+           Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB
+             (P_Client_Map, P_From_Patch) +
+           Png_Height / 2;
 
-      To_x :=
-        Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_To_Patch) +
-        Png_Width / 2;
-      To_y :=
-        Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_To_Patch) +
-        Png_Height / 2;
+         To_x :=
+           Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_To_Patch) +
+           Png_Width / 2;
+         To_y :=
+           Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_To_Patch) +
+           Png_Height / 2;
 
-      d_x := Float (To_x - From_x);
-      d_y := Float (To_y - From_y);
+         d_x := Float (To_x - From_x);
+         d_y := Float (To_y - From_y);
 
-      declare
-         x1 : Float;
-         y1 : Float;
-         x2 : Float;
-         y2 : Float;
+         declare
+            x1 : Float;
+            y1 : Float;
+            x2 : Float;
+            y2 : Float;
 
-         theta        : Float;
-         arrow_Angle  : constant Float := 3.1415 / 24.0;
-         arrow_Length : constant Float := 20.0;
-      begin
-         theta := Math.Arctan (d_y, d_x, 3.1415);
+            theta        : Float;
+            arrow_Angle  : constant Float := 3.141_5 / 24.0;
+            arrow_Length : constant Float := 20.0;
+         begin
+            theta := Math.Arctan (d_y, d_x, 3.141_5);
 
-         x1 := Float (To_x) - arrow_Length * Math.cos (theta + arrow_Angle, 3.1415);
-         y1 := Float (To_y) - arrow_Length * Math.sin (theta + arrow_Angle, 3.1415);
-         x2 := Float (To_x) - arrow_Length * Math.cos (theta - arrow_Angle, 3.1415);
-         y2 := Float (To_y) - arrow_Length * Math.sin (theta - arrow_Angle, 3.1415);
+            x1 := Float (To_x) - arrow_Length * Math.Cos (theta + arrow_Angle, 3.141_5);
+            y1 := Float (To_y) - arrow_Length * Math.Sin (theta + arrow_Angle, 3.141_5);
+            x2 := Float (To_x) - arrow_Length * Math.Cos (theta - arrow_Angle, 3.141_5);
+            y2 := Float (To_y) - arrow_Length * Math.Sin (theta - arrow_Angle, 3.141_5);
 
-         Draw_Line
-           (From_x, From_y, To_x, To_y, P_Fullsizeview);
+            Draw_Line (From_x, From_y, To_x, To_y, P_Fullsizeview);
 
-         Draw_Line
-           (To_x, To_y, Glib.Gint (x1), Glib.Gint (y1), P_Fullsizeview);
+            Draw_Line (To_x, To_y, Glib.Gint (x1), Glib.Gint (y1), P_Fullsizeview);
 
-         Draw_Line
-           (To_x, To_y, Glib.Gint (x2), Glib.Gint (y2), P_Fullsizeview);
+            Draw_Line (To_x, To_y, Glib.Gint (x2), Glib.Gint (y2), P_Fullsizeview);
 
-      end;
+         exception
+            when others =>
+               Text_IO.Put_Line ("Exception:");
+               Text_IO.Put_Line
+                 ("x1:" & x1'Img & " y1:" & y1'Img & " x2:" & x2'Img & " y2:" & y2'Img);
+         end;
 
-      if Verbose then
-         Text_IO.Put_Line ("Tubatsga_Window_Pkg.Fullsizeview.Draw_Arrow - exit");
+         if Verbose then
+            Text_IO.Put_Line ("Tubatsga_Window_Pkg.Fullsizeview.Draw_Arrow - exit");
+         end if;
+
       end if;
+
+   exception
+      when Ada.Numerics.Argument_Error =>
+         Text_IO.Put_Line ("P_From_Patch:");
+         Landscape.Put (Landscape.Type_Patch (P_From_Patch));
+         Landscape.Put (Landscape.Type_Patch (P_To_Patch));
+         raise;
    end Draw_Arrow;
 
-   procedure Draw_All_Patch (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                             : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview                      : in out Gdk.Pixbuf.Gdk_Pixbuf;
+   procedure Draw_All_Patch
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
       P_All_Landscape_On_Patch, P_All_Constructions_On_Patch,
       P_All_Effects_On_Patch : in out Gdk.Pixbuf.Gdk_Pixbuf)
 
@@ -362,7 +387,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_All_Patch;
 
-   procedure Draw_Invisible (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+   procedure Draw_Invisible
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
       x, y        : Glib.Gint;
@@ -391,10 +417,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Invisible;
 
-   procedure Draw_Players (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                           : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview                    : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here                     : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Players
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
       Player_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
@@ -439,10 +466,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Players;
 
-   procedure Draw_Houses (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                          : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview                   : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here                    : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Houses
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
@@ -487,10 +515,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
                    (P_Client_Map, P_Patch, Piece_No);
 
                Gdk.Pixbuf.Composite
-                 (Piece_Image.all.Image_Data,
-                  P_Fullsizeview,
-                  Glib.Gint (x),
-                  Glib.Gint (y),
+                 (Piece_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y),
                   Png_Width,--  + 150,
                   Png_Height,-- + 150,
                   Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0,
@@ -508,10 +533,11 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Houses;
 
-   procedure Draw_Pieces (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                          : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview                   : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here                    : in     Landscape.Pieces_Here_List.Vector)
+   procedure Draw_Pieces
+     (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
    is
       Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
 
@@ -556,10 +582,8 @@ package body Tubastga_Window_Pkg.FullsizeView is
                    (P_Client_Map, P_Patch, Piece_No);
 
                Gdk.Pixbuf.Composite
-                 (Piece_Image.all.Image_Data,
-                  P_Fullsizeview,
-                  Glib.Gint (x + Piece_Image.all.Dest_X),
-                  Glib.Gint (y + Piece_Image.all.Dest_Y),
+                 (Piece_Image.all.Image_Data, P_Fullsizeview,
+                  Glib.Gint (x + Piece_Image.all.Dest_X), Glib.Gint (y + Piece_Image.all.Dest_Y),
                   Piece_Image.all.Image_Width,--  + 150,
                   Piece_Image.all.Image_Height,-- + 150,
                   Glib.Gdouble (x + Piece_Image.all.Offset_X),
@@ -578,9 +602,9 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Pieces;
 
-   procedure Draw_Patch_Selections (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Patch                                : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_LB_Selected_Pos, P_RB_Selected_Pos   :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
+   procedure Draw_Patch_Selections
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Patch : in Hexagon.Client_Map.Type_Client_Patch;
+      P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector)
    is
       Trav        : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
       Other_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
@@ -635,14 +659,15 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
    end Draw_Patch_Selections;
 
-   function Selected_Patch (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Fullsizeview_X, P_Fullsizeview_Y :    Glib.Gdouble) return Hexagon.Client_Map
-     .Type_Client_Patch_Adress
+   function Selected_Patch
+     (P_Client_Map                       : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Fullsizeview_X, P_Fullsizeview_Y :    Glib.Gdouble)
+      return Hexagon.Client_Map.Type_Client_Patch_Adress
    is
       X, Y : Integer;
    begin
       X := Integer (P_Fullsizeview_X) - 55;
-      Y := 1050 - Integer (P_Fullsizeview_Y);
+      Y := 1_050 - Integer (P_Fullsizeview_Y);
 
       return Hexagon.Client_Map.Get_Patch_Adress_From_XY (P_Client_Map, X, Y);
    end Selected_Patch;
