@@ -1168,10 +1168,11 @@ package body Tubastga_Game.Server_Logic is
                                    P_Area : in     Hexagon.Area.Type_Action_Capabilities_A;
                                    P_Effect_Name : in Effect.Type_Effect_Name)
    is
-      Effect_Area : Hexagon.Area.Type_Action_Capabilities_A (1 .. 1);
-      An_Effect     : Effect.Type_Effect;
-      Ret_Status  : Status.Type_Status;
-      Lua_Status  : Lua.Lua_Return_Code;
+      Effect_Area  : Hexagon.Area.Type_Action_Capabilities_A (1 .. 1);
+      An_Effect    : Effect.Type_Effect;
+      Ret_Status   : Status.Type_Status;
+      Lua_Status   : Lua.Lua_Return_Code;
+      Effect_Found : Boolean;
 
       use Lua;
       use Piece;
@@ -1182,6 +1183,8 @@ package body Tubastga_Game.Server_Logic is
             " P_Effect_Name=" & P_Effect_Name'Img );
       end if;
 
+      Text_IO.Put_Line("Perform_Patch_Effect- A");
+      Effect_Found := False;
       for T in P_Area'First .. P_Area'Last loop
          declare
             A_Patch       : Hexagon.Server_Map.Type_Server_Patch_Adress;
@@ -1189,42 +1192,58 @@ package body Tubastga_Game.Server_Logic is
          begin
             A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Area (T).A, P_Area (T).B);
             Cursor_Effect := Effect.Effect_List.First (A_Patch.all.Effects_Here);
-            An_Effect     := Effect.Effect_List.Element (Cursor_Effect);
-            Server.ServerAPI.Player_Activity_Report_Append
-              (6, P_Player_Id,
-               Utilities.RemoteString.To_Unbounded_String
-                 ("Effect=" & An_Effect.Aux'Img & " on " & P_Area (T).A'Img & " " &
-                  P_Area (T).B'Img));
+
+            if Effect.Effect_List.Has_Element(Cursor_Effect) then
+               An_Effect     := Effect.Effect_List.Element (Cursor_Effect);
+               Server.ServerAPI.Player_Activity_Report_Append
+                 (6, P_Player_Id,
+                  Utilities.RemoteString.To_Unbounded_String
+                    ("Effect=" & An_Effect.Aux'Img & " on " & P_Area (T).A'Img & " " &
+                       P_Area (T).B'Img));
+
+               Effect_Found := True;
+            end if;
          end;
 
       end loop;
 
-      Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");
-      Lua.Get_Field (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
-      Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (P_Player_Id));
-      Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (An_Effect.Aux));
-      Lua_Status := Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
-      if Lua_Status /= Lua.LUA_OK then
-         --  An error occurs during the execution
-         Text_IO.Put_Line (Lua_Status'Img);
-         Text_IO.Put_Line (To_Ada (Lua_State, -1));
-      end if;
+      Text_IO.Put_Line("Perform_Patch_Effect- B");
 
-      Server.ServerAPI.Player_Activity_Report_Append
-        (6, P_Player_Id,
-         Utilities.RemoteString.To_Unbounded_String ("We are searching the patch...."));
+      if Effect_Found then
+         Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");
+         Lua.Get_Field (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
+         Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (P_Player_Id));
+         Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (An_Effect.Aux));
+         Lua_Status := Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
+         if Lua_Status /= Lua.LUA_OK then
+            --  An error occurs during the execution
+            Text_IO.Put_Line (Lua_Status'Img);
+            Text_IO.Put_Line (To_Ada (Lua_State, -1));
+         end if;
 
-      -- for the moment only piece with id=8 will find something:)
-      if P_Piece.Id = 8 then
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found something!"));
+           (6, P_Player_Id,
+            Utilities.RemoteString.To_Unbounded_String ("We are searching the patch...."));
 
-         Server.ServerAPI.Revoke_Patch_Effect
-           (P_Player_Id, P_Action_Type, P_Piece.Id, P_Area, An_Effect.Effect_Name, Ret_Status);
+
+         -- for the moment only piece with id=8 will find something:)
+         if P_Piece.Id = 8 then
+            Server.ServerAPI.Player_Activity_Report_Append
+              (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found something!"));
+
+            Server.ServerAPI.Revoke_Patch_Effect
+              (P_Player_Id, P_Action_Type, P_Piece.Id, P_Area, An_Effect.Effect_Name, Ret_Status);
+
+         else
+            Server.ServerAPI.Player_Activity_Report_Append
+              (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found nothing!"));
+         end if;
 
       else
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found nothing!"));
+           (6, P_Player_Id,
+            Utilities.RemoteString.To_Unbounded_String ("There is nowhere particular to search here"));
+
       end if;
 
       if Verbose then
@@ -1407,6 +1426,8 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Validate_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
 
+      Text_IO.Put_Line("Validate_Perform_Patch_Effect");
+
       return True;
    end Validate_Perform_Patch_Effect;
 
@@ -1422,6 +1443,8 @@ package body Tubastga_Game.Server_Logic is
          Text_IO.Put_Line
            ("Tubastga_Game.Server_Logic.Before_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
+
+      Text_IO.Put_Line("Before_Perform_Patch_Effect");
 
       P_Result := Status.Proceed;
    end Before_Perform_Patch_Effect;
@@ -1440,6 +1463,7 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.End_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
 
+      Text_IO.Put_Line("End_Perform_Patch_Effect");
       if P_End_Status = Status.Patch_Effect_Not_Here then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,

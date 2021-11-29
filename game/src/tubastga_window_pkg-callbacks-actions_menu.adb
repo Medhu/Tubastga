@@ -1114,8 +1114,9 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
 
          Effect_Cursor :=
            Effect.Effect_List.Find (Selected_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure);
-         if Effect.Effect_List.Has_Element (Effect_Cursor) then
-            An_Effect := Effect.Effect_List.Element (Effect_Cursor);
+         if Effect.Effect_List.Has_Element (Effect_Cursor) or true then
+            --An_Effect := Effect.Effect_List.Element (Effect_Cursor);
+            An_Effect := Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 11);
 
             Piece.Client_Piece.Perform_Patch_Effect
               (Me_Player_Id, Action.Type_Action_Type (1), Piece.Type_Piece (Selected_Piece.all),
