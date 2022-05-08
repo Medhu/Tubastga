@@ -19,7 +19,6 @@
 
 with Text_IO;
 with Goods;
---with Hexagon.Utility;
 
 package body Tubastga_Game.Server_Logic.House_Piece is
    Verbose : constant Boolean := False;

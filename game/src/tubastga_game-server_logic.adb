@@ -44,7 +44,7 @@ package body Tubastga_Game.Server_Logic is
    package Random is new Ada.Numerics.Discrete_Random (Positive);
    RandomGen : Random.Generator;
 
-   Verbose : constant Boolean := False;
+   Verbose : constant Boolean := True;
 
    Current_Scenario : Utilities.RemoteString.Type_String;
 
@@ -446,7 +446,7 @@ package body Tubastga_Game.Server_Logic is
 
       A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Pos.A, P_Pos.B);
 
-      if not Pieces_Type_Info_List (P_Piece.Type_Of_Piece).Move_Landscape
+      if not Houses_Type_Info_List (P_Piece.Type_Of_Piece).Construct_Landscape
           (A_Patch.all.Landscape_Here) then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
@@ -507,6 +507,8 @@ package body Tubastga_Game.Server_Logic is
       Server.ServerAPI.Player_Activity_Report_Append
         (6, P_Player_Id,
          Utilities.RemoteString.To_Unbounded_String ("Narrative of Create Piece (House)"));
+
+      P_Attempts_Remaining := 0;
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Create_Piece (House)- exit");
@@ -3020,6 +3022,8 @@ package body Tubastga_Game.Server_Logic is
 
          A_Pos_Blue1 := Hexagon.Type_Hexagon_Position'(True, 16, 20);
          A_Pos_Blue2 := Hexagon.Type_Hexagon_Position'(True, 17, 20);
+         A_Pos_Blue3 := Hexagon.Type_Hexagon_Position'(True, 17, 19);
+
 
          A_Pos_Red1 := Hexagon.Type_Hexagon_Position'(True, 73, 87);
          A_Pos_Red2 := Hexagon.Type_Hexagon_Position'(True, 18, 21);
@@ -3039,6 +3043,14 @@ package body Tubastga_Game.Server_Logic is
 
         Server.ServerAPI.Create_Piece
            (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
+            A_Piece.Id, Ret_Status, True);
+
+         A_Piece.Type_Of_Piece := Tubastga_Game.Bowman_Piece;
+         A_Piece.Category      := Piece.Fighting_Piece;
+         A_Piece.Player_Id     := 1;
+
+        Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue3, A_Piece,
             A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
