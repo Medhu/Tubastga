@@ -204,6 +204,8 @@ package body Tubastga_Window_Pkg.Images is
          Other_Image := Tubastga_Window_Pkg.Images.Minimap_Outside_View;
       elsif P_Type = "point" then
          Other_Image := Tubastga_Window_Pkg.Images.Point;
+      elsif P_Type = "minimap_area" then
+         Other_Image := Tubastga_Window_Pkg.Images.Minimap_Area;
       end if;
 
       --text_io.Put_Line("Other_Image:" & Other_Image'Img);
@@ -513,6 +515,12 @@ package body Tubastga_Window_Pkg.Images is
         (P_Images, Point,
          new Type_Image'
            (Ada.Strings.Unbounded.To_Unbounded_String ("resources\point.png"),
+            null, 0, 0, 0, 0, 0, 0));
+
+      Images_List_Pkg.Include
+        (P_Images, Minimap_Area,
+         new Type_Image'
+           (Ada.Strings.Unbounded.To_Unbounded_String ("resources\minimap_area.png"),
             null, 0, 0, 0, 0, 0, 0));
 
    end Initialize;

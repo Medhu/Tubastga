@@ -81,7 +81,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Max_Activity_Text : constant Integer := 50;
 
-   Game_Area_Origo_Y : constant Integer := 1050;
+   Game_Area_Origo_Y : constant Integer := 1_050;
    Map_Scale         : Float            := 0.5;
 
    Minimap_Origo_Y : constant Integer := 400;
@@ -111,7 +111,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Last_Updates_Summary, Now : Ada.Real_Time.Time;
 
-   procedure Update_Activity_Report_Buffer (P_Window : in Type_Wnd_Main_Access;
+   procedure Update_Activity_Report_Buffer
+     (P_Window        : in Type_Wnd_Main_Access;
       P_Activity_List : in Observation.Activity.Activity_Report.Vector)
    is
       Data            : Observation.Activity.Type_Activity_Report;
@@ -228,7 +229,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    function Format_Landscape (P_Landscape : in Landscape.Type_Landscape) return String is
    begin
-      return Utilities.RemoteString.To_String
+      return
+        Utilities.RemoteString.To_String
           (Tubastga_Game.Landscapes_Type_Info_List (P_Landscape).Type_Name);
    end Format_Landscape;
 
@@ -246,10 +248,10 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
       All_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True, Width => 1400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
+          (Has_Alpha => True, Width => 1_400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
       Pieces_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True, Width => 1400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
+          (Has_Alpha => True, Width => 1_400, Height => Glib.Gint (Game_Area_Origo_Y) + 80);
       Scale_Pix       := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
       All_Minimap_Pix :=
         Gdk.Pixbuf.Gdk_New
@@ -298,8 +300,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end On_Player_Timer_Area_Show;
 
-   procedure All_Pieces_On_Map (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                                : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure All_Pieces_On_Map
+     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
       Trav_Pieces      : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id       : Piece.Type_Piece_Id;
@@ -324,8 +327,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end All_Pieces_On_Map;
 
-   procedure Draw_Map (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch                       : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
+   procedure Draw_Map
+     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
    begin
       All_Pieces_On_Map (A_Client_Map, P_Patch);
@@ -335,7 +339,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       if Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (A_Client_Map, P_Patch.all) in
           0 .. 820 and
         Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (A_Client_Map, P_Patch.all) in
-          0 .. 1050
+          0 .. 1_050
       then
 
          if P_Patch.Visible then
@@ -435,8 +439,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    end On_Player_Timer_Area_Expose_Event;
 
    function On_Player_1_Timer_Area_Expose_Event
-     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
-      P_Draw : Cairo.Cairo_Context) return Boolean
+     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class; P_Draw : Cairo.Cairo_Context)
+      return Boolean
    is
       use Player;
    begin
@@ -456,8 +460,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    end On_Player_1_Timer_Area_Expose_Event;
 
    function On_Player_2_Timer_Area_Expose_Event
-     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
-      P_Draw : Cairo.Cairo_Context) return Boolean
+     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class; P_Draw : Cairo.Cairo_Context)
+      return Boolean
    is
       use Player;
    begin
@@ -477,8 +481,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    end On_Player_2_Timer_Area_Expose_Event;
 
    function On_Player_3_Timer_Area_Expose_Event
-     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
-      P_Draw : Cairo.Cairo_Context) return Boolean
+     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class; P_Draw : Cairo.Cairo_Context)
+      return Boolean
    is
       use Player;
    begin
@@ -498,8 +502,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
    end On_Player_3_Timer_Area_Expose_Event;
 
    function On_Map_Area_Expose_Event
-     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class;
-      P_Draw : Cairo.Cairo_Context) return Boolean
+     (Object : access Gtk.Drawing_Area.Gtk_Drawing_Area_Record'Class; P_Draw : Cairo.Cairo_Context)
+      return Boolean
    is
       Adm_Status : Status.Type_Adm_Status;
 
@@ -618,9 +622,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   use Piece.Client_Piece;
                begin
 
-                  -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be
-                  -- maintained when pieces are killed or they disappear from
-                  -- view.
+                  -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be maintained when
+                  -- pieces are killed or they disappear from view.
                   --
                   A_Pos := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
                   if A_Pos.P_Valid then
@@ -643,9 +646,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   use Piece.Client_Piece;
                begin
 
-                  -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be
-                  -- maintained when pieces are killed or they disappear from
-                  -- view.
+                  -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be maintained when
+                  -- pieces are killed or they disappear from view.
                   --
                   A_Pos := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (RB_Selected_Pos);
                   if A_Pos.P_Valid then
@@ -676,12 +678,42 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
            (A_Client_Map,
             A_Client_Map.Origo_Patch, -- current origo for
          --this client.
+
             Draw_Map'Access);
 
          Hexagon.Client_Map.Reset_Visit;
 
          Button_Event := False;
       end if;
+
+      declare
+         Minimap_X, Minimap_Y : Glib.Gint;
+         Piece_Image_Name     : Tubastga_Window_Pkg.Images.Type_Image_Names;
+         Piece_Image          : Tubastga_Window_Pkg.Images.Type_Image_Access;
+      begin
+         Minimap_X :=
+           Glib.Gint
+             (10 + Hexagon.Client_Map.Get_Absolute_X_From_AB (A_Client_Map.Origo_Patch.all) / 30);
+         Minimap_Y :=
+           Glib.Gint
+             (370 - Hexagon.Client_Map.Get_Absolute_Y_From_AB (A_Client_Map.Origo_Patch.all) / 30);
+
+--            Minimap_X := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (A_Client_Map, A_Client_Map.Origo_Patch.all);
+--            Minimap_Y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (A_Client_Map, A_Client_Map.Origo_Patch.all);
+
+         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_Other_Image ("minimap_area");
+         Piece_Image      :=
+           Tubastga_Window_Pkg.Images.Get_Image
+             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
+
+         Gdk.Pixbuf.Composite
+           (Piece_Image.all.Image_Data, All_Minimap_Pix, Glib.Gint (Minimap_X),
+            Glib.Gint (Minimap_Y - Piece_Image.all.Image_Height), Piece_Image.all.Image_Width,
+            Piece_Image.all.Image_Height, Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0),
+            Glib.Gdouble (1.0), Gdk.Pixbuf.Interp_Nearest, 255);
+
+         Text_IO.Put_Line ("Minimap_X:" & Minimap_X'Img & "Minimap_Y:" & Minimap_Y'Img);
+      end;
 
       if Curr_Patch /= null then
 
@@ -925,8 +957,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    end Place_Piece;
 
-   function On_Map_Area_Motion_Notify_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params                                        : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Motion_Notify_Event
+     (Object : access Gtk.Widget.Gtk_Widget_Record'Class; Params : Gtk.Arguments.Gtk_Args)
+      return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
       X    : Glib.Gdouble;
@@ -942,8 +975,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Map_Area_Motion_Notify_Event;
 
-   function On_Map_Area_Button_Press_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params                                       : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Button_Press_Event
+     (Object : access Gtk.Widget.Gtk_Widget_Record'Class; Params : Gtk.Arguments.Gtk_Args)
+      return Boolean
    is
       Arg1    : Gdk.Event.Gdk_Event                         := To_Event (Params, 1);
       X       : Glib.Gdouble;
@@ -997,7 +1031,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
             -- are we trying to place a piece?
             if Tubastga_UI_Aux.UI_State in
-                Tubastga_UI_Aux.Place_Sentry .. Tubastga_UI_Aux.Place_Stonecutter then
+                Tubastga_UI_Aux.Place_Sentry .. Tubastga_UI_Aux.Place_Stonecutter
+            then
                Place_Piece;
                Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Done;
             end if;
@@ -1015,8 +1050,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Map_Area_Button_Press_Event;
 
-   function On_Map_Area_Scroll_Event (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params                                 : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Map_Area_Scroll_Event
+     (Object : access Gtk.Widget.Gtk_Widget_Record'Class; Params : Gtk.Arguments.Gtk_Args)
+      return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
@@ -1143,8 +1179,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Place_Stonecutter;
    end On_Button_Place_Stonecutter;
 
-   function On_Keyboard_Key_Press (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params                              : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Keyboard_Key_Press
+     (Object : access Gtk.Widget.Gtk_Widget_Record'Class; Params : Gtk.Arguments.Gtk_Args)
+      return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
@@ -1197,16 +1234,20 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             end;
 
          when Gdk.Types.Keysyms.GDK_Up =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
 
          when Gdk.Types.Keysyms.GDK_Down =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
 
          when Gdk.Types.Keysyms.GDK_Left =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
 
          when Gdk.Types.Keysyms.GDK_Right =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
 
          when Gdk.Types.Keysyms.GDK_space =>
             null;
@@ -1224,16 +1265,20 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             null;
 
          when Gdk.Types.Keysyms.GDK_uparrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Up);
 
          when Gdk.Types.Keysyms.GDK_downarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Down);
 
          when Gdk.Types.Keysyms.GDK_leftarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Left);
 
          when Gdk.Types.Keysyms.GDK_rightarrow =>
-            Tubastga_Window_Pkg.ZoomedView.Scroll_Map (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
+            Tubastga_Window_Pkg.ZoomedView.Scroll_Map
+              (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
 
          when Gdk.Types.Keysyms.GDK_Escape =>
             Tubastga_UI_Aux.UI_State := Tubastga_UI_Aux.Done;
@@ -1256,8 +1301,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       return True;
    end On_Keyboard_Key_Press;
 
-   function On_Keyboard_Key_Release (Object : access Gtk.Widget.Gtk_Widget_Record'Class;
-      Params                                : Gtk.Arguments.Gtk_Args) return Boolean
+   function On_Keyboard_Key_Release
+     (Object : access Gtk.Widget.Gtk_Widget_Record'Class; Params : Gtk.Arguments.Gtk_Args)
+      return Boolean
    is
       Arg1 : Gdk.Event.Gdk_Event := To_Event (Params, 1);
 
