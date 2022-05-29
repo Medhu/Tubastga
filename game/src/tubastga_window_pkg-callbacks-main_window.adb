@@ -684,36 +684,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Hexagon.Client_Map.Reset_Visit;
 
          Button_Event := False;
+
       end if;
-
-      declare
-         Minimap_X, Minimap_Y : Glib.Gint;
-         Piece_Image_Name     : Tubastga_Window_Pkg.Images.Type_Image_Names;
-         Piece_Image          : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      begin
-         Minimap_X :=
-           Glib.Gint
-             (10 + Hexagon.Client_Map.Get_Absolute_X_From_AB (A_Client_Map.Origo_Patch.all) / 30);
-         Minimap_Y :=
-           Glib.Gint
-             (370 - Hexagon.Client_Map.Get_Absolute_Y_From_AB (A_Client_Map.Origo_Patch.all) / 30);
-
---            Minimap_X := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (A_Client_Map, A_Client_Map.Origo_Patch.all);
---            Minimap_Y := Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (A_Client_Map, A_Client_Map.Origo_Patch.all);
-
-         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_Other_Image ("minimap_area");
-         Piece_Image      :=
-           Tubastga_Window_Pkg.Images.Get_Image
-             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
-
-         Gdk.Pixbuf.Composite
-           (Piece_Image.all.Image_Data, All_Minimap_Pix, Glib.Gint (Minimap_X),
-            Glib.Gint (Minimap_Y - Piece_Image.all.Image_Height), Piece_Image.all.Image_Width,
-            Piece_Image.all.Image_Height, Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0),
-            Glib.Gdouble (1.0), Gdk.Pixbuf.Interp_Nearest, 255);
-
-         Text_IO.Put_Line ("Minimap_X:" & Minimap_X'Img & "Minimap_Y:" & Minimap_Y'Img);
-      end;
 
       if Curr_Patch /= null then
 
@@ -793,11 +765,42 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Glib.Gdouble (Map_Scale), Gdk.Pixbuf.Interp_Nearest, 255);
       Gdk.Cairo.Set_Source_Pixbuf (P_Draw, Scale_Pix, Glib.Gdouble (0), Glib.Gdouble (0));
       Cairo.Paint (P_Draw);
+      --
+      declare
+         Minimap_X, Minimap_Y : Glib.Gint;
+         Piece_Image_Name     : Tubastga_Window_Pkg.Images.Type_Image_Names;
+         Piece_Image          : Tubastga_Window_Pkg.Images.Type_Image_Access;
 
+      begin
+         Minimap_X :=
+           Glib.Gint
+             (10 + Hexagon.Client_Map.Get_Absolute_X_From_AB (A_Client_Map.Origo_Patch.all) / 30);
+         Minimap_Y :=
+           Glib.Gint
+             (370 - Hexagon.Client_Map.Get_Absolute_Y_From_AB (A_Client_Map.Origo_Patch.all) / 30);
+
+         Piece_Image_Name := Tubastga_Window_Pkg.Images.Find_Other_Image ("minimap_area");
+
+         Piece_Image :=
+           Tubastga_Window_Pkg.Images.Get_Image
+             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
+
+         Gdk.Pixbuf.Composite
+           (Piece_Image.all.Image_Data, All_Minimap_Pix,
+            Glib.Gint (Minimap_X),
+            Glib.Gint (Minimap_Y - Piece_Image.all.Image_Height), --Glib.Gint (Minimap_Y - Piece_Image.all.Image_Height),
+            Piece_Image.all.Image_Width, Piece_Image.all.Image_Height,
+            Glib.Gdouble (Minimap_X), Glib.Gdouble (Minimap_Y - Piece_Image.all.Image_Height), Glib.Gdouble (1.0),
+            Glib.Gdouble (1.0), Gdk.Pixbuf.Interp_Nearest, 255);
+
+      end;
+
+      --
       Gdk.Pixbuf.Composite
         (All_Minimap_Pix, Scale_Minimap_Pix, Glib.Gint (0), Glib.Gint (0), 140, 360,
          Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0), Glib.Gdouble (1.0),
          Gdk.Pixbuf.Interp_Nearest, 255);
+
       Gdk.Cairo.Set_Source_Pixbuf
         (P_Draw, Scale_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (250));
 
@@ -1250,7 +1253,9 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
               (A_Client_Map, Tubastga_Window_Pkg.ScrolledView.Right);
 
          when Gdk.Types.Keysyms.GDK_space =>
-            null;
+            Text_IO.Put_Line
+              ("A:" & A_Client_Map.Origo_Patch.all.Pos.A'Img & " B:" &
+               A_Client_Map.Origo_Patch.all.Pos.B'Img);
 
          when Gdk.Types.Keysyms.GDK_Home =>
             null;

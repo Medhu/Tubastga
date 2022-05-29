@@ -56,25 +56,6 @@ package body Tubastga_Window_Pkg.MinimapView is
       -- minimap
       Minimap_Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
                                                               Tubastga_Window_Pkg.Images.Find_Minimap_Landscape_Image(P_Patch.Landscape_Here));
-      if
-        ((Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
-            0 .. 50 or
-          Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
-            770 .. 820) and
-         (Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch) in
-            0 .. 1050)) or
-         --
-        ((Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch) in
-            0 .. 50 or
-          Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB (P_Client_Map, P_Patch) in
-            1000 .. 1050) and
-         (Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB (P_Client_Map, P_Patch) in
-            0 .. 820))
-      then
-      Minimap_Landscape_Image := Tubastga_Window_Pkg.Images.Get_Image(Tubastga_Window_Pkg.Images.All_Images,
-                                                                      Tubastga_Window_Pkg.Images.Find_Other_Image("minimap_outside_view"));
-      end if;
-
       -- minimap
       Gdk.Pixbuf.Composite
         (Minimap_Landscape_Image.all.Image_Data,
