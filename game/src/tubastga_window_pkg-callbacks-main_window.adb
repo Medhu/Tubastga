@@ -99,8 +99,8 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
    Iter : Gtk.Text_Iter.Gtk_Text_Iter;
 
-   Pieces_Pix                                                             : Gdk.Pixbuf.Gdk_Pixbuf;
-   All_Pix, Scale_Pix, All_Minimap_Pix, Scale_Minimap_Pix, Patch_Zoom_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
+   Pieces_Pix                                          : Gdk.Pixbuf.Gdk_Pixbuf;
+   All_Pix, Scale_Pix, All_Minimap_Pix, Patch_Zoom_Pix : Gdk.Pixbuf.Gdk_Pixbuf;
 
    All_Constructions_On_Patch, All_Landscape_On_Patch, All_Effects_On_Patch,
    All_Selections_On_Patch : Gdk.Pixbuf.Gdk_Pixbuf;
@@ -255,9 +255,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       Scale_Pix       := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
       All_Minimap_Pix :=
         Gdk.Pixbuf.Gdk_New
-          (Has_Alpha => True, Width => Glib.Gint (500),
-           Height    => Glib.Gint (Minimap_Origo_Y) + Glib.Gint (10));
-      Scale_Minimap_Pix := Gdk.Pixbuf.Gdk_New (Has_Alpha => True, Width => 700, Height => 730);
+          (Has_Alpha => True, Width => Glib.Gint (230), Height    => Glib.Gint (400));
 
       Patch_Zoom_Pix :=
         Gdk.Pixbuf.Gdk_New
@@ -603,6 +601,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
             Hexagon.Client_Map.Reset_Visit;
 
+            Gdk.Pixbuf.Fill (All_Minimap_Pix, Glib.Guint32 (0));
             Hexagon.Client_Map.Traverse (A_Client_Map, A_Client_Map.Origo_Patch, Draw_Map'Access);
 
             Hexagon.Client_Map.Reset_Visit;
@@ -796,13 +795,14 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       end;
 
       --
-      Gdk.Pixbuf.Composite
-        (All_Minimap_Pix, Scale_Minimap_Pix, Glib.Gint (0), Glib.Gint (0), 140, 360,
-         Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0), Glib.Gdouble (1.0),
-         Gdk.Pixbuf.Interp_Nearest, 255);
+--      Gdk.Pixbuf.Composite
+--        (All_Minimap_Pix, Scale_Minimap_Pix, Glib.Gint (0), Glib.Gint (0), 200, 400,
+--         Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0), Glib.Gdouble (1.0),
+--         Gdk.Pixbuf.Interp_Nearest, 255);
 
       Gdk.Cairo.Set_Source_Pixbuf
-        (P_Draw, Scale_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (250));
+        (P_Draw, All_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (150));
+--        (P_Draw, Scale_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (150));
 
       declare
          LB_Trav, RB_Trav : Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Cursor;
