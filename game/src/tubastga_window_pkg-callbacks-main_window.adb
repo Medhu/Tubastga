@@ -795,10 +795,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
       end;
 
       --
---      Gdk.Pixbuf.Composite
---        (All_Minimap_Pix, Scale_Minimap_Pix, Glib.Gint (0), Glib.Gint (0), 200, 400,
---         Glib.Gdouble (0), Glib.Gdouble (0), Glib.Gdouble (1.0), Glib.Gdouble (1.0),
---         Gdk.Pixbuf.Interp_Nearest, 255);
 
       Gdk.Cairo.Set_Source_Pixbuf
         (P_Draw, All_Minimap_Pix, Glib.Gdouble (500), Glib.Gdouble (150));
