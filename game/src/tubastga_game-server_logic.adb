@@ -2631,12 +2631,6 @@ package body Tubastga_Game.Server_Logic is
 
       if Current_Scenario = "demo_1" then
 
-         Text_IO.Put_Line ("Loading original navigation information:");
-         Hexagon.Server_Navigation.Load_Navigation
-           (Ada.Strings.Unbounded.To_Unbounded_String
-              ("scenarios\land_navigation\" & Utilities.RemoteString.To_String (Current_Scenario) &
-               ".dat"),
-            Navigation_Original);
          Energy_Update := Ada.Real_Time.Clock;
 
          Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");

@@ -312,6 +312,11 @@ package body TubastgaEditor_Window_Pkg is
    begin
       Gtk.File_Chooser_Dialog.Gtk_New
         (dlg_FileOpen, "File Open", Parent, Gtk.File_Chooser.Action_Open);
+
+      Parent.all.mapFileFilter := Gtk.File_Filter.Gtk_File_Filter_New;
+      Gtk.File_Filter.Add_Pattern(Parent.all.mapFileFilter, "*.dat");
+      Gtk.File_Chooser_Dialog.Set_Filter(dlg_FileOpen, Parent.all.mapFileFilter);
+
       Dummy :=
         Gtk.Dialog.Add_Button
           (Gtk.Dialog.Gtk_Dialog (dlg_FileOpen), "Ok",

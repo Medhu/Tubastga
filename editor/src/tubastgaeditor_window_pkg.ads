@@ -1,3 +1,4 @@
+
 --
 --
 --      Tubastga - Scenario Editor
@@ -35,6 +36,7 @@ with Gtk.File_Chooser_Dialog;
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Gtk.Check_Button;
+with Gtk.File_Filter;
 with Player;           use Player;
 with Utilities;
 with Gtk.Text_View;    use Gtk.Text_View;
@@ -73,8 +75,9 @@ package TubastgaEditor_Window_Pkg is
       chkPath           : Gtk_Check_Button;
       chkNavigation     : Gtk_Check_Button;
 
+      mapFileFilter     : Gtk.File_Filter.Gtk_File_Filter;
       dlgFileOpen,
-      dlgFileSave : Gtk.File_Chooser_Dialog.Gtk_File_Chooser_Dialog;
+      dlgFileSave       : Gtk.File_Chooser_Dialog.Gtk_File_Chooser_Dialog;
    end record;
 
    type Window1_Access is access all Window1_Record'Class;

@@ -4,36 +4,17 @@ with "lua";
 
 project TubastgaEditor is
 
-   type Runtime_Type is
-      ("full");
-   Runtime : Runtime_Type := external ("RUNTIME");
-   type Gtkada_Kind_Type is
-      ("static", "relocatable");
-   Library_Type : Gtkada_Kind_Type := external ("LIBRARY_TYPE");
+   for Main use ("tubastgaeditor_window.adb");
 
-   case Runtime is
+   for Source_Dirs use (".", 
+                        "editor\src", 
+                        "game\src", 
+                        "game\src\polyorb\client", 
+                        "game\src\polyorb\server");
 
-      when "full" =>
+   for Object_Dir use "build";
 
-         case Library_Type is
-
-            when "static" =>
-               for Main use ("tubastgaeditor_window.adb");
-               for Source_Dirs use (".", 
-			   "editor\src", 
-			   "game\src", "game\src\polyorb\client", "game\src\polyorb\server");
-               for Object_Dir use "build";
-
-               for Exec_Dir use "tubastga_editor";
-
-            when "relocatable" =>
-               for Main use ("mapeditor_window.adb");
-               for Source_Dirs use (".\**");
-         end case;
-   end case;
-
-   package Compiler is
-   end Compiler;
+   for Exec_Dir use "tubastga_editor";
 
    package Linker is
       for Default_Switches ("ada") use ("-L../../lib", "-llua");

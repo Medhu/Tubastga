@@ -21,6 +21,7 @@ with Glib;       use Glib;
 with Gdk.Event;  use Gdk.Event;
 with Gdk.Types;  use Gdk.Types;
 with Gtk.Enums;  use Gtk.Enums;
+with Gtk.File_Filter;
 with Gtk.Widget; use Gtk.Widget;
 with Cairo;
 with Gdk.Cairo;
