@@ -1116,6 +1116,41 @@ package body Tubastga_Game.Server_Logic is
       P_To_Pos : in out Hexagon.Type_Hexagon_Position; P_End_Pos : in Hexagon.Type_Hexagon_Position;
       P_Result                                :    out Status.Type_Result_Status)
    is
+      use Ada.Real_Time;
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move - enter");
+      end if;
+
+      if Ada.Real_Time.Clock > P_Moving_Piece.Next_Move_Attempt  then
+         P_Moving_Piece.Next_Move_Attempt := Ada.Real_Time.Clock + Ada.Real_Time.Seconds(5);
+         Text_IO.Put_Line("Halloiluken Tidspunkt til sjekk");
+
+         Server.ServerAPI.Player_Activity_Report_Append
+                 (1, P_Player_Id,
+                  Utilities.RemoteString.To_Unbounded_String
+                    ("Beregn path" ) );
+
+
+         P_Result := Status.Proceed;
+      else
+
+         P_Result := Status.Fail;
+      end if;
+
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move - exit P_Status=" & P_Result'Img);
+      end if;
+   end Before_Perform_Move;
+
+   procedure Before_Perform_Move_Step (P_Player_Id : in     Player.Type_Player_Id;
+      P_Action_Type                           : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Pos                              : in     Hexagon.Type_Hexagon_Position;
+      P_To_Pos : in out Hexagon.Type_Hexagon_Position; P_End_Pos : in Hexagon.Type_Hexagon_Position;
+      P_Result                                :    out Status.Type_Result_Status)
+   is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
       Move_Status : Boolean;
@@ -1124,7 +1159,7 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move - enter");
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - enter");
       end if;
       A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
 
@@ -1138,9 +1173,9 @@ package body Tubastga_Game.Server_Logic is
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Before_Perform_Move - exit P_Status=" & P_Result'Img);
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - exit P_Status=" & P_Result'Img);
       end if;
-   end Before_Perform_Move;
+   end Before_Perform_Move_Step;
 
    procedure End_Perform_Move (P_Player_Id : in     Player.Type_Player_Id;
       P_Action_Type                        : in     Action.Type_Action_Type;
@@ -1149,19 +1184,34 @@ package body Tubastga_Game.Server_Logic is
       P_End_Pos : in     Hexagon.Type_Hexagon_Position; P_End_Status : in Status.Type_Status;
       P_Attempts_Remaining                 : in out Integer)
    is
-      use Hexagon;
-      use Status;
+
+    use Status;
+
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move - enter - exit");
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Move - enter P_End_Status:"
+                           & P_End_Status'Img
+                          & " P_Attempts_Remaining:" & P_Attempts_Remaining'Img);
       end if;
 
-      if P_End_Status = Status.Completed_Ok then
-         P_Attempts_Remaining := 0;
-      else
-         P_Attempts_Remaining := P_Attempts_Remaining - 1;
-      end if;
+--      Tmp := Positive(P_Attempts_Remaining / 2);
 
+--      if P_End_Status = Status.Completed_Ok then
+--         P_Attempts_Remaining := 0;
+--      else
+--         if Tmp < 1000 then
+--            P_Attempts_Remaining := 0;
+--            Server.ServerAPI.Player_Activity_Report_Append(1, P_Player_Id,
+--                                                           Utilities.RemoteString.To_Unbounded_String("Gi opp"));
+--         else
+--            P_Attempts_Remaining := P_Attempts_Remaining - Tmp;
+--         end if;
+
+--      end if;
+
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Move - exit");
+      end if;
    end End_Perform_Move;
 
    procedure Perform_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;

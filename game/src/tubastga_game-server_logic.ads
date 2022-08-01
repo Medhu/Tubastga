@@ -34,6 +34,7 @@ with Effect.Server;
 with Lua;
 with Action;
 with Hexagon.Server_Navigation;
+with Ada.Real_Time;
 
 package Tubastga_Game.Server_Logic is
    Not_Implementet : exception;
@@ -41,10 +42,11 @@ package Tubastga_Game.Server_Logic is
    type Type_Attack_State is (Idle, Start_Attacking, Defence_Done);
 
    type Type_My_Tubastga_Piece is new Piece.Server.Fighting_Piece.Type_Piece with record
-      Storage : Goods.Type_Storage_Access := null;
-      Health  : Integer                   := 0;
-      Energy  : Integer                   := 0;
-      Attack_State : Type_Attack_State := Idle;
+      Storage : Goods.Type_Storage_Access    := null;
+      Health  : Integer                      := 0;
+      Energy  : Integer                      := 0;
+      Attack_State : Type_Attack_State       := Idle;
+      Next_Move_Attempt : Ada.Real_Time.Time := Ada.Real_Time.Time_First;
    end record;
 
    type Type_My_Tubastga_Piece_Access_Class is access all Type_My_Tubastga_Piece'Class;
@@ -288,6 +290,15 @@ package Tubastga_Game.Server_Logic is
       P_To_Pos       : in Hexagon.Type_Hexagon_Position) return Boolean;
 
    procedure Before_Perform_Move
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
+      P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
+      P_End_Pos      : in     Hexagon.Type_Hexagon_Position;
+      P_Result       :    out Status.Type_Result_Status);
+
+   procedure Before_Perform_Move_Step
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
       P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
