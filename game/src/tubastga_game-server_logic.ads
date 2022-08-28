@@ -35,6 +35,7 @@ with Lua;
 with Action;
 with Hexagon.Server_Navigation;
 with Ada.Real_Time;
+with Attempt;
 
 package Tubastga_Game.Server_Logic is
    Not_Implementet : exception;
@@ -90,7 +91,7 @@ package Tubastga_Game.Server_Logic is
       P_Pos                : in     Hexagon.Type_Hexagon_Position;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Create Piece
@@ -114,7 +115,7 @@ package Tubastga_Game.Server_Logic is
       P_Pos                : in     Hexagon.Type_Hexagon_Position;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Put Piece
@@ -138,7 +139,7 @@ package Tubastga_Game.Server_Logic is
       P_Pos                : in     Hexagon.Type_Hexagon_Position;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Put Piece
@@ -162,7 +163,7 @@ package Tubastga_Game.Server_Logic is
       P_Pos                : in     Hexagon.Type_Hexagon_Position;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Remove Piece
@@ -184,7 +185,7 @@ package Tubastga_Game.Server_Logic is
       P_Patch              : in out Landscape.Type_Patch;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Remove Piece
@@ -206,7 +207,7 @@ package Tubastga_Game.Server_Logic is
       P_Patch              : in out Landscape.Type_Patch;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Attack
@@ -242,7 +243,7 @@ package Tubastga_Game.Server_Logic is
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
       P_Winner             : in     Player.Type_Player_Id;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Ranged Attack
@@ -278,7 +279,7 @@ package Tubastga_Game.Server_Logic is
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
       P_Winner             : in     Player.Type_Player_Id;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Move
@@ -314,7 +315,7 @@ package Tubastga_Game.Server_Logic is
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
       P_End_Pos            : in     Hexagon.Type_Hexagon_Position;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Patch Effect
@@ -345,10 +346,10 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name             : in     Effect.Type_Effect_Name;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Patch Effect
@@ -379,10 +380,10 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name             : in     Effect.Type_Effect_Name;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Piece Effect
@@ -410,9 +411,9 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id          : in     Player.Type_Player_Id;
       P_Action_Type        : in     Action.Type_Action_Type;
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name             : in     Effect.Type_Effect_Name;
+      P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Perform Piece Effect
@@ -442,7 +443,7 @@ package Tubastga_Game.Server_Logic is
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name             : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Grant Piece Effect
@@ -466,7 +467,7 @@ package Tubastga_Game.Server_Logic is
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect             : in     Effect.Type_Effect;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Grant Piece Effect
@@ -490,7 +491,7 @@ package Tubastga_Game.Server_Logic is
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect             : in     Effect.Type_Effect;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Revoke Piece Effect
@@ -514,7 +515,7 @@ package Tubastga_Game.Server_Logic is
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Result             : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Grant Piece Effect
@@ -538,7 +539,7 @@ package Tubastga_Game.Server_Logic is
       P_Piece              : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_Result             : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Grant Patch Piece
@@ -565,7 +566,7 @@ package Tubastga_Game.Server_Logic is
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect             : in     Effect.Type_Effect;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Grant Patch Effect
@@ -592,7 +593,7 @@ package Tubastga_Game.Server_Logic is
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect             : in     Effect.Type_Effect;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Revoke Patch Effect
@@ -619,7 +620,7 @@ package Tubastga_Game.Server_Logic is
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    --
    -- Revoke Patch Effect
@@ -646,7 +647,7 @@ package Tubastga_Game.Server_Logic is
       P_Area               : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect_Name        : in     Effect.Type_Effect_Name;
       P_End_Status         : in     Status.Type_Status;
-      P_Attempts_Remaining : in out Integer);
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    procedure Upkeep
      (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
