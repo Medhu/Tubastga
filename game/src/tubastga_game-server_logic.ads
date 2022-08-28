@@ -83,7 +83,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Create_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -107,7 +108,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info);
 
    procedure End_Create_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -131,7 +133,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Put_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -155,7 +158,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Pos         : in     Hexagon.Type_Hexagon_Position;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Put_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -177,7 +181,8 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Remove_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -199,7 +204,8 @@ package Tubastga_Game.Server_Logic is
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Remove_Piece
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -225,7 +231,8 @@ package Tubastga_Game.Server_Logic is
       P_Attacking_Piece,
       P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Result             :    out Status.Type_Result_Status);
+      P_Result             :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Calculate_Attack_Result
      (P_Player_Id   : in Player.Type_Player_Id;
@@ -233,7 +240,8 @@ package Tubastga_Game.Server_Logic is
       P_Attacking_Piece,
       P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Winner             :    out Player.Type_Player_Id);
+      P_Winner             :    out Player.Type_Player_Id;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Attack
      (P_Player_Id   : in Player.Type_Player_Id;
@@ -261,7 +269,8 @@ package Tubastga_Game.Server_Logic is
       P_Attacking_Piece,
       P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Result             :    out Status.Type_Result_Status);
+      P_Result             :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Calculate_Ranged_Attack_Result
      (P_Player_Id   : in Player.Type_Player_Id;
@@ -269,7 +278,8 @@ package Tubastga_Game.Server_Logic is
       P_Attacking_Piece,
       P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Winner             :    out Player.Type_Player_Id);
+      P_Winner             :    out Player.Type_Player_Id;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Ranged_Attack
      (P_Player_Id   : in Player.Type_Player_Id;
@@ -297,7 +307,8 @@ package Tubastga_Game.Server_Logic is
       P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
       P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
       P_End_Pos      : in     Hexagon.Type_Hexagon_Position;
-      P_Result       :    out Status.Type_Result_Status);
+      P_Result       :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Before_Perform_Move_Step
      (P_Player_Id    : in     Player.Type_Player_Id;
@@ -306,7 +317,8 @@ package Tubastga_Game.Server_Logic is
       P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
       P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
       P_End_Pos      : in     Hexagon.Type_Hexagon_Position;
-      P_Result       :    out Status.Type_Result_Status);
+      P_Result       :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Move
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -333,14 +345,16 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Perform_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name      : in     Effect.Type_Effect_Name);
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -367,14 +381,16 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name      : in     Effect.Type_Effect_Name;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Perform_Patch_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name      : in     Effect.Type_Effect_Name);
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -399,13 +415,15 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name      : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name      : in     Effect.Type_Effect_Name);
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -429,13 +447,15 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name      : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure Perform_Piece_Effect
      (P_Player_Id   : in     Player.Type_Player_Id;
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name      : in     Effect.Type_Effect_Name);
+      P_Effect_Name      : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Perform_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -459,7 +479,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect      : in     Effect.Type_Effect;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Grant_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -483,7 +504,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect      : in     Effect.Type_Effect;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Grant_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -507,7 +529,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -531,7 +554,8 @@ package Tubastga_Game.Server_Logic is
       P_Action_Type : in     Action.Type_Action_Type;
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -557,7 +581,8 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect      : in     Effect.Type_Effect;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Grant_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -584,7 +609,8 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect      : in     Effect.Type_Effect;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Grant_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -611,7 +637,8 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect_Name : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Revoke_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
@@ -638,7 +665,8 @@ package Tubastga_Game.Server_Logic is
       P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect_Name : in     Effect.Type_Effect_Name;
-      P_Result      :    out Status.Type_Result_Status);
+      P_Result      :    out Status.Type_Result_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info);
 
    procedure End_Revoke_Patch_Effect
      (P_Player_Id          : in     Player.Type_Player_Id;
