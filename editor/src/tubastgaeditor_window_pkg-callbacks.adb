@@ -28,6 +28,8 @@ with Gdk.Cairo;
 with Gtk.Main;
 with Gtk.File_Chooser_Dialog;
 with Gtk.Check_Button;
+with Piece.Client_Piece;
+with Piece.Server.Fighting_Piece;
 --
 with Text_IO;
 with Gdk.Pixbuf;
@@ -63,6 +65,10 @@ with Status;
 with Landscape.Server;
 with Gtk.Toggle_Button;
 with Ada.Directories;
+with Piece;
+with Piece.Server;
+with Effect;
+
 
 package body TubastgaEditor_Window_Pkg.Callbacks is
    Verbose : constant Boolean := False;
@@ -133,6 +139,9 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          Tubastga_Window_Pkg.FullsizeView.Draw_All_Patch
            (A_Client_Map, P_Patch.all, All_Pix, All_Constructions_On_Patch,
             All_Effects_On_Patch, All_Landscape_On_Patch);
+         Tubastga_Window_Pkg.FullsizeView.Draw_Players(A_Client_Map, P_Patch.all, All_Pix,
+                                                       P_Patch.all.Pieces_Here);
+
       end if;
 
    end Draw_Map;
@@ -603,7 +612,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
      (P_Navigation : in Hexagon.Server_Navigation.Type_Navigation;
       P_From, P_To : in Hexagon.Type_Hexagon_Position)
    is
-      A_Piece : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
+      A_Piece            : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
       Ret_Status         : Status.Type_Status;
       Trav_Path          : Hexagon.Server_Navigation.Path_Pkg.Cursor;
       A_Prev_Patch       : Hexagon.Client_Map.Type_Client_Patch_Adress;
@@ -984,6 +993,61 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
          end if;
 
          if TubastgaEditor_UI_Aux.UI_State =
+           TubastgaEditor_UI_Aux.Place_Piece then
+            declare
+               Tubastga_Class1 : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class;
+               A_Piece : Piece.Server.Type_Piece_Access_Class := null;
+               Ret_Status : Status.Type_Status;
+               A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress := null;
+
+            begin
+               Tubastga_Class1               := new Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+               Tubastga_Class1.Id            := Piece.Undefined_Piece_Id;
+               Tubastga_Class1.Type_Of_Piece := Piece.Undefined_Piece_Type;
+               Tubastga_Class1.Player_Id     := Player.Undefined_Player_Id;
+
+               Piece.Server.Fighting_Piece.Init(Tubastga_Class1.all, Tubastga_Game.Pieces_Type_Info_List);
+
+               A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB
+                 (Left_Button_Server_Pressed_Patch.all.Pos.A,
+                  Left_Button_Server_Pressed_Patch.all.Pos.B);
+
+               Piece.Server.New_Piece(Piece.Type_Piece'(Piece.Type_Piece_Id(1),
+                                      Tubastga_Game.Sentry_Piece,
+                                      Piece.Fighting_Piece,
+                                      Utilities.RemoteString.To_Unbounded_String("Test"),
+                                      Player.Type_Player_Id'(1)),
+                                      A_Piece);
+               A_Piece.all.Id := 1;
+
+            Piece.Server.Pieces_Server_List.Append
+              (Piece.Server.All_Pieces_In_Game,
+               Piece.Server.Type_Piece_Position'
+                 (A_Piece, Hexagon.Type_Hexagon_Position'(P_Valid => False)));
+
+               Piece.Server.Put_Piece(Player.Type_Player_Id(1),
+                                      Action.Type_Action_Type(1),
+                                      Landscape.Type_Patch(A_Patch.all),
+                                      Piece.Server.Type_Piece(A_Piece.all),
+                                      Ret_Status);
+               Hexagon.Server_Map.Put(A_Patch.all);
+
+               Piece.Client_Piece.Pieces_Client_List.Append(Piece.Client_Piece.Client_Pieces_In_Game,
+                                                            new Piece.Client_Piece.Type_Client_Piece'(1, Tubastga_Game.Sentry_Piece,
+                                                              Piece.Fighting_Piece, Utilities.RemoteString.To_Unbounded_String("Name"),
+                                                              Player.Type_Player_Id(1), Effect.Effect_List.Empty_Map) );
+               Landscape.Pieces_Here_List.Append(
+                  A_Client_Map.Map
+                    (Integer (Left_Button_Server_Pressed_Patch.all.Pos.A),
+                     Integer (Left_Button_Server_Pressed_Patch.all.Pos.B)).all
+                    .Pieces_Here, 1);
+
+            end;
+
+            TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.None;
+         end if;
+
+         if TubastgaEditor_UI_Aux.UI_State =
            TubastgaEditor_UI_Aux.Place_FillAllLandscape then
             --
             Map_Builder.Fill_Area
@@ -1118,6 +1182,34 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
            ("TubastgaEditor_Window_Pkg.callbacks.On_Button_Landscape_Mountain - exit");
       end if;
    end On_Button_Landscape_Mountain;
+
+   procedure On_Button_PlacePiece
+     (Object : access Gtk_Button_Record'Class)
+   is
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_PlacePiece - clicked");
+      end if;
+
+      TubastgaEditor_UI_Aux.UI_State :=
+        TubastgaEditor_UI_Aux.Place_Piece;
+
+   end On_Button_PlacePiece;
+
+   procedure On_Button_RemovePiece
+     (Object : access Gtk_Button_Record'Class)
+   is
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("TubastgaEditor_Window_Pkg.callbacks.On_Button_RemovePiece - clicked");
+      end if;
+
+      TubastgaEditor_UI_Aux.UI_State :=
+        TubastgaEditor_UI_Aux.Remove_Piece;
+
+   end On_Button_RemovePiece;
 
    procedure On_Button_FillAllLandscape
      (Object : access Gtk_Button_Record'Class)

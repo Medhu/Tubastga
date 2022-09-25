@@ -63,6 +63,8 @@ package TubastgaEditor_Window_Pkg is
       btnLandscapeMountain : Gtk_Button;
 
       btnFillAll : Gtk_Button;
+      btnPlaceEnemy : Gtk_Button;
+      btnRemoveEnemy : Gtk_Button;
 
       btnWidth1 : Gtk_Button;
       btnWidth2 : Gtk_Button;

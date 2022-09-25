@@ -46,6 +46,12 @@ package TubastgaEditor_Window_Pkg.Callbacks is
    procedure On_Button_Landscape_Mountain
      (Object : access Gtk_Button_Record'Class);
 
+   procedure On_Button_PlacePiece
+     (Object : access Gtk_Button_Record'Class);
+
+   procedure On_Button_RemovePiece
+     (Object : access Gtk_Button_Record'Class);
+
    procedure On_Button_FillAllLandscape
      (Object : access Gtk_Button_Record'Class);
 

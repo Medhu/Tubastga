@@ -23,9 +23,12 @@ package TubastgaEditor_UI_Aux is
    UI_Problem : exception;
 
    type Type_UI_State is
-     (Scroll,
+     (None,
+      Scroll,
       Place_Landscape,
-      Place_FillAllLandscape);
+      Place_FillAllLandscape,
+      Place_Piece,
+      Remove_Piece);
 
 
    type Type_Pencil_Width is (Width1, Width2, Width3);

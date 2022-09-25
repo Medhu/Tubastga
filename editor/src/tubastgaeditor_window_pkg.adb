@@ -184,6 +184,23 @@ package body TubastgaEditor_Window_Pkg is
          Right_Attach => 2, Top_Attach => 10, Bottom_Attach => 11,
          Xoptions => Fill, Xpadding => 0, Ypadding => 0);
 
+      Gtk_New (Window1.btnPlaceEnemy, -"Place Enemy");
+      Set_Relief (Window1.btnPlaceEnemy, Relief_Normal);
+
+      Attach
+        (Window1.Table1, Window1.btnPlaceEnemy, Left_Attach => 0,
+         Right_Attach => 1, Top_Attach => 11, Bottom_Attach => 12,
+         Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+      Gtk_New (Window1.btnRemoveEnemy, -"Remove Enemy");
+      Set_Relief (Window1.btnRemoveEnemy, Relief_Normal);
+
+      Attach
+        (Window1.Table1, Window1.btnRemoveEnemy, Left_Attach => 1,
+         Right_Attach => 2, Top_Attach => 11, Bottom_Attach => 12,
+         Xoptions => Fill, Xpadding => 0, Ypadding => 0);
+
+
       Gtk_New(Window1.chkPath, "Show Path");
       Set_Relief (Window1.chkPath, Relief_Normal);
 
@@ -244,6 +261,14 @@ package body TubastgaEditor_Window_Pkg is
       Button_Cb.Connect
         (Window1.btnLandscapeMountain, "pressed",
          Button_Cb.To_Marshaller (On_Button_Landscape_Mountain'Access), False);
+
+      Button_Cb.Connect
+        (Window1.btnPlaceEnemy, "pressed",
+         Button_Cb.To_Marshaller (On_Button_PlacePiece'Access), False);
+
+      Button_Cb.Connect
+        (Window1.btnRemoveEnemy, "pressed",
+         Button_Cb.To_Marshaller (On_Button_RemovePiece'Access), False);
 
       Button_Cb.Connect
         (Window1.all.btnFillAll, "pressed",
