@@ -49,17 +49,18 @@ package body Tubastga_Game.Server_Logic is
    Current_Scenario : Utilities.RemoteString.Type_String;
 
    use Hexagon.Area;
-   Win_Pattern : Hexagon.Area
-     .Server_Area.Type_Action_Capabilities_Access :=
-     new Hexagon.Area
-       .Type_Action_Capabilities'
+   Win_Pattern : Hexagon.Area.Server_Area.Type_Action_Capabilities_Access :=
+     new Hexagon.Area.Type_Action_Capabilities'
        (Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 1), --13
         Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 0), --14
         Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, -1),--15
         Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, -1),--16
         Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 0),--17
-        Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 1)--18
-        );
+        Hexagon.Area.Type_Hexagon_Delta_Position'
+          (True,
+           -1,
+           1)--18
+   );
 
    Energy_Update : Ada.Real_Time.Time;
 
@@ -69,7 +70,8 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Init_Piece (Piece) - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Init_Piece (Piece) - enter");
       end if;
 
       if P_Piece_Class.Type_Of_Piece = Tubastga_Game.Carrier_Piece then
@@ -79,12 +81,14 @@ package body Tubastga_Game.Server_Logic is
             Effect.Type_Effect'
               (Tubastga_Game.Effect_Stops,
                Tubastga_Game.Carrier.Get_Tower_Code
-                 (Piece.Undefined_Piece_Id, Piece.Undefined_Piece_Id, Piece.Undefined_Piece_Id)));
+                 (Piece.Undefined_Piece_Id, Piece.Undefined_Piece_Id,
+                  Piece.Undefined_Piece_Id)));
 
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Init_Piece (Piece) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Init_Piece (Piece) - exit");
       end if;
    end Init_Piece;
 
@@ -92,7 +96,8 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Init_Piece (House) - enter"); --&
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Init_Piece (House) - enter"); --&
       end if;
 
       if P_Piece_Class.Type_Of_Piece = Tubastga_Game.Tower_House then
@@ -100,19 +105,22 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Init_Piece (House) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Init_Piece (House) - exit");
       end if;
    end Init_Piece;
 
    function Create_Piece_Name
-     (P_Piece : in Type_My_Tubastga_Piece) return Utilities.RemoteString.Type_String
+     (P_Piece : in Type_My_Tubastga_Piece)
+      return Utilities.RemoteString.Type_String
    is
       Name : Utilities.RemoteString.Type_String;
 
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Create_Piece_Name - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Create_Piece_Name - enter");
       end if;
 
       if P_Piece.Id = 1 then
@@ -143,21 +151,24 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Create_Piece_Name - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Create_Piece_Name - exit");
       end if;
 
       return Name;
    end Create_Piece_Name;
 
    function Create_Piece_Name
-     (P_Piece : in Type_My_Tubastga_House) return Utilities.RemoteString.Type_String
+     (P_Piece : in Type_My_Tubastga_House)
+      return Utilities.RemoteString.Type_String
    is
       Name : Utilities.RemoteString.Type_String;
 
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Create_Piece_Name - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Create_Piece_Name - enter");
       end if;
 
       if P_Piece.Id = 1 then
@@ -178,15 +189,16 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Create_Piece_Name - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Create_Piece_Name - exit");
       end if;
 
       return Name;
    end Create_Piece_Name;
 
    function Observation_Area
-     (P_Piece : in Type_My_Tubastga_Piece) return Hexagon.Area.Server_Area
-     .Type_Action_Capabilities_Access
+     (P_Piece : in Type_My_Tubastga_Piece)
+      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access
    is
       Ret : Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
 
@@ -195,14 +207,15 @@ package body Tubastga_Game.Server_Logic is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Observation_Area - enter " & P_Piece.Type_Of_Piece'Img);
+           ("Tubastga_Game.Server_Logic.Observation_Area - enter " &
+            P_Piece.Type_Of_Piece'Img);
       end if;
 
       if P_Piece.Type_Of_Piece = Tubastga_Game.Sentry_Piece then
          Ret :=
-           new Hexagon.Area
-             .Type_Action_Capabilities'
+           new Hexagon.Area.Type_Action_Capabilities'
          -- group I
+
              (Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 0),
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 1), --13
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 0), --14
@@ -211,6 +224,7 @@ package body Tubastga_Game.Server_Logic is
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 0),--17
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 1),--18
          -- group II
+
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 2),--1
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 1),--2
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 2, 0),--3
@@ -222,15 +236,18 @@ package body Tubastga_Game.Server_Logic is
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -2, 0),--9
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -2, 1),--10
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -2, 2),--11
-              Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 2)--12
-              );
+              Hexagon.Area.Type_Hexagon_Delta_Position'
+                (True,
+                 -1,
+                 2)--12
+         );
 
       elsif P_Piece.Type_Of_Piece = Tubastga_Game.Knight_Piece then
          Ret :=
-           new Hexagon.Area
-             .Type_Action_Capabilities'
+           new Hexagon.Area.Type_Action_Capabilities'
              (Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 0),
          -- group I
+
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 4),--1
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 3),--3
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 3, 1),--6
@@ -244,6 +261,7 @@ package body Tubastga_Game.Server_Logic is
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -4, 3),--26
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -3, 4),--28
          --group II
+
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 3),--2
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 3, 0),--7
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 3, -3),--12
@@ -251,6 +269,7 @@ package body Tubastga_Game.Server_Logic is
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -3, 0),--22
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -3, 3),--27
          --group III
+
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 2),--4
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 1),--31
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 2, 0),--9
@@ -264,13 +283,17 @@ package body Tubastga_Game.Server_Logic is
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -2, 2),--29
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 2),--36
          --group IV
+
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 1),--5
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 0),--10
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, -1),--15
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, -1),--20
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 0),--25
-              Hexagon.Area.Type_Hexagon_Delta_Position'(True, -1, 1)--30
-              );
+              Hexagon.Area.Type_Hexagon_Delta_Position'
+                (True,
+                 -1,
+                 1)--30
+         );
 
       elsif P_Piece.Type_Of_Piece = Tubastga_Game.Bowman_Piece then
          Ret :=
@@ -298,6 +321,7 @@ package body Tubastga_Game.Server_Logic is
          Ret :=
            new Hexagon.Area.Type_Action_Capabilities'
          -- group I
+
              (Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 0),
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 0, 1),
               Hexagon.Area.Type_Hexagon_Delta_Position'(True, 1, 0),
@@ -309,7 +333,8 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Observation_Area - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Observation_Area - exit");
       end if;
 
       return Ret;
@@ -318,9 +343,12 @@ package body Tubastga_Game.Server_Logic is
    --
    -- Create Piece
    --Piece
-   function Validate_Create_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type : in Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece) return Boolean
+   function Validate_Create_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
+      return Boolean
    is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
@@ -332,13 +360,16 @@ package body Tubastga_Game.Server_Logic is
             P_Piece.Type_Of_Piece'Img & " player_id=" & P_Player_Id'Img);
       end if;
 
-      A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Pos.A, P_Pos.B);
+      A_Patch :=
+        Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Pos.A, P_Pos.B);
 
       if not Pieces_Type_Info_List (P_Piece.Type_Of_Piece).Move_Landscape
-          (A_Patch.all.Landscape_Here) then
+          (A_Patch.all.Landscape_Here)
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("You can't create that piece there"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("You can't create that piece there"));
 
          return False;
       else
@@ -353,10 +384,12 @@ package body Tubastga_Game.Server_Logic is
 
    end Validate_Create_Piece;
 
-   procedure Before_Create_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type : in     Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
+   procedure Before_Create_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
@@ -366,17 +399,19 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Create_Piece (Piece)- exit ");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Create_Piece (Piece)- exit ");
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Create_Piece;
 
-   procedure End_Create_Piece (P_Player_Id : in     Player.Type_Player_Id;
-                               P_Action_Type : in     Action.Type_Action_Type;
-                               P_Pos : in Hexagon.Type_Hexagon_Position;
-                               P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                               P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Create_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Utilities.RemoteString;
       use Piece;
@@ -396,13 +431,16 @@ package body Tubastga_Game.Server_Logic is
          Utilities.RemoteString.To_Unbounded_String
            ("You placed a " &
             Utilities.RemoteString.To_String
-              (Piece.Server.Get_Type_Of_Piece_Name (Piece.Type_Piece (P_Piece))) &
+              (Piece.Server.Get_Type_Of_Piece_Name
+                 (Piece.Type_Piece (P_Piece))) &
             " at " & P_Pos.A'Img & ", " & P_Pos.B'Img & " called " &
-            Utilities.RemoteString.To_String (Piece.Get_Name (Piece.Type_Piece (P_Piece)))));
+            Utilities.RemoteString.To_String
+              (Piece.Get_Name (Piece.Type_Piece (P_Piece)))));
 
       Server.ServerAPI.Player_Activity_Report_Append
         (6, P_Player_Id,
-         Utilities.RemoteString.To_Unbounded_String ("Narrative of Create Piece (Piece)"));
+         Utilities.RemoteString.To_Unbounded_String
+           ("Narrative of Create Piece (Piece)"));
 
       if P_Piece.Type_Of_Piece = Tubastga_Game.Sentry_Piece then
          P_Piece.Health := 300;
@@ -421,19 +459,23 @@ package body Tubastga_Game.Server_Logic is
               ("Narrative of Create Piece (Piece) in Demo_1 scenario"));
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Create_Piece (Piece)- exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Create_Piece (Piece)- exit");
       end if;
    end End_Create_Piece;
 
    --
    -- Create Piece
    -- House
-   function Validate_Create_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type : in Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House) return Boolean
+   function Validate_Create_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House)
+      return Boolean
    is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
@@ -445,13 +487,16 @@ package body Tubastga_Game.Server_Logic is
             P_Piece.Type_Of_Piece'Img & " player_id=" & P_Player_Id'Img);
       end if;
 
-      A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Pos.A, P_Pos.B);
+      A_Patch :=
+        Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Pos.A, P_Pos.B);
 
       if not Houses_Type_Info_List (P_Piece.Type_Of_Piece).Construct_Landscape
-          (A_Patch.all.Landscape_Here) then
+          (A_Patch.all.Landscape_Here)
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("You can't create that house there"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("You can't create that house there"));
 
          return False;
       else
@@ -466,10 +511,12 @@ package body Tubastga_Game.Server_Logic is
 
    end Validate_Create_Piece;
 
-   procedure Before_Create_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type : in     Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
+   procedure Before_Create_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
@@ -480,20 +527,23 @@ package body Tubastga_Game.Server_Logic is
 
       Server.ServerAPI.Player_Activity_Report_Append
         (1, P_Player_Id,
-         Utilities.RemoteString.To_Unbounded_String ("Before create piece (House)"));
+         Utilities.RemoteString.To_Unbounded_String
+           ("Before create piece (House)"));
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Create_Piece (House)- exit ");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Create_Piece (House)- exit ");
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Create_Piece;
 
-   procedure End_Create_Piece (P_Player_Id : in     Player.Type_Player_Id;
-                               P_Action_Type : in     Action.Type_Action_Type;
-                               P_Pos : in Hexagon.Type_Hexagon_Position;
-                               P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                               P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Create_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
@@ -508,21 +558,26 @@ package body Tubastga_Game.Server_Logic is
 
       Server.ServerAPI.Player_Activity_Report_Append
         (6, P_Player_Id,
-         Utilities.RemoteString.To_Unbounded_String ("Narrative of Create Piece (House)"));
+         Utilities.RemoteString.To_Unbounded_String
+           ("Narrative of Create Piece (House)"));
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Create_Piece (House)- exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Create_Piece (House)- exit");
       end if;
    end End_Create_Piece;
 
    --
    -- Put Piece
    -- Piece
-   function Validate_Put_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type : in Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece) return Boolean
+   function Validate_Put_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
+      return Boolean
    is
       use Player;
    begin
@@ -535,8 +590,10 @@ package body Tubastga_Game.Server_Logic is
       return True;
    end Validate_Put_Piece;
 
-   procedure Before_Put_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type : in     Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
+   procedure Before_Put_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
@@ -548,20 +605,22 @@ package body Tubastga_Game.Server_Logic is
             P_Piece.Type_Of_Piece'Img);
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Put_Piece;
 
-   procedure End_Put_Piece (P_Player_Id    : in     Player.Type_Player_Id;
-                            P_Action_Type  : in     Action.Type_Action_Type;
-                            P_Pos          : in Hexagon.Type_Hexagon_Position;
-                            P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                            P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Put_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.End_Put_Piece - enter - exit " & P_Piece.Type_Of_Piece'Img);
+           ("Tubastga_Game.Server_Logic.End_Put_Piece - enter - exit " &
+            P_Piece.Type_Of_Piece'Img);
       end if;
 
    end End_Put_Piece;
@@ -569,43 +628,52 @@ package body Tubastga_Game.Server_Logic is
    --
    -- Put Piece
    -- House
-   function Validate_Put_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type : in Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House) return Boolean
+   function Validate_Put_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Pos         : in Hexagon.Type_Hexagon_Position;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House)
+      return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Put_Piece - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Put_Piece - enter - exit");
       end if;
 
       return True;
    end Validate_Put_Piece;
 
-   procedure Before_Put_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type : in     Action.Type_Action_Type; P_Pos : in Hexagon.Type_Hexagon_Position;
+   procedure Before_Put_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Put_Piece - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Put_Piece - enter - exit");
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Put_Piece;
 
-   procedure End_Put_Piece (P_Player_Id : in     Player.Type_Player_Id;
-                            P_Action_Type : in     Action.Type_Action_Type;
-                            P_Pos : in Hexagon.Type_Hexagon_Position;
-                            P_Piece                           : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                            P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Put_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Pos          : in     Hexagon.Type_Hexagon_Position;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Put_Piece - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Put_Piece - enter - exit");
       end if;
 
    end End_Put_Piece;
@@ -613,135 +681,162 @@ package body Tubastga_Game.Server_Logic is
    --
    -- Remove Piece
    -- Piece
-   function Validate_Remove_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                            : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece) return Boolean
+   function Validate_Remove_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
+      return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Remove_Piece - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Remove_Piece - enter - exit");
       end if;
 
       return True;
    end Validate_Remove_Piece;
 
-   procedure Before_Remove_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                           : in     Action.Type_Action_Type;
+   procedure Before_Remove_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Remove_Piece (Piece)- enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Remove_Piece (Piece)- enter");
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Remove_Piece (Piece)- exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Remove_Piece (Piece)- exit");
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Remove_Piece;
 
-   procedure End_Remove_Piece (P_Player_Id : in     Player.Type_Player_Id;
-                               P_Action_Type : in     Action.Type_Action_Type;
-                               P_Patch : in out Landscape.Type_Patch;
-                               P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                               P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Remove_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Patch        : in out Landscape.Type_Patch;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Remove_Piece (Piece)- enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Remove_Piece (Piece)- enter");
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Remove_Piece (Piece)- exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Remove_Piece (Piece)- exit");
       end if;
    end End_Remove_Piece;
 
    --
    -- Remove Piece
    -- House
-   function Validate_Remove_Piece (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                            : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House) return Boolean
+   function Validate_Remove_Piece
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House)
+      return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Remove_Piece - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Remove_Piece - enter - exit");
       end if;
 
       return True;
    end Validate_Remove_Piece;
 
-   procedure Before_Remove_Piece (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                           : in     Action.Type_Action_Type;
+   procedure Before_Remove_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Remove_Piece (House) - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Remove_Piece (House) - enter");
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Remove_Piece (House) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Remove_Piece (House) - exit");
       end if;
 
-      Attempt.Set_Proceed_Attempt(P_Attempt_Info);
+      Attempt.Set_Proceed_Attempt (P_Attempt_Info);
    end Before_Remove_Piece;
 
-   procedure End_Remove_Piece (P_Player_Id : in     Player.Type_Player_Id;
-                               P_Action_Type : in     Action.Type_Action_Type;
-                               P_Patch : in out Landscape.Type_Patch;
-                               P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                               P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Remove_Piece
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Patch        : in out Landscape.Type_Patch;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Remove_Piece (House) - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Remove_Piece (House) - enter");
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Remove_Piece (House) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Remove_Piece (House) - exit");
       end if;
    end End_Remove_Piece;
 
    --
    -- Perform Attack
    --
-   function Validate_Perform_Attack (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                              : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
+   function Validate_Perform_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
       return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Perform_Attack - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Perform_Attack - enter - exit");
       end if;
 
       return True;
    end Validate_Perform_Attack;
 
-   procedure Before_Perform_Attack (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                             : in Action.Type_Action_Type;
+   procedure Before_Perform_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
       P_Attacking_Piece,
-      P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Attacked_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
    is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Attack - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Perform_Attack - enter - exit");
       end if;
 
-      A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
+      A_Patch :=
+        Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
 
-      if not Pieces_Type_Info_List (P_Attacking_Piece.Type_Of_Piece).Attack_Landscape
-          (A_Patch.all.Landscape_Here) then
+      if not Pieces_Type_Info_List (P_Attacking_Piece.Type_Of_Piece)
+          .Attack_Landscape
+          (A_Patch.all.Landscape_Here)
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
             Utilities.RemoteString.To_Unbounded_String
@@ -765,51 +860,62 @@ package body Tubastga_Game.Server_Logic is
               ("Attack_State:" & P_Attacking_Piece.Attack_State'Img));
 
          if P_Attacking_Piece.Attack_State = Idle then
-            if Server.ServerAPI.Is_Effect_On_Piece (P_Player_id, P_Attacking_Piece.Id, Effect_Attack_Start) then
-               P_Attacking_Piece.Attack_State := Tubastga_Game.Server_Logic.Start_Attacking;
-               Server.ServerAPI.Grant_Piece_Effect(P_Player_Id, P_Action_Type,
-                                            P_Attacking_Piece.Id,
-                                            Effect.Type_Effect'(Tubastga_Game.Effect_Attack_Start, 0),
-                                            Ret);
+            if Server.ServerAPI.Is_Effect_On_Piece
+                (P_Player_Id, P_Attacking_Piece.Id, Effect_Attack_Start)
+            then
+               P_Attacking_Piece.Attack_State :=
+                 Tubastga_Game.Server_Logic.Start_Attacking;
+               Server.ServerAPI.Grant_Piece_Effect
+                 (P_Player_Id, P_Action_Type, P_Attacking_Piece.Id,
+                  Effect.Type_Effect'(Tubastga_Game.Effect_Attack_Start, 0),
+                  Ret);
 
-               P_Attacking_Piece.Attack_State := Tubastga_Game.Server_Logic.Start_Attacking;
+               P_Attacking_Piece.Attack_State :=
+                 Tubastga_Game.Server_Logic.Start_Attacking;
             end if;
-            Attempt.Set_Failed_Attempt(P_Attempt_Info);
+            Attempt.Set_Failed_Attempt (P_Attempt_Info);
 
          elsif P_Attacking_Piece.Attack_State = Start_Attacking then
-            if Effect.Effect_List.Find (P_Attacking_Piece.Effects_On_Piece, Effect_Defence_Done) /=
-              Effect.Effect_List.No_Element then
-               P_Attacking_Piece.Attack_State := Tubastga_Game.Server_Logic.Defence_Done;
+            if Effect.Effect_List.Find
+                (P_Attacking_Piece.Effects_On_Piece, Effect_Defence_Done) /=
+              Effect.Effect_List.No_Element
+            then
+               P_Attacking_Piece.Attack_State :=
+                 Tubastga_Game.Server_Logic.Defence_Done;
             end if;
 
-            Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Failed);
+            Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Failed);
          elsif P_Attacking_Piece.Attack_State = Defence_Done then
             null;
             -- Defending done - attack can be calculate them
             P_Attacking_Piece.Attack_State := Tubastga_Game.Server_Logic.Idle;
-            Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+            Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
          end if;
       end;
 
       --
       --
-      if Hexagon.Server_Navigation.Hexagon_Distance (P_From_Pos, P_To_Pos) /= 1 then
+      if Hexagon.Server_Navigation.Hexagon_Distance (P_From_Pos, P_To_Pos) /= 1
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("Attacker is too far away from target"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("Attacker is too far away from target"));
 
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Failed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Failed);
          Server.ServerAPI.Observe_Game (1);
       else
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
       end if;
    end Before_Perform_Attack;
 
-   procedure Calculate_Attack_Result (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                               : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece         : in out Type_My_Tubastga_Piece;
-                                      P_From_Pos, P_To_Pos : in Hexagon.Type_Hexagon_Position; P_Winner : out Player.Type_Player_Id;
-                                     P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Calculate_Attack_Result
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
+      P_Attacking_Piece, P_Attacked_Piece : in out Type_My_Tubastga_Piece;
+      P_From_Pos, P_To_Pos                : in Hexagon.Type_Hexagon_Position;
+      P_Winner                            :    out Player.Type_Player_Id;
+      P_Attempt_Info                      : in out Attempt.Type_Attempt_Info)
    is
 
       Attack_Defence : Tubastga_Game.Server_Logic.Type_Attack_Defence_Record;
@@ -818,7 +924,8 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Calculate_Attack_Result - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Calculate_Attack_Result - enter");
 
       end if;
 
@@ -829,9 +936,11 @@ package body Tubastga_Game.Server_Logic is
       Ret := Tubastga_Game.Server_Logic.Roll (Attack_Defence);
 
       if Ret = Attacking_Wins then
-         P_Attacked_Piece.Health := P_Attacked_Piece.Health - Attack_Defence.Attack;
+         P_Attacked_Piece.Health :=
+           P_Attacked_Piece.Health - Attack_Defence.Attack;
       else
-         P_Attacking_Piece.Health := P_Attacking_Piece.Health - Attack_Defence.Defence;
+         P_Attacking_Piece.Health :=
+           P_Attacking_Piece.Health - Attack_Defence.Defence;
       end if;
 
       if P_Attacked_Piece.Health <= 0 then
@@ -845,17 +954,20 @@ package body Tubastga_Game.Server_Logic is
       P_Winner := P_Attacked_Piece.Player_Id;
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Calculate_Attack_Result - exit Winner=" & P_Winner'Img);
+           ("Tubastga_Game.Server_Logic.Calculate_Attack_Result - exit Winner=" &
+            P_Winner'Img);
       end if;
    end Calculate_Attack_Result;
 
-   procedure End_Perform_Attack (P_Player_Id : in Player.Type_Player_Id;
-                                 P_Action_Type                          : in Action.Type_Action_Type;
-                                 P_Attacking_Piece,
-                                 P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                 P_From_Pos, P_To_Pos : in Hexagon.Type_Hexagon_Position;
-                                 P_Winner : in Player.Type_Player_Id;
-                                 P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
+      P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
+      P_Winner             : in     Player.Type_Player_Id;
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
    is
       Attacker_Pos, Attacked_Pos : Hexagon.Type_Hexagon_Position;
 
@@ -864,19 +976,20 @@ package body Tubastga_Game.Server_Logic is
       use Attempt;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Attack - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Attack - enter");
       end if;
 
-      if Attempt.Get_Attempt_Status(P_Attempt_Info) = Status.Ok then
-         Attempt.Set_Done_Attempt(P_Attempt_Info);
+      if Attempt.Get_Attempt_Status (P_Attempt_Info) = Status.Ok then
+         Attempt.Set_Done_Attempt (P_Attempt_Info);
 
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Attacked_Piece.Player_Id,
             Utilities.RemoteString.To_Unbounded_String
-              (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) & " has " &
-               P_Attacking_Piece.Health'Img & " " &
-               Utilities.RemoteString.To_String (P_Attacked_Piece.Name) & " has " &
-               P_Attacked_Piece.Health'Img));
+              (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) &
+               " has " & P_Attacking_Piece.Health'Img & " " &
+               Utilities.RemoteString.To_String (P_Attacked_Piece.Name) &
+               " has " & P_Attacked_Piece.Health'Img));
 
          if P_Attacking_Piece.Player_Id = P_Winner then
 
@@ -910,32 +1023,42 @@ package body Tubastga_Game.Server_Logic is
          else
             Server.ServerAPI.Player_Activity_Report_Append
               (1, P_Attacked_Piece.Player_Id,
-               Utilities.RemoteString.To_Unbounded_String ("The fight was not conclusive"));
+               Utilities.RemoteString.To_Unbounded_String
+                 ("The fight was not conclusive"));
          end if;
 
       else
-         Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
-         Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
+         Attacker_Pos :=
+           Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
+         Attacked_Pos :=
+           Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-         if Hexagon.Server_Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) /= 1 then
-            Attempt.Set_Done_Attempt(P_Attempt_Info);
+         if Hexagon.Server_Navigation.Hexagon_Distance
+             (Attacker_Pos, Attacked_Pos) /=
+           1
+         then
+            Attempt.Set_Done_Attempt (P_Attempt_Info);
          else
-            Attempt.Set_Attempt_Info(P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1 );
+            Attempt.Set_Attempt_Info
+              (P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1);
          end if;
 
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Attack - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Attack - exit");
       end if;
    end End_Perform_Attack;
 
    --
    -- Perform Ranged Attack
    --
-   function Validate_Perform_Ranged_Attack (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                     : in Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
+   function Validate_Perform_Ranged_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece)
       return Boolean
    is
       use Player;
@@ -948,12 +1071,14 @@ package body Tubastga_Game.Server_Logic is
       return True;
    end Validate_Perform_Ranged_Attack;
 
-   procedure Before_Perform_Ranged_Attack (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                    : in Action.Type_Action_Type;
+   procedure Before_Perform_Ranged_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
       P_Attacking_Piece,
-      P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Attacked_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
       P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
    is
       Attacker_Pos, Attacked_Pos : Hexagon.Type_Hexagon_Position;
 
@@ -964,27 +1089,35 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Before_Perform_Ranged_Attack - enter - exit");
       end if;
 
-      Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
-      Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
+      Attacker_Pos :=
+        Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
+      Attacked_Pos :=
+        Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-      if Hexagon.Server_Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
+      if Hexagon.Server_Navigation.Hexagon_Distance
+          (Attacker_Pos, Attacked_Pos) >
+        2
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("Attacker is too far away from target"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("Attacker is too far away from target"));
 
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Failed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Failed);
          Server.ServerAPI.Observe_Game (1);
       else
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
       end if;
 
    end Before_Perform_Ranged_Attack;
 
-   procedure Calculate_Ranged_Attack_Result (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                                      : in     Action.Type_Action_Type;
-      P_Attacking_Piece, P_Attacked_Piece                : in out Type_My_Tubastga_Piece;
-      P_From_Pos, P_To_Pos : in Hexagon.Type_Hexagon_Position; P_Winner : out Player.Type_Player_Id;
-      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Calculate_Ranged_Attack_Result
+     (P_Player_Id                         : in     Player.Type_Player_Id;
+      P_Action_Type                       : in     Action.Type_Action_Type;
+      P_Attacking_Piece, P_Attacked_Piece : in out Type_My_Tubastga_Piece;
+      P_From_Pos, P_To_Pos                : in Hexagon.Type_Hexagon_Position;
+      P_Winner                            :    out Player.Type_Player_Id;
+      P_Attempt_Info                      : in out Attempt.Type_Attempt_Info)
    is
       Attack_Defence : Tubastga_Game.Server_Logic.Type_Attack_Defence_Record;
 
@@ -992,7 +1125,8 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Calculate_Ranged_Attack_Result - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Calculate_Ranged_Attack_Result - enter");
       end if;
 
       Attack_Defence :=
@@ -1002,9 +1136,11 @@ package body Tubastga_Game.Server_Logic is
       Ret := Tubastga_Game.Server_Logic.Roll (Attack_Defence);
 
       if Ret = Attacking_Wins then
-         P_Attacked_Piece.Health := P_Attacked_Piece.Health - Attack_Defence.Attack;
+         P_Attacked_Piece.Health :=
+           P_Attacked_Piece.Health - Attack_Defence.Attack;
       else
-         P_Attacking_Piece.Health := P_Attacking_Piece.Health - Attack_Defence.Defence;
+         P_Attacking_Piece.Health :=
+           P_Attacking_Piece.Health - Attack_Defence.Defence;
       end if;
 
       if P_Attacked_Piece.Health <= 0 then
@@ -1023,13 +1159,15 @@ package body Tubastga_Game.Server_Logic is
       end if;
    end Calculate_Ranged_Attack_Result;
 
-   procedure End_Perform_Ranged_Attack (P_Player_Id : in Player.Type_Player_Id;
-                                        P_Action_Type        : in Action.Type_Action_Type;
-                                        P_Attacking_Piece,
-                                        P_Attacked_Piece     : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                        P_From_Pos, P_To_Pos : in Hexagon.Type_Hexagon_Position;
-                                        P_Winner             : in Player.Type_Player_Id;
-                                        P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Ranged_Attack
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Attacking_Piece,
+      P_Attacked_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
+      P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
+      P_Winner             : in     Player.Type_Player_Id;
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
    is
       Attacker_Pos, Attacked_Pos : Hexagon.Type_Hexagon_Position;
 
@@ -1038,11 +1176,12 @@ package body Tubastga_Game.Server_Logic is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Ranged_Attack - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Ranged_Attack - enter");
       end if;
 
-      if Attempt.Get_Attempt_Status(P_Attempt_Info) = Status.Ok then
-         Attempt.Set_Done_Attempt(P_Attempt_Info);
+      if Attempt.Get_Attempt_Status (P_Attempt_Info) = Status.Ok then
+         Attempt.Set_Done_Attempt (P_Attempt_Info);
 
          if P_Attacking_Piece.Player_Id = P_Winner then
             Server.ServerAPI.Player_Activity_Report_Append
@@ -1061,54 +1200,68 @@ package body Tubastga_Game.Server_Logic is
             Server.ServerAPI.Player_Activity_Report_Append
               (1, P_Attacked_Piece.Player_Id,
                Utilities.RemoteString.To_Unbounded_String
-                 (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) & " missed "));
+                 (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) &
+                  " missed "));
             Server.ServerAPI.Player_Activity_Report_Append
               (1, P_Attacking_Piece.Player_Id,
                Utilities.RemoteString.To_Unbounded_String
-                 (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) & " missed "));
+                 (Utilities.RemoteString.To_String (P_Attacking_Piece.Name) &
+                  " missed "));
          end if;
 
       else
-         Attacker_Pos := Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
-         Attacked_Pos := Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
+         Attacker_Pos :=
+           Piece.Server.Find_Piece_In_List (P_Attacking_Piece.Id).Actual_Pos;
+         Attacked_Pos :=
+           Piece.Server.Find_Piece_In_List (P_Attacked_Piece.Id).Actual_Pos;
 
-         if Hexagon.Server_Navigation.Hexagon_Distance (Attacker_Pos, Attacked_Pos) > 2 then
-            Attempt.Set_Done_Attempt(P_Attempt_Info);
+         if Hexagon.Server_Navigation.Hexagon_Distance
+             (Attacker_Pos, Attacked_Pos) >
+           2
+         then
+            Attempt.Set_Done_Attempt (P_Attempt_Info);
          else
-            Attempt.Set_Attempt_Info(P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1 );
+            Attempt.Set_Attempt_Info
+              (P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1);
          end if;
 
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Ranged_Attack - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Ranged_Attack - exit");
       end if;
    end End_Perform_Ranged_Attack;
    --
    -- Perform Move
    --
-   function Validate_Perform_Move (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                            : in Action.Type_Action_Type;
+   function Validate_Perform_Move
+     (P_Player_Id    : in Player.Type_Player_Id;
+      P_Action_Type  : in Action.Type_Action_Type;
       P_Moving_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_To_Pos                                 : in Hexagon.Type_Hexagon_Position) return Boolean
+      P_To_Pos       : in Hexagon.Type_Hexagon_Position) return Boolean
    is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
       Ret : Boolean;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Perform_Move - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Perform_Move - enter - exit");
       end if;
 
-      A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
+      A_Patch :=
+        Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
 
-      if not Pieces_Type_Info_List (P_Moving_Piece.Type_Of_Piece).Move_Landscape
-          (A_Patch.all.Landscape_Here) then
+      if not Pieces_Type_Info_List (P_Moving_Piece.Type_Of_Piece)
+          .Move_Landscape
+          (A_Patch.all.Landscape_Here)
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
             Utilities.RemoteString.To_Unbounded_String
-              ("This piece piece can't enter that position (Piece) Pos=(" & P_To_Pos.A'Img & ", " &
-               P_To_Pos.B'Img & ")"));
+              ("This piece piece can't enter that position (Piece) Pos=(" &
+               P_To_Pos.A'Img & ", " & P_To_Pos.B'Img & ")"));
 
          Ret := False;
       else
@@ -1123,49 +1276,54 @@ package body Tubastga_Game.Server_Logic is
       return Ret;
    end Validate_Perform_Move;
 
-   procedure Before_Perform_Move (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                           : in     Action.Type_Action_Type;
-      P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_From_Pos                              : in     Hexagon.Type_Hexagon_Position;
-      P_To_Pos : in out Hexagon.Type_Hexagon_Position;
-      P_End_Pos : in Hexagon.Type_Hexagon_Position;
+   procedure Before_Perform_Move
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
+      P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
+      P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
+      P_End_Pos      : in     Hexagon.Type_Hexagon_Position;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Ada.Real_Time;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move - enter");
       end if;
 
-      if Ada.Real_Time.Clock > P_Moving_Piece.Next_Move_Attempt  then
-         P_Moving_Piece.Next_Move_Attempt := Ada.Real_Time.Clock + Ada.Real_Time.Seconds(5);
-         Text_IO.Put_Line("Halloiluken Tidspunkt til sjekk");
+      if Ada.Real_Time.Clock > P_Moving_Piece.Next_Move_Attempt then
+         P_Moving_Piece.Next_Move_Attempt :=
+           Ada.Real_Time.Clock + Ada.Real_Time.Seconds (5);
+         Text_IO.Put_Line ("Halloiluken Tidspunkt til sjekk");
 
          Server.ServerAPI.Player_Activity_Report_Append
-                 (1, P_Player_Id,
-                  Utilities.RemoteString.To_Unbounded_String
-                    ("Beregn path" ) );
+           (1, P_Player_Id,
+            Utilities.RemoteString.To_Unbounded_String ("Beregn path"));
 
-
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
       else
 
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Failed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Failed);
       end if;
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Before_Perform_Move - exit P_Status=" & Attempt.To_String(P_Attempt_Info));
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move - exit P_Status=" &
+            Attempt.To_String (P_Attempt_Info));
       end if;
    end Before_Perform_Move;
 
-   procedure Before_Perform_Move_Step (P_Player_Id    : in     Player.Type_Player_Id;
-                                       P_Action_Type  : in     Action.Type_Action_Type;
-                                       P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                       P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
-                                       P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
-                                       P_End_Pos      : in Hexagon.Type_Hexagon_Position;
-                                       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Perform_Move_Step
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
+      P_From_Pos     : in     Hexagon.Type_Hexagon_Position;
+      P_To_Pos       : in out Hexagon.Type_Hexagon_Position;
+      P_End_Pos      : in     Hexagon.Type_Hexagon_Position;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
 
@@ -1175,30 +1333,35 @@ package body Tubastga_Game.Server_Logic is
       use Piece;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - enter");
       end if;
-      A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
+      A_Patch :=
+        Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_To_Pos.A, P_To_Pos.B);
 
       Tubastga_Game.Server_Logic.Move_Logic.Move_Energy
         (P_Moving_Piece, Landscape.Type_Patch (A_Patch.all), Move_Status);
       if Move_Status then
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
       else
-         Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Failed);
+         Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Failed);
       end if;
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - exit P_Status=" & Attempt.To_String(P_Attempt_Info));
+           ("Tubastga_Game.Server_Logic.Before_Perform_Move_Step - exit P_Status=" &
+            Attempt.To_String (P_Attempt_Info));
       end if;
    end Before_Perform_Move_Step;
 
-   procedure End_Perform_Move (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                        : in     Action.Type_Action_Type;
-      P_Moving_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_From_Pos, P_To_Pos                 : in     Hexagon.Type_Hexagon_Position;
-      P_End_Pos : in     Hexagon.Type_Hexagon_Position;
-      P_Attempt_Info                       : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Move
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Moving_Piece : in out Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece;
+      P_From_Pos, P_To_Pos : in     Hexagon.Type_Hexagon_Position;
+      P_End_Pos            : in     Hexagon.Type_Hexagon_Position;
+      P_Attempt_Info       : in out Attempt.Type_Attempt_Info)
    is
       n : Natural;
 
@@ -1207,45 +1370,56 @@ package body Tubastga_Game.Server_Logic is
       use Status;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Move - enter P_Attempt_Info:" & Attempt.To_String (P_Attempt_Info)  );
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Move - enter P_Attempt_Info:" &
+            Attempt.To_String (P_Attempt_Info));
       end if;
 
-
-      if Attempt.Get_Attempt_Status(P_Attempt_Info) = Status.Completed_Ok then
+      if Attempt.Get_Attempt_Status (P_Attempt_Info) = Status.Completed_Ok then
          Attempt.Set_Done_Attempt (P_Attempt_Info);
-            Server.ServerAPI.Player_Activity_Report_Append(1, P_Player_Id, Utilities.RemoteString.To_Unbounded_String("Movement succeeded") );
+         Server.ServerAPI.Player_Activity_Report_Append
+           (1, P_Player_Id,
+            Utilities.RemoteString.To_Unbounded_String ("Movement succeeded"));
       else
          n := Attempt.Get_Attempt_Info (P_Attempt_Info);
-         Text_IO.Put_Line("");
+         Text_IO.Put_Line ("");
 
          --
-         -- hva var resultatet fra forriige kjøring?
-         -- ta vare på resultatet fra denne kjøringen:
+         -- hva var resultatet fra forriige kjøring? ta vare på resultatet
+         -- fra denne kjøringen:
          if n = 510 then
-            Server.ServerAPI.Player_Activity_Report_Append(1, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("På n=510 stopper vi commandoen") );
+            Server.ServerAPI.Player_Activity_Report_Append
+              (1, P_Player_Id,
+               Utilities.RemoteString.To_Unbounded_String
+                 ("På n=510 stopper vi commandoen"));
 
-            Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Done);
+            Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Done);
 
-         elsif n > 500  then
-            Server.ServerAPI.Player_Activity_Report_Append(1, P_Player_Id, "Etter 1000 'n' :" &
-                                                             Utilities.RemoteString.To_Unbounded_String (Attempt.To_String(P_Attempt_Info)) );
+         elsif n > 500 then
+            Server.ServerAPI.Player_Activity_Report_Append
+              (1, P_Player_Id,
+               "Etter 1000 'n' :" &
+               Utilities.RemoteString.To_Unbounded_String
+                 (Attempt.To_String (P_Attempt_Info)));
 
          end if;
 
-         Attempt.Set_Attempt_Info(P_Attempt_Info, n + 1 );
+         Attempt.Set_Attempt_Info (P_Attempt_Info, n + 1);
 
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Perform_Move - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Perform_Move - exit");
       end if;
    end End_Perform_Move;
 
-   procedure Perform_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                            : in     Action.Type_Action_Type;
+   procedure Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name : in Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       Effect_Area  : Hexagon.Area.Type_Action_Capabilities_A (1 .. 1);
@@ -1259,27 +1433,30 @@ package body Tubastga_Game.Server_Logic is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Perform_Patch_Effect - enter P_Piece.id=" & P_Piece.Id'Img &
-            " P_Effect_Name=" & P_Effect_Name'Img );
+           ("Tubastga_Game.Server_Logic.Perform_Patch_Effect - enter P_Piece.id=" &
+            P_Piece.Id'Img & " P_Effect_Name=" & P_Effect_Name'Img);
       end if;
 
-      Text_IO.Put_Line("Perform_Patch_Effect- A");
+      Text_IO.Put_Line ("Perform_Patch_Effect- A");
       Effect_Found := False;
       for T in P_Area'First .. P_Area'Last loop
          declare
             A_Patch       : Hexagon.Server_Map.Type_Server_Patch_Adress;
             Cursor_Effect : Effect.Effect_List.Cursor;
          begin
-            A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (P_Area (T).A, P_Area (T).B);
-            Cursor_Effect := Effect.Effect_List.First (A_Patch.all.Effects_Here);
+            A_Patch :=
+              Hexagon.Server_Map.Get_Patch_Adress_From_AB
+                (P_Area (T).A, P_Area (T).B);
+            Cursor_Effect :=
+              Effect.Effect_List.First (A_Patch.all.Effects_Here);
 
-            if Effect.Effect_List.Has_Element(Cursor_Effect) then
-               An_Effect     := Effect.Effect_List.Element (Cursor_Effect);
+            if Effect.Effect_List.Has_Element (Cursor_Effect) then
+               An_Effect := Effect.Effect_List.Element (Cursor_Effect);
                Server.ServerAPI.Player_Activity_Report_Append
                  (6, P_Player_Id,
                   Utilities.RemoteString.To_Unbounded_String
-                    ("Effect=" & An_Effect.Aux'Img & " on " & P_Area (T).A'Img & " " &
-                       P_Area (T).B'Img));
+                    ("Effect=" & An_Effect.Aux'Img & " on " &
+                     P_Area (T).A'Img & " " & P_Area (T).B'Img));
 
                Effect_Found := True;
             end if;
@@ -1287,14 +1464,20 @@ package body Tubastga_Game.Server_Logic is
 
       end loop;
 
-      Text_IO.Put_Line("Perform_Patch_Effect- B");
+      Text_IO.Put_Line ("Perform_Patch_Effect- B");
 
       if Effect_Found then
          Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");
-         Lua.Get_Field (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
-         Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (P_Player_Id));
-         Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (An_Effect.Aux));
-         Lua_Status := Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
+         Lua.Get_Field
+           (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
+         Lua.Push
+           (Tubastga_Game.Server_Logic.Lua_State,
+            Lua.Lua_Integer (P_Player_Id));
+         Lua.Push
+           (Tubastga_Game.Server_Logic.Lua_State,
+            Lua.Lua_Integer (An_Effect.Aux));
+         Lua_Status :=
+           Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
          if Lua_Status /= Lua.LUA_OK then
             --  An error occurs during the execution
             Text_IO.Put_Line (Lua_Status'Img);
@@ -1303,46 +1486,56 @@ package body Tubastga_Game.Server_Logic is
 
          Server.ServerAPI.Player_Activity_Report_Append
            (6, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("We are searching the patch...."));
-
+            Utilities.RemoteString.To_Unbounded_String
+              ("We are searching the patch...."));
 
          -- for the moment only piece with id=8 will find something:)
          if P_Piece.Id = 8 then
             Server.ServerAPI.Player_Activity_Report_Append
-              (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found something!"));
+              (6, P_Player_Id,
+               Utilities.RemoteString.To_Unbounded_String
+                 ("We found something!"));
 
             Server.ServerAPI.Revoke_Patch_Effect
-              (P_Player_Id, P_Action_Type, P_Piece.Id, P_Area, An_Effect.Effect_Name, Ret_Status);
+              (P_Player_Id, P_Action_Type, P_Piece.Id, P_Area,
+               An_Effect.Effect_Name, Ret_Status);
 
          else
             Server.ServerAPI.Player_Activity_Report_Append
-              (6, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("We found nothing!"));
+              (6, P_Player_Id,
+               Utilities.RemoteString.To_Unbounded_String
+                 ("We found nothing!"));
          end if;
 
       else
          Server.ServerAPI.Player_Activity_Report_Append
            (6, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("There is nowhere particular to search here"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("There is nowhere particular to search here"));
 
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Perform_Patch_Effect - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Perform_Patch_Effect - exit");
       end if;
    end Perform_Patch_Effect;
 
-   procedure Perform_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                            : in     Action.Type_Action_Type;
+   procedure Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A; P_Effect_Name : in Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
 
-      type Type_Neighbours is array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
+      type Type_Neighbours is
+        array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
 
       Neighbours : Type_Neighbours :=
-        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0), (True, -1, +1),
-         (True, 0, +1));
+        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0),
+         (True, -1, +1), (True, 0, +1));
 
 --
 --      Wall_In_Navigation_Node : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
@@ -1362,9 +1555,9 @@ package body Tubastga_Game.Server_Logic is
             P_Piece.Id'Img);
       end if;
 
-      -- 1) Copy Navigation information from the original Navigation map.
-      -- Make sure that this node and nodes that are neighbours to this one
-      -- has their neighbours set to original state.
+      -- 1) Copy Navigation information from the original Navigation map. Make
+      -- sure that this node and nodes that are neighbours to this one has
+      -- their neighbours set to original state.
       --
 --      Trav := Hexagon.Server_Navigation.Navigation_List_Pkg.First(
 --                                                                  Navigation_Original.Navigation_List);
@@ -1455,32 +1648,36 @@ package body Tubastga_Game.Server_Logic is
 --          (Other_Navigation_Node.all, Wall_In_Navigation_Node.all.Id);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Perform_Patch_Effect (House) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Perform_Patch_Effect (House) - exit");
       end if;
    end Perform_Patch_Effect;
 
-   procedure Perform_Piece_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                            : in     Action.Type_Action_Type;
+   procedure Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name                                 : in     Effect.Type_Effect_Name;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Perform_Piece_Effect - enter P_Piece.id=" & P_Piece.Id'Img &
-            " P_Effect.Effect_Name=" & P_Effect_Name'Img);
+           ("Tubastga_Game.Server_Logic.Perform_Piece_Effect - enter P_Piece.id=" &
+            P_Piece.Id'Img & " P_Effect.Effect_Name=" & P_Effect_Name'Img);
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Perform_Piece_Effect - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Perform_Piece_Effect - exit");
       end if;
    end Perform_Piece_Effect;
 
-   procedure Perform_Piece_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                            : in     Action.Type_Action_Type;
+   procedure Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name                                 : in     Effect.Type_Effect_Name;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Piece;
@@ -1492,14 +1689,16 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Perform_Piece_Effect (House) - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Perform_Piece_Effect (House) - exit");
       end if;
    end Perform_Piece_Effect;
 
-   function Validate_Perform_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                    : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name                                         : in Effect.Type_Effect_Name;
+   function Validate_Perform_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean
    is
       use Player;
@@ -1509,15 +1708,17 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Validate_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
 
-      Text_IO.Put_Line("Validate_Perform_Patch_Effect");
+      Text_IO.Put_Line ("Validate_Perform_Patch_Effect");
 
       return True;
    end Validate_Perform_Patch_Effect;
 
-   procedure Before_Perform_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                                   : in     Action.Type_Action_Type;
+   procedure Before_Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name : in     Effect.Type_Effect_Name; P_Area : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
@@ -1527,17 +1728,18 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Before_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
 
-      Text_IO.Put_Line("Before_Perform_Patch_Effect");
+      Text_IO.Put_Line ("Before_Perform_Patch_Effect");
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Perform_Patch_Effect;
 
-   procedure End_Perform_Patch_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                       P_Action_Type  : in     Action.Type_Action_Type;
-                                       P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                       P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                       P_Area         : in Hexagon.Area.Type_Action_Capabilities_A;
-                                       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
       use Status;
@@ -1547,20 +1749,24 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.End_Perform_Patch_Effect(Piece) - enter - exit");
       end if;
 
-      Text_IO.Put_Line("End_Perform_Patch_Effect");
-      if Attempt.Get_Attempt_Status(P_Attempt_Info) = Status.Patch_Effect_Not_Here then
+      Text_IO.Put_Line ("End_Perform_Patch_Effect");
+      if Attempt.Get_Attempt_Status (P_Attempt_Info) =
+        Status.Patch_Effect_Not_Here
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
-            Utilities.RemoteString.To_Unbounded_String ("There was nothing to search for here"));
+            Utilities.RemoteString.To_Unbounded_String
+              ("There was nothing to search for here"));
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Perform_Patch_Effect;
 
-   function Validate_Perform_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                    : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name                                         : in Effect.Type_Effect_Name;
+   function Validate_Perform_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name : in Effect.Type_Effect_Name;
       P_Area : in Hexagon.Area.Type_Action_Capabilities_A) return Boolean
    is
       use Player;
@@ -1573,12 +1779,13 @@ package body Tubastga_Game.Server_Logic is
       return True;
    end Validate_Perform_Patch_Effect;
 
-   procedure Before_Perform_Patch_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                          P_Action_Type  : in     Action.Type_Action_Type;
-                                          P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                          P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                          P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
-                                          P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
@@ -1587,15 +1794,16 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Before_Perform_Patch_Effect (House) - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Perform_Patch_Effect;
 
-   procedure End_Perform_Patch_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                       P_Action_Type  : in     Action.Type_Action_Type;
-                                       P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                       P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                       P_Area         : in Hexagon.Area.Type_Action_Capabilities_A;
-                                       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
@@ -1604,13 +1812,14 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.End_Perform_Patch_Effect (House) - enter - exit");
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Perform_Patch_Effect;
 
-   function Validate_Perform_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                    : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name                                         : in Effect.Type_Effect_Name) return Boolean
+   function Validate_Perform_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
    is
       use Player;
    begin
@@ -1622,11 +1831,12 @@ package body Tubastga_Game.Server_Logic is
       return True;
    end Validate_Perform_Piece_Effect;
 
-   procedure Before_Perform_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                          P_Action_Type  : in     Action.Type_Action_Type;
-                                          P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                          P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                          P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
@@ -1635,14 +1845,15 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Before_Perform_Piece_Effect(Piece) - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Perform_Piece_Effect;
 
-   procedure End_Perform_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                       P_Action_Type  : in     Action.Type_Action_Type;
-                                       P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                       P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
@@ -1651,13 +1862,14 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.End_Perform_Piece_Effect(Piece) - enter - exit");
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Perform_Piece_Effect;
 
-   function Validate_Perform_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                    : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name                                         : in Effect.Type_Effect_Name) return Boolean
+   function Validate_Perform_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
    is
       use Player;
    begin
@@ -1669,11 +1881,12 @@ package body Tubastga_Game.Server_Logic is
       return True;
    end Validate_Perform_Piece_Effect;
 
-   procedure Before_Perform_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                          P_Action_Type  : in     Action.Type_Action_Type;
-                                          P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                          P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                          P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
@@ -1682,14 +1895,15 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.Before_Perform_Piece_Effect (House) - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Perform_Piece_Effect;
 
-   procedure End_Perform_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                       P_Action_Type  : in     Action.Type_Action_Type;
-                                       P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                       P_Effect_Name  : in     Effect.Type_Effect_Name;
-                                       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Perform_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
       use Status;
@@ -1699,7 +1913,9 @@ package body Tubastga_Game.Server_Logic is
            ("Tubastga_Game.Server_Logic.End_Perform_Piece_Effect (House) - enter - exit");
       end if;
 
-      if Attempt.Get_Attempt_Status(P_Attempt_Info) = Status.Piece_Effect_Not_Here then
+      if Attempt.Get_Attempt_Status (P_Attempt_Info) =
+        Status.Piece_Effect_Not_Here
+      then
          Server.ServerAPI.Player_Activity_Report_Append
            (1, P_Player_Id,
             Utilities.RemoteString.To_Unbounded_String
@@ -1708,101 +1924,115 @@ package body Tubastga_Game.Server_Logic is
 
    end End_Perform_Piece_Effect;
 
-   function Validate_Grant_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                  : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect                                       : in Effect.Type_Effect) return Boolean
+   function Validate_Grant_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect      : in Effect.Type_Effect) return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Grant_Piece_Effect - enter - exit");
       end if;
 
       return True;
    end Validate_Grant_Piece_Effect;
 
-   procedure Before_Grant_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                        P_Action_Type  : in     Action.Type_Action_Type;
-                                        P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                        P_Effect       : in     Effect.Type_Effect;
-                                        P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Grant_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Grant_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Grant_Piece_Effect;
 
-   procedure End_Grant_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                     P_Action_Type  : in     Action.Type_Action_Type;
-                                     P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                     P_Effect       : in     Effect.Type_Effect;
-                                     P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Grant_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Grant_Piece_Effect - enter - exit");
       end if;
 
       Server.ServerAPI.Player_Activity_Report_Append
-        (1, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("Promoted"));
+        (1, P_Player_Id,
+         Utilities.RemoteString.To_Unbounded_String ("Promoted"));
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Grant_Piece_Effect;
 
-   function Validate_Grant_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                  : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect                                       : in Effect.Type_Effect) return Boolean
+   function Validate_Grant_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect      : in Effect.Type_Effect) return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Grant_Piece_Effect - enter - exit");
       end if;
 
       return True;
    end Validate_Grant_Piece_Effect;
 
-   procedure Before_Grant_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                        P_Action_Type  : in     Action.Type_Action_Type;
-                                        P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                        P_Effect       : in     Effect.Type_Effect;
-                                        P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Grant_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Grant_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Grant_Piece_Effect;
 
-   procedure End_Grant_Piece_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                     P_Action_Type  : in     Action.Type_Action_Type;
-                                     P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                     P_Effect       : in     Effect.Type_Effect;
-                                     P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure End_Grant_Piece_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Grant_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Grant_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Grant_Piece_Effect;
 
-   function Validate_Revoke_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                   : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Effect_Name                                   : in Effect.Type_Effect_Name) return Boolean
+   function Validate_Revoke_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
    is
       use Player;
    begin
@@ -1817,42 +2047,46 @@ package body Tubastga_Game.Server_Logic is
    procedure Before_Revoke_Piece_Effect
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
-      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Revoke_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Revoke_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Revoke_Piece_Effect;
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
-      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Revoke_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Revoke_Piece_Effect - enter - exit");
       end if;
 
       Server.ServerAPI.Player_Activity_Report_Append
-        (1, P_Player_Id, Utilities.RemoteString.To_Unbounded_String ("Demoted"));
+        (1, P_Player_Id,
+         Utilities.RemoteString.To_Unbounded_String ("Demoted"));
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Revoke_Piece_Effect;
 
-   function Validate_Revoke_Piece_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                   : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Effect_Name                                   : in Effect.Type_Effect_Name) return Boolean
+   function Validate_Revoke_Piece_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
    is
       use Player;
    begin
@@ -1863,7 +2097,8 @@ package body Tubastga_Game.Server_Logic is
 
       Server.ServerAPI.Player_Activity_Report_Append
         (6, P_Player_Id,
-         Utilities.RemoteString.To_Unbounded_String ("Narrative of Revoke Piece Effect (House)"));
+         Utilities.RemoteString.To_Unbounded_String
+           ("Narrative of Revoke Piece Effect (House)"));
 
       Server.ServerAPI.Player_Activity_Report_Append
         (Observation.Activity.Internal_Details, P_Player_Id,
@@ -1877,40 +2112,43 @@ package body Tubastga_Game.Server_Logic is
    procedure Before_Revoke_Piece_Effect
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
-      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Revoke_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Revoke_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Revoke_Piece_Effect;
 
    procedure End_Revoke_Piece_Effect
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
-      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
       P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Revoke_Piece_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Revoke_Piece_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Done_Attempt(P_Attempt_Info);
+      Attempt.Set_Done_Attempt (P_Attempt_Info);
    end End_Revoke_Piece_Effect;
 
-   function Validate_Grant_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                  : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area                                         : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect                                       : in Effect.Type_Effect) return Boolean
+   function Validate_Grant_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean
    is
       Ret : Boolean;
 
@@ -1919,24 +2157,27 @@ package body Tubastga_Game.Server_Logic is
       use Effect;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect - enter");
       end if;
 
       Ret := True;
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect  - exit Ret=" & Ret'Img);
+           ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect  - exit Ret=" &
+            Ret'Img);
       end if;
       return Ret;
    end Validate_Grant_Patch_Effect;
 
-   procedure Before_Grant_Patch_Effect (P_Player_Id    : in     Player.Type_Player_Id;
-                                        P_Action_Type  : in     Action.Type_Action_Type;
-                                        P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-                                        P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
-                                        P_Effect       : in Effect.Type_Effect;
-                                        P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Grant_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       Ret : Boolean;
 
@@ -1945,77 +2186,89 @@ package body Tubastga_Game.Server_Logic is
       use Effect;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect - enter");
       end if;
 
       Ret := True;
 
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect  - exit Ret=" & Ret'Img);
+           ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect  - exit Ret=" &
+            Ret'Img);
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Grant_Patch_Effect;
 
-   procedure End_Grant_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                              : in     Action.Type_Action_Type;
+   procedure End_Grant_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A; P_Effect : in Effect.Type_Effect;
-      P_End_Status : in     Status.Type_Status; P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect : in Effect.Type_Effect; P_End_Status : in Status.Type_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Attempt;
       use Status;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect - enter");
       end if;
 
       if P_End_Status = Status.Ok then
-         Attempt.Set_Done_Attempt(P_Attempt_Info);
+         Attempt.Set_Done_Attempt (P_Attempt_Info);
       else
-         Attempt.Set_Attempt_Info(P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1 );
+         Attempt.Set_Attempt_Info
+           (P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1);
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect  - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect  - exit");
       end if;
 
    end End_Grant_Patch_Effect;
 
-   function Validate_Grant_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                  : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Area                                         : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect                                       : in Effect.Type_Effect) return Boolean
+   function Validate_Grant_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect      : in Effect.Type_Effect) return Boolean
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Grant_Patch_Effect - enter - exit");
       end if;
 
       return True;
    end Validate_Grant_Patch_Effect;
 
-   procedure Before_Grant_Patch_Effect (P_Player_Id   : in     Player.Type_Player_Id;
-                                        P_Action_Type : in     Action.Type_Action_Type;
-                                        P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-                                        P_Area        : in     Hexagon.Area.Type_Action_Capabilities_A;
-                                        P_Effect      : in Effect.Type_Effect;
-                                        P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   procedure Before_Grant_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect       : in     Effect.Type_Effect;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Grant_Patch_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Grant_Patch_Effect;
 
-   procedure Directions (P_Effect_Name : in     Effect.Type_Effect_Name; P_Direction : out Integer;
-      P_Opposite                       :    out Integer)
+   procedure Directions
+     (P_Effect_Name : in Effect.Type_Effect_Name; P_Direction : out Integer;
+      P_Opposite    :    out Integer)
    is
 
       use Effect;
@@ -2046,28 +2299,35 @@ package body Tubastga_Game.Server_Logic is
       end if;
    end Directions;
 
-   procedure End_Grant_Patch_Effect (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                              : in     Action.Type_Action_Type;
+   procedure End_Grant_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
       P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A; P_Effect : in Effect.Type_Effect;
-      P_End_Status : in     Status.Type_Status; P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect : in Effect.Type_Effect; P_End_Status : in Status.Type_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
-      type Type_Neighbours is array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
+      type Type_Neighbours is
+        array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
 
       Neighbours : Type_Neighbours :=
-        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0), (True, -1, +1),
-         (True, 0, +1));
+        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0),
+         (True, -1, +1), (True, 0, +1));
 
-      Wall_In_Navigation_Node : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Other_Navigation_Node   : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Other_Pos : Hexagon.Type_Hexagon_Position := Hexagon.Type_Hexagon_Position'(True, 1, 1);
-      Direction, Opposite     : Integer;
+      Wall_In_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Other_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Other_Pos : Hexagon.Type_Hexagon_Position :=
+        Hexagon.Type_Hexagon_Position'(True, 1, 1);
+      Direction, Opposite : Integer;
 
       use Attempt;
       use Status;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Grant_Patch_Effect - enter - exit");
       end if;
 
       Server.ServerAPI.Player_Activity_Report_Append
@@ -2085,10 +2345,12 @@ package body Tubastga_Game.Server_Logic is
 
          Other_Pos.A :=
            Hexagon.Type_Hexagon_Numbers
-             (Integer (Wall_In_Navigation_Node.all.Pos.A) + Integer (Neighbours (Direction).A));
+             (Integer (Wall_In_Navigation_Node.all.Pos.A) +
+              Integer (Neighbours (Direction).A));
          Other_Pos.B :=
            Hexagon.Type_Hexagon_Numbers
-             (Integer (Wall_In_Navigation_Node.all.Pos.B) + Integer (Neighbours (Direction).B));
+             (Integer (Wall_In_Navigation_Node.all.Pos.B) +
+              Integer (Neighbours (Direction).B));
 
          Other_Navigation_Node :=
            Hexagon.Server_Navigation.Get_Navigation_Node_By_Position
@@ -2102,67 +2364,19 @@ package body Tubastga_Game.Server_Logic is
          Hexagon.Server_Navigation.Modify.Remove_Path_To_Neighbour
            (Other_Navigation_Node.all, Wall_In_Navigation_Node.all.Id);
 
-         Attempt.Set_Done_Attempt(P_Attempt_Info);
+         Attempt.Set_Done_Attempt (P_Attempt_Info);
       else
-         Attempt.Set_Attempt_Info(P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1 );
+         Attempt.Set_Attempt_Info
+           (P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1);
       end if;
    end End_Grant_Patch_Effect;
 
-   function Validate_Revoke_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                   : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area                                          : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name                                   : in Effect.Type_Effect_Name) return Boolean
-   is
-      use Player;
-   begin
-      if Verbose then
-         Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Validate_Revoke_Patch_Effect - enter - exit");
-      end if;
-
-      return True;
-   end Validate_Revoke_Patch_Effect;
-
-   procedure Before_Revoke_Patch_Effect
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                                  : in     Action.Type_Action_Type;
-      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name : in Effect.Type_Effect_Name;
-      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
-   is
-      use Player;
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Revoke_Patch_Effect - enter - exit");
-      end if;
-
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
-   end Before_Revoke_Patch_Effect;
-
-   procedure End_Revoke_Patch_Effect
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                               : in     Action.Type_Action_Type;
-      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name : in Effect.Type_Effect_Name;
-      P_End_Status : in     Status.Type_Status;
-      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
-   is
-      use Player;
-   begin
-      if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Revoke_Patch_Effect - enter - exit");
-      end if;
-
-   end End_Revoke_Patch_Effect;
-
-   function Validate_Revoke_Patch_Effect (P_Player_Id : in Player.Type_Player_Id;
-      P_Action_Type                                   : in Action.Type_Action_Type;
-      P_Piece : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Area                                          : in Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name                                   : in Effect.Type_Effect_Name) return Boolean
+   function Validate_Revoke_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
    is
       use Player;
    begin
@@ -2177,7 +2391,7 @@ package body Tubastga_Game.Server_Logic is
    procedure Before_Revoke_Patch_Effect
      (P_Player_Id    : in     Player.Type_Player_Id;
       P_Action_Type  : in     Action.Type_Action_Type;
-      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
       P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
       P_Effect_Name  : in     Effect.Type_Effect_Name;
       P_Attempt_Info : in out Attempt.Type_Attempt_Info)
@@ -2185,38 +2399,100 @@ package body Tubastga_Game.Server_Logic is
       use Player;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Before_Revoke_Patch_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Revoke_Patch_Effect - enter - exit");
       end if;
 
-      Attempt.Set_Command_Status(P_Attempt_Info, Attempt.Proceed);
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
    end Before_Revoke_Patch_Effect;
 
    procedure End_Revoke_Patch_Effect
-     (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                               : in     Action.Type_Action_Type;
-      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
-      P_Area : in     Hexagon.Area.Type_Action_Capabilities_A;
-      P_Effect_Name : in Effect.Type_Effect_Name;
-      P_End_Status : in     Status.Type_Status; P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_End_Status   : in     Status.Type_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
    is
-      type Type_Neighbours is array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
+      use Player;
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Revoke_Patch_Effect - enter - exit");
+      end if;
+
+   end End_Revoke_Patch_Effect;
+
+   function Validate_Revoke_Patch_Effect
+     (P_Player_Id   : in Player.Type_Player_Id;
+      P_Action_Type : in Action.Type_Action_Type;
+      P_Piece       : in Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Area        : in Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name : in Effect.Type_Effect_Name) return Boolean
+   is
+      use Player;
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Validate_Revoke_Patch_Effect - enter - exit");
+      end if;
+
+      return True;
+   end Validate_Revoke_Patch_Effect;
+
+   procedure Before_Revoke_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   is
+      use Player;
+   begin
+      if Verbose then
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Before_Revoke_Patch_Effect - enter - exit");
+      end if;
+
+      Attempt.Set_Command_Status (P_Attempt_Info, Attempt.Proceed);
+   end Before_Revoke_Patch_Effect;
+
+   procedure End_Revoke_Patch_Effect
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_House;
+      P_Area         : in     Hexagon.Area.Type_Action_Capabilities_A;
+      P_Effect_Name  : in     Effect.Type_Effect_Name;
+      P_End_Status   : in     Status.Type_Status;
+      P_Attempt_Info : in out Attempt.Type_Attempt_Info)
+   is
+      type Type_Neighbours is
+        array (1 .. 6) of Hexagon.Area.Type_Hexagon_Delta_Position;
 
       Neighbours : Type_Neighbours :=
-        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0), (True, -1, +1),
-         (True, 0, +1));
+        ((True, +1, 0), (True, +1, -1), (True, 0, -1), (True, -1, 0),
+         (True, -1, +1), (True, 0, +1));
 
-      Original_Wall_In_Navigation_Node : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Active_Wall_In_Navigation_Node   : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Original_Other_Navigation_Node   : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Active_Other_Navigation_Node     : Hexagon.Server_Navigation.Type_Navigation_Node_Access;
-      Other_Pos : Hexagon.Type_Hexagon_Position := Hexagon.Type_Hexagon_Position'(True, 1, 1);
-      Direction, Opposite              : Integer;
+      Original_Wall_In_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Active_Wall_In_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Original_Other_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Active_Other_Navigation_Node : Hexagon.Server_Navigation
+        .Type_Navigation_Node_Access;
+      Other_Pos : Hexagon.Type_Hexagon_Position :=
+        Hexagon.Type_Hexagon_Position'(True, 1, 1);
+      Direction, Opposite : Integer;
 
       use Attempt;
       use Status;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.End_Revoke_Patch_Effect - enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.End_Revoke_Patch_Effect - enter - exit");
       end if;
 
       if P_End_Status = Status.Ok then
@@ -2255,33 +2531,43 @@ package body Tubastga_Game.Server_Logic is
               Other_Pos);
 
          if Hexagon.Server_Navigation.Has_Neighbour
-             (Original_Wall_In_Navigation_Node.all, Original_Other_Navigation_Node.all.Id) then
+             (Original_Wall_In_Navigation_Node.all,
+              Original_Other_Navigation_Node.all.Id)
+         then
 
             Hexagon.Server_Navigation.Modify.Add_Path_To_Neighbour
-              (Active_Wall_In_Navigation_Node.all, Active_Other_Navigation_Node.all.Id);
+              (Active_Wall_In_Navigation_Node.all,
+               Active_Other_Navigation_Node.all.Id);
          else
             Hexagon.Server_Navigation.Modify.Remove_Path_To_Neighbour
-              (Active_Wall_In_Navigation_Node.all, Active_Other_Navigation_Node.all.Id);
+              (Active_Wall_In_Navigation_Node.all,
+               Active_Other_Navigation_Node.all.Id);
          end if;
 
          if Hexagon.Server_Navigation.Has_Neighbour
-             (Original_Other_Navigation_Node.all, Original_Wall_In_Navigation_Node.all.Id) then
+             (Original_Other_Navigation_Node.all,
+              Original_Wall_In_Navigation_Node.all.Id)
+         then
 
             Hexagon.Server_Navigation.Modify.Add_Path_To_Neighbour
-              (Active_Other_Navigation_Node.all, Active_Wall_In_Navigation_Node.all.Id);
+              (Active_Other_Navigation_Node.all,
+               Active_Wall_In_Navigation_Node.all.Id);
          else
             Hexagon.Server_Navigation.Modify.Remove_Path_To_Neighbour
-              (Active_Other_Navigation_Node.all, Active_Wall_In_Navigation_Node.all.Id);
+              (Active_Other_Navigation_Node.all,
+               Active_Wall_In_Navigation_Node.all.Id);
          end if;
 
-         Attempt.Set_Done_Attempt(P_Attempt_Info);
+         Attempt.Set_Done_Attempt (P_Attempt_Info);
       else
-         Attempt.Set_Attempt_Info(P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1 );
+         Attempt.Set_Attempt_Info
+           (P_Attempt_Info, Attempt.Get_Attempt_Info (P_Attempt_Info) - 1);
       end if;
    end End_Revoke_Patch_Effect;
 
-   procedure Upkeep (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
-      P_Piece                : in out Type_My_Tubastga_Piece)
+   procedure Upkeep
+     (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
+      P_Piece : in out Type_My_Tubastga_Piece)
    is
       Tower_Id    : Integer;
       Tower       : Piece.Server.Type_Piece_Access_Class;
@@ -2308,26 +2594,37 @@ package body Tubastga_Game.Server_Logic is
 
          for Tower_Number_Trav in 1 .. 3 loop
             Tower_Id :=
-              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Stops (P_Piece, Tower_Number_Trav);
+              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Stops
+                (P_Piece, Tower_Number_Trav);
             Load_Goods :=
-              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Load (P_Piece, Tower_Number_Trav);
+              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Load
+                (P_Piece, Tower_Number_Trav);
             Unload_Goods :=
-              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload (P_Piece, Tower_Number_Trav);
+              Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Unload
+                (P_Piece, Tower_Number_Trav);
 
             if Tower_Id /= 99 then
                Tower_Pos :=
-                 Piece.Server.Find_Piece_In_List (Piece.Type_Piece_Id (Tower_Id)).Actual_Pos;
+                 Piece.Server.Find_Piece_In_List
+                   (Piece.Type_Piece_Id (Tower_Id))
+                   .Actual_Pos;
                Tower :=
-                 Piece.Server.Find_Piece_In_List (Piece.Type_Piece_Id (Tower_Id)).Actual_Piece;
+                 Piece.Server.Find_Piece_In_List
+                   (Piece.Type_Piece_Id (Tower_Id))
+                   .Actual_Piece;
                Tower_Patch :=
-                 Hexagon.Server_Map.Get_Patch_Adress_From_AB (Tower_Pos.A, Tower_Pos.B);
+                 Hexagon.Server_Map.Get_Patch_Adress_From_AB
+                   (Tower_Pos.A, Tower_Pos.B);
 
-               if Hexagon.Server_Map.Are_Neighbours (P_Patch, Tower_Patch.all) then
+               if Hexagon.Server_Map.Are_Neighbours (P_Patch, Tower_Patch.all)
+               then
                   -- We are next to the from tower
                   Tubastga_Game.Server_Logic.Carrier.Carrier_Tower_Transaction
-                    (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower.all),
-                     Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (P_Piece), Load_Goods,
-                     Unload_Goods);
+                    (Tubastga_Game.Server_Logic.Type_My_Tubastga_House
+                       (Tower.all),
+                     Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece
+                       (P_Piece),
+                     Load_Goods, Unload_Goods);
                end if;
             end if;
          end loop;
@@ -2335,7 +2632,9 @@ package body Tubastga_Game.Server_Logic is
          Server.ServerAPI.Observe_Game_Minimum_Details (5);
 
          for Trav_Opponents in 1 .. 10 loop
-            if Server.ServerAPI.Is_Player_In_Scenario (Player.Type_Player_Id (Trav_Opponents)) then
+            if Server.ServerAPI.Is_Player_In_Scenario
+                (Player.Type_Player_Id (Trav_Opponents))
+            then
 
                Tubastga_Game.Server_Logic.Carrier.Carrier_Move
                  (Player.Type_Player_Id (Trav_Opponents), P_Patch, P_Piece);
@@ -2343,12 +2642,16 @@ package body Tubastga_Game.Server_Logic is
                Server.ServerAPI.Observe_Game_Minimum_Details (1);
 
                -- Show what the carrier is carrying
-               Carrying_Goods := Goods.Goods_Info_To_Aux (P_Piece.Storage.Slots (1));
+               Carrying_Goods :=
+                 Goods.Goods_Info_To_Aux (P_Piece.Storage.Slots (1));
 
                Piece.Server.Grant_Piece_Effect
-                 (Player.Type_Player_Id (Trav_Opponents), Action.Type_Action_Type (1),
+                 (Player.Type_Player_Id (Trav_Opponents),
+                  Action.Type_Action_Type (1),
                   Piece.Server.Type_Piece (P_Piece),
-                  Effect.Type_Effect'(Tubastga_Game.Effect_Slot_1, Carrying_Goods), Ret_Status);
+                  Effect.Type_Effect'
+                    (Tubastga_Game.Effect_Slot_1, Carrying_Goods),
+                  Ret_Status);
 
             end if;
          end loop;
@@ -2361,8 +2664,8 @@ package body Tubastga_Game.Server_Logic is
    end Upkeep;
 
    function Observation_Area
-     (P_Piece : in Type_My_Tubastga_House) return Hexagon.Area.Server_Area
-     .Type_Action_Capabilities_Access
+     (P_Piece : in Type_My_Tubastga_House)
+      return Hexagon.Area.Server_Area.Type_Action_Capabilities_Access
    is
       Ret : Hexagon.Area.Server_Area.Type_Action_Capabilities_Access;
 
@@ -2371,7 +2674,8 @@ package body Tubastga_Game.Server_Logic is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Tubastga_Game.Server_Logic.Observation_Area - enter " & P_Piece.Type_Of_Piece'Img);
+           ("Tubastga_Game.Server_Logic.Observation_Area - enter " &
+            P_Piece.Type_Of_Piece'Img);
       end if;
 
       if P_Piece.Type_Of_Piece = Tubastga_Game.Farm_House then
@@ -2459,14 +2763,16 @@ package body Tubastga_Game.Server_Logic is
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Observation_Area - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Observation_Area - exit");
       end if;
 
       return Ret;
    end Observation_Area;
 
-   procedure Upkeep (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
-      P_House                : in out Type_My_Tubastga_House)
+   procedure Upkeep
+     (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
+      P_House : in out Type_My_Tubastga_House)
    is
       Ret_Status     : Status.Type_Status;
       Carrying_Goods : Integer;
@@ -2485,9 +2791,12 @@ package body Tubastga_Game.Server_Logic is
 
       if P_House.Type_Of_Piece = Tubastga_Game.Tower_House then
 
-         for Trav_Slots in P_House.Storage.Slots'First .. P_House.Storage.Slots'Last loop
+         for Trav_Slots in
+           P_House.Storage.Slots'First .. P_House.Storage.Slots'Last
+         loop
             -- Show what the carrier is carrying
-            Carrying_Goods := Goods.Goods_Info_To_Aux (P_House.Storage.Slots (Trav_Slots));
+            Carrying_Goods :=
+              Goods.Goods_Info_To_Aux (P_House.Storage.Slots (Trav_Slots));
 
             if Trav_Slots = 1 then
                An_Effect_Name := Tubastga_Game.Effect_Slot_1;
@@ -2498,23 +2807,28 @@ package body Tubastga_Game.Server_Logic is
             end if;
 
             Piece.Server.Grant_Piece_Effect
-              (P_House.Player_Id, Action.Type_Action_Type (1), Piece.Server.Type_Piece (P_House),
-               Effect.Type_Effect'(An_Effect_Name, Carrying_Goods), Ret_Status);
+              (P_House.Player_Id, Action.Type_Action_Type (1),
+               Piece.Server.Type_Piece (P_House),
+               Effect.Type_Effect'(An_Effect_Name, Carrying_Goods),
+               Ret_Status);
 
          end loop;
 
       end if;
 
       if P_House.Type_Of_Piece = Tubastga_Game.Farm_House then
-         Tubastga_Game.Server_Logic.House_Piece.Farm_House_Production (P_Patch, P_House);
+         Tubastga_Game.Server_Logic.House_Piece.Farm_House_Production
+           (P_Patch, P_House);
       end if;
 
       if P_House.Type_Of_Piece = Tubastga_Game.Lumberjack_House then
-         Tubastga_Game.Server_Logic.House_Piece.Lumberjack_House_Production (P_Patch, P_House);
+         Tubastga_Game.Server_Logic.House_Piece.Lumberjack_House_Production
+           (P_Patch, P_House);
       end if;
 
       if P_House.Type_Of_Piece = Tubastga_Game.Stonecutter_House then
-         Tubastga_Game.Server_Logic.House_Piece.Stonecutter_House_Production (P_Patch, P_House);
+         Tubastga_Game.Server_Logic.House_Piece.Stonecutter_House_Production
+           (P_Patch, P_House);
       end if;
 
       if Verbose then
@@ -2522,20 +2836,23 @@ package body Tubastga_Game.Server_Logic is
       end if;
    end Upkeep;
 
-   function Can_Load (P_Piece : in Type_My_Tubastga_Piece;
-      P_Goods                 : in Goods.Type_Goods_Info) return Boolean
+   function Can_Load
+     (P_Piece : in Type_My_Tubastga_Piece; P_Goods : in Goods.Type_Goods_Info)
+      return Boolean
    is
    begin
       return True;
    end Can_Load;
 
-   procedure Tubastga_Creating_Game (P_Map_Name : in Utilities.RemoteString.Type_String;
-      P_Scenario_Name                           : in Utilities.RemoteString.Type_String)
+   procedure Tubastga_Creating_Game
+     (P_Map_Name      : in Utilities.RemoteString.Type_String;
+      P_Scenario_Name : in Utilities.RemoteString.Type_String)
    is
       use Lua;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Creating_Game - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Creating_Game - enter");
       end if;
 
       Current_Scenario := P_Scenario_Name;
@@ -2547,8 +2864,9 @@ package body Tubastga_Game.Server_Logic is
       end if;
    end Tubastga_Creating_Game;
 
-   procedure Tubastga_Saving_Game (P_Map_Name : in Utilities.RemoteString.Type_String;
-      P_Scenario_Name                         : in Utilities.RemoteString.Type_String)
+   procedure Tubastga_Saving_Game
+     (P_Map_Name      : in Utilities.RemoteString.Type_String;
+      P_Scenario_Name : in Utilities.RemoteString.Type_String)
    is
       Trav_Piece : Piece.Server.Pieces_Server_List.Cursor;
 
@@ -2562,7 +2880,8 @@ package body Tubastga_Game.Server_Logic is
       use Goods;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Saving_Game - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Saving_Game - enter");
       end if;
 
       Ada.Streams.Stream_IO.Create
@@ -2572,20 +2891,35 @@ package body Tubastga_Game.Server_Logic is
 
       Utilities.RemoteString.Type_String'Write (Save_Stream, Current_Scenario);
 
-      Trav_Piece := Piece.Server.Pieces_Server_List.First (Piece.Server.All_Pieces_In_Game);
+      Trav_Piece :=
+        Piece.Server.Pieces_Server_List.First
+          (Piece.Server.All_Pieces_In_Game);
       while Piece.Server.Pieces_Server_List.Has_Element (Trav_Piece) loop
-         A_Piece := Piece.Server.Pieces_Server_List.Element (Trav_Piece).Actual_Piece;
+         A_Piece :=
+           Piece.Server.Pieces_Server_List.Element (Trav_Piece).Actual_Piece;
 
          if A_Piece.all.Category = Piece.Fighting_Piece then
 
-            if Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Piece.all).Storage /= null then
-               A_Storage := Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Piece.all).Storage;
+            if Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Piece.all)
+                .Storage /=
+              null
+            then
+               A_Storage :=
+                 Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece
+                   (A_Piece.all)
+                   .Storage;
                Piece.Type_Piece_Id'Write (Save_Stream, A_Piece.all.Id);
                Goods.Type_Storage'Write (Save_Stream, A_Storage.all);
             end if;
          elsif A_Piece.all.Category = Piece.House_Piece then
-            if Tubastga_Game.Server_Logic.Type_My_Tubastga_House (A_Piece.all).Storage /= null then
-               A_Storage := Tubastga_Game.Server_Logic.Type_My_Tubastga_House (A_Piece.all).Storage;
+            if Tubastga_Game.Server_Logic.Type_My_Tubastga_House (A_Piece.all)
+                .Storage /=
+              null
+            then
+               A_Storage :=
+                 Tubastga_Game.Server_Logic.Type_My_Tubastga_House
+                   (A_Piece.all)
+                   .Storage;
                Piece.Type_Piece_Id'Write (Save_Stream, A_Piece.all.Id);
                Goods.Type_Storage'Write (Save_Stream, A_Storage.all);
             end if;
@@ -2601,12 +2935,14 @@ package body Tubastga_Game.Server_Logic is
       Ada.Streams.Stream_IO.Close (Save_File);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Saving_Game - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Saving_Game - exit");
       end if;
    end Tubastga_Saving_Game;
 
-   procedure Tubastga_Loading_Game (P_Map_Name : in Utilities.RemoteString.Type_String;
-      P_Scenario_Name                          : in Utilities.RemoteString.Type_String)
+   procedure Tubastga_Loading_Game
+     (P_Map_Name      : in Utilities.RemoteString.Type_String;
+      P_Scenario_Name : in Utilities.RemoteString.Type_String)
    is
 
       A_Piece    : Piece.Server.Type_Piece_Access_Class;
@@ -2620,7 +2956,8 @@ package body Tubastga_Game.Server_Logic is
       use Goods;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Loading_Game - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Loading_Game - enter");
       end if;
 
       Ada.Streams.Stream_IO.Open
@@ -2637,12 +2974,16 @@ package body Tubastga_Game.Server_Logic is
          if A_Piece.all.Category = Piece.Fighting_Piece then
             A_Storage := new Goods.Type_Storage (1);
             Goods.Type_Storage'Read (Load_Stream, A_Storage.all);
-            Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Piece.all).Storage := A_Storage;
+            Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Piece.all)
+              .Storage :=
+              A_Storage;
 
          elsif A_Piece.all.Category = Piece.House_Piece then
             A_Storage := new Goods.Type_Storage (3);
             Goods.Type_Storage'Read (Load_Stream, A_Storage.all);
-            Tubastga_Game.Server_Logic.Type_My_Tubastga_House (A_Piece.all).Storage := A_Storage;
+            Tubastga_Game.Server_Logic.Type_My_Tubastga_House (A_Piece.all)
+              .Storage :=
+              A_Storage;
          end if;
          Piece.Type_Piece_Id'Read (Load_Stream, A_Piece_Id);
       end loop;
@@ -2652,7 +2993,8 @@ package body Tubastga_Game.Server_Logic is
       Ada.Streams.Stream_IO.Close (Load_File);
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Loading_Game - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Loading_Game - exit");
       end if;
    end Tubastga_Loading_Game;
 
@@ -2664,7 +3006,8 @@ package body Tubastga_Game.Server_Logic is
       N         := 1;
       while N <= Max_Index loop
 
-         Text_IO.Put_Line ("Index " & N'Img & " " & Lua.Get_Type (P_Lua_State, N)'Img);
+         Text_IO.Put_Line
+           ("Index " & N'Img & " " & Lua.Get_Type (P_Lua_State, N)'Img);
          N := N + 1;
       end loop;
    end Print_Stack;
@@ -2672,7 +3015,8 @@ package body Tubastga_Game.Server_Logic is
    procedure Tubastga_Joining_Game is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Joining_Game -enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Joining_Game -enter - exit");
       end if;
 
    end Tubastga_Joining_Game;
@@ -2680,7 +3024,8 @@ package body Tubastga_Game.Server_Logic is
    procedure Tubastga_Leaving_Game is
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Leaving_Game -enter - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Leaving_Game -enter - exit");
       end if;
 
    end Tubastga_Leaving_Game;
@@ -2709,7 +3054,8 @@ package body Tubastga_Game.Server_Logic is
       use Utilities.RemoteString;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Start_Game - enter ");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Start_Game - enter ");
       end if;
 
       Lua.Load_File (Tubastga_Game.Server_Logic.Lua_State, "lua\tubastga.lua");
@@ -2725,10 +3071,12 @@ package body Tubastga_Game.Server_Logic is
          Energy_Update := Ada.Real_Time.Clock;
 
          Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");
-         Lua.Get_Field (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
+         Lua.Get_Field
+           (Tubastga_Game.Server_Logic.Lua_State, -1, "foundTreasure");
          Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (3));
          Lua.Push (Tubastga_Game.Server_Logic.Lua_State, Lua.Lua_Integer (4));
-         Lua_Status := Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
+         Lua_Status :=
+           Lua.PCall (Tubastga_Game.Server_Logic.Lua_State, 2, 0, 0);
          if Lua_Status /= Lua.LUA_OK then
             --  An error occurs during the execution
             Text_IO.Put_Line (Lua_Status'Img);
@@ -2743,7 +3091,9 @@ package body Tubastga_Game.Server_Logic is
             Server.ServerAPI.Get_Server_Info (Server_Info);
 
             Utilities.RemoteString_List.Append
-              (Server_Info, Utilities.RemoteString.To_Unbounded_String ("Change Server: 01"));
+              (Server_Info,
+               Utilities.RemoteString.To_Unbounded_String
+                 ("Change Server: 01"));
 
             Server.ServerAPI.Set_Server_Info (Server_Info);
 
@@ -2762,59 +3112,59 @@ package body Tubastga_Game.Server_Logic is
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (18, 21);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
-            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1821));
+            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1_821));
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (19, 22);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
-            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1922));
+            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1_922));
 
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (19, 23);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
             Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 0));
 
-         -- Place one tower for both players
-         -- Give each player stone, wood and money
+         -- Place one tower for both players Give each player stone, wood and
+         -- money
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue1, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue1, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue3, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue3, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue2, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          Server.ServerAPI.Observe_Game (5);
 
@@ -2825,8 +3175,8 @@ package body Tubastga_Game.Server_Logic is
          -- Path / Worker
          A_Pos_Worker := Hexagon.Type_Hexagon_Position'(True, 15, 19);
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Worker, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Worker, A_Piece, A_Piece.Id, Ret_Status, True);
 
          Hexagon.Server_Navigation.Path_Pkg.Append
            (Worker_Path.This_Path,
@@ -2878,7 +3228,8 @@ package body Tubastga_Game.Server_Logic is
                Effect.Type_Effect'
                  (Tubastga_Game.Effect_Stops,
                   Tubastga_Game.Carrier.Get_Tower_Code
-                    (Tower_1.all.Id, Tower_2.all.Id, Piece.Undefined_Piece_Id)));
+                    (Tower_1.all.Id, Tower_2.all.Id,
+                     Piece.Undefined_Piece_Id)));
 
             Effect.Effect_List.Include
               (Carrier.all.Effects_On_Piece, Tubastga_Game.Effect_Load,
@@ -2896,20 +3247,24 @@ package body Tubastga_Game.Server_Logic is
 
             The_Goods := Goods.Type_Goods_Info'(Goods.Stone, 10);
             Goods.Into_Storage
-              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_1.all).Storage.all,
+              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_1.all)
+                 .Storage.all,
                The_Goods, Storage_Ret);
             The_Goods := Goods.Type_Goods_Info'(Goods.Wood, 20);
             Goods.Into_Storage
-              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_1.all).Storage.all,
+              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_1.all)
+                 .Storage.all,
                The_Goods, Storage_Ret);
 
             The_Goods := Goods.Type_Goods_Info'(Goods.Stone, 30);
             Goods.Into_Storage
-              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_2.all).Storage.all,
+              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_2.all)
+                 .Storage.all,
                The_Goods, Storage_Ret);
             The_Goods := Goods.Type_Goods_Info'(Goods.Wood, 40);
             Goods.Into_Storage
-              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_2.all).Storage.all,
+              (Tubastga_Game.Server_Logic.Type_My_Tubastga_House (Tower_2.all)
+                 .Storage.all,
                The_Goods, Storage_Ret);
 
          end;
@@ -2918,7 +3273,9 @@ package body Tubastga_Game.Server_Logic is
          Text_IO.Put_Line ("Server is running the scenario : scenario_1.dat");
 
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, 1, Utilities.RemoteString.To_Unbounded_String ("Welcome to Tubast'ga"));
+           (6, 1,
+            Utilities.RemoteString.To_Unbounded_String
+              ("Welcome to Tubast'ga"));
          Server.ServerAPI.Player_Activity_Report_Append
            (6, 1,
             Utilities.RemoteString.To_Unbounded_String
@@ -2929,7 +3286,9 @@ package body Tubastga_Game.Server_Logic is
               ("The scouts have mapped Arka - and found an enemy in the North part."));
          --
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, 2, Utilities.RemoteString.To_Unbounded_String ("Welcome to Tubast'ga"));
+           (6, 2,
+            Utilities.RemoteString.To_Unbounded_String
+              ("Welcome to Tubast'ga"));
          Server.ServerAPI.Player_Activity_Report_Append
            (6, 2,
             Utilities.RemoteString.To_Unbounded_String
@@ -2948,7 +3307,7 @@ package body Tubastga_Game.Server_Logic is
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (18, 21);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
-            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1821));
+            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1_821));
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (19, 22);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
@@ -2960,50 +3319,53 @@ package body Tubastga_Game.Server_Logic is
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
             Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 0));
 
-         -- Place one tower for both players
-         -- Give each player stone, wood and money
+         -- Place one tower for both players Give each player stone, wood and
+         -- money
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue1, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue1, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue2, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          Server.ServerAPI.Observe_Game (5);
 
       elsif Current_Scenario = "scenario_3player" then
-         Text_IO.Put_Line ("Server is running the scenario : scenario_3player.dat");
+         Text_IO.Put_Line
+           ("Server is running the scenario : scenario_3player.dat");
 
          A_Pos_Green1 := Hexagon.Type_Hexagon_Position'(True, 30, 30);
 
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, 1, Utilities.RemoteString.To_Unbounded_String ("Welcome to Tubast'ga (3 players)"));
+           (6, 1,
+            Utilities.RemoteString.To_Unbounded_String
+              ("Welcome to Tubast'ga (3 players)"));
          Server.ServerAPI.Player_Activity_Report_Append
            (6, 1,
             Utilities.RemoteString.To_Unbounded_String
@@ -3014,7 +3376,9 @@ package body Tubastga_Game.Server_Logic is
               ("The scouts have mapped Arka - and found an enemy in the North part."));
          --
          Server.ServerAPI.Player_Activity_Report_Append
-           (6, 2, Utilities.RemoteString.To_Unbounded_String ("Welcome to Tubast'ga"));
+           (6, 2,
+            Utilities.RemoteString.To_Unbounded_String
+              ("Welcome to Tubast'ga"));
          Server.ServerAPI.Player_Activity_Report_Append
            (6, 2,
             Utilities.RemoteString.To_Unbounded_String
@@ -3033,7 +3397,7 @@ package body Tubastga_Game.Server_Logic is
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (18, 21);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
-            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1821));
+            Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 1_821));
          A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (19, 22);
          Effect.Effect_List.Include
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
@@ -3045,40 +3409,40 @@ package body Tubastga_Game.Server_Logic is
            (A_Patch.all.Effects_Here, Tubastga_Game.Effect_Treasure,
             Effect.Type_Effect'(Tubastga_Game.Effect_Treasure, 0));
 
-         -- Place one tower for both players
-         -- Give each player stone, wood and money
+         -- Place one tower for both players Give each player stone, wood and
+         -- money
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue1, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue1, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue2, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          --
          Text_IO.Put_Line ("3dje spiller start");
@@ -3087,8 +3451,8 @@ package body Tubastga_Game.Server_Logic is
          A_Piece.Player_Id     := 3;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (3), Action.Type_Action_Type (1), A_Pos_Green1, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (3), Action.Type_Action_Type (1),
+            A_Pos_Green1, A_Piece, A_Piece.Id, Ret_Status, True);
          Text_IO.Put_Line ("3dje spiller slutt");
 
          Server.ServerAPI.Observe_Game (5);
@@ -3096,63 +3460,62 @@ package body Tubastga_Game.Server_Logic is
          if Ret_Status = Status.Ok then
             A_Piece.Id := 2;
             Server.ServerAPI.Perform_Move
-              (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Piece.Id, A_Pos_Blue1,
-               Ret_Status);
+              (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+               A_Piece.Id, A_Pos_Blue1, Ret_Status);
          end if;
 
          Server.ServerAPI.Observe_Game (5);
 
       elsif Current_Scenario = "scenario_battle" then
-         Text_IO.Put_Line ("Server is running the scenario : scenario_battle.dat");
+         Text_IO.Put_Line
+           ("Server is running the scenario : scenario_battle.dat");
 
          A_Pos_Blue1 := Hexagon.Type_Hexagon_Position'(True, 16, 20);
          A_Pos_Blue2 := Hexagon.Type_Hexagon_Position'(True, 17, 20);
          A_Pos_Blue3 := Hexagon.Type_Hexagon_Position'(True, 17, 19);
 
-
          A_Pos_Red1 := Hexagon.Type_Hexagon_Position'(True, 73, 87);
          A_Pos_Red2 := Hexagon.Type_Hexagon_Position'(True, 18, 21);
-
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 1;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue1, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue1, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 1;
 
-        Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue2, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+         Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue2, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Bowman_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 1;
 
-        Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (1), Action.Type_Action_Type (1), A_Pos_Blue3, A_Piece,
-            A_Piece.Id, Ret_Status, True);
+         Server.ServerAPI.Create_Piece
+           (Player.Type_Player_Id (1), Action.Type_Action_Type (1),
+            A_Pos_Blue3, A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Tower_House;
          A_Piece.Category      := Piece.House_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red1,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          A_Piece.Type_Of_Piece := Tubastga_Game.Sentry_Piece;
          A_Piece.Category      := Piece.Fighting_Piece;
          A_Piece.Player_Id     := 2;
 
          Server.ServerAPI.Create_Piece
-           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2, A_Piece, A_Piece.Id,
-            Ret_Status, True);
+           (Player.Type_Player_Id (2), Action.Type_Action_Type (1), A_Pos_Red2,
+            A_Piece, A_Piece.Id, Ret_Status, True);
 
          --
 
@@ -3160,13 +3523,16 @@ package body Tubastga_Game.Server_Logic is
       end if; --  Scenario dependent logic
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Start_Game - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Start_Game - exit");
       end if;
    end Tubastga_Start_Game;
 
    procedure Tubastga_Upkeep_Game is
-      Trav_All_Pieces  : Piece.Server.Pieces_Server_List.Cursor;
-      A_Fighting_Piece : Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class := null;
+      Trav_All_Pieces : Piece.Server.Pieces_Server_List.Cursor;
+      A_Fighting_Piece : Tubastga_Game.Server_Logic
+        .Type_My_Tubastga_Piece_Access_Class :=
+        null;
       A_Piece_Position : Piece.Server.Type_Piece_Position;
 
       use Piece;
@@ -3175,47 +3541,64 @@ package body Tubastga_Game.Server_Logic is
       use Ada.Real_Time;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Upkeep_Game - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Upkeep_Game - enter");
       end if;
 
       for Player_Id in 1 .. 2 loop
-         Tubastga_Game.Server_Logic.Carrier.Remove_Workers_Path (Player.Type_Player_Id (Player_Id));
+         Tubastga_Game.Server_Logic.Carrier.Remove_Workers_Path
+           (Player.Type_Player_Id (Player_Id));
 
-         Tubastga_Game.Server_Logic.Carrier.Create_Workers_Path (Player.Type_Player_Id (Player_Id));
+         Tubastga_Game.Server_Logic.Carrier.Create_Workers_Path
+           (Player.Type_Player_Id (Player_Id));
       end loop;
 
       if Energy_Update < Ada.Real_Time.Clock then
-         Energy_Update := Ada.Real_Time.Clock + Ada.Real_Time.To_Time_Span (5.0);
+         Energy_Update :=
+           Ada.Real_Time.Clock + Ada.Real_Time.To_Time_Span (5.0);
 
-         Trav_All_Pieces := Piece.Server.Pieces_Server_List.First (Piece.Server.All_Pieces_In_Game);
-         while Piece.Server.Pieces_Server_List.Has_Element (Trav_All_Pieces) loop
-            A_Piece_Position := Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces);
+         Trav_All_Pieces :=
+           Piece.Server.Pieces_Server_List.First
+             (Piece.Server.All_Pieces_In_Game);
+         while Piece.Server.Pieces_Server_List.Has_Element (Trav_All_Pieces)
+         loop
+            A_Piece_Position :=
+              Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces);
 
-            if A_Piece_Position.Actual_Piece.all.Category = Piece.Fighting_Piece then
+            if A_Piece_Position.Actual_Piece.all.Category =
+              Piece.Fighting_Piece
+            then
                A_Fighting_Piece :=
                  Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece_Access_Class
                    (A_Piece_Position.Actual_Piece);
 
                if A_Fighting_Piece.all.Category = Piece.Fighting_Piece then
                   Tubastga_Game.Server_Logic.Move_Logic.Rest_Energy
-                    (Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece (A_Fighting_Piece.all));
+                    (Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece
+                       (A_Fighting_Piece.all));
                end if;
                Server.ServerAPI.Player_Activity_Report_Append
                  (1, A_Piece_Position.Actual_Piece.all.Player_Id,
                   Utilities.RemoteString.To_Unbounded_String
-                    (Utilities.RemoteString.To_String (A_Fighting_Piece.all.Name) & " has ") &
+                    (Utilities.RemoteString.To_String
+                       (A_Fighting_Piece.all.Name) &
+                     " has ") &
                   A_Fighting_Piece.all.Energy'Img);
-            elsif A_Piece_Position.Actual_Piece.all.Category = Piece.House_Piece then
+            elsif A_Piece_Position.Actual_Piece.all.Category =
+              Piece.House_Piece
+            then
                --            Tubastga_Game.Server_Logic.Type_My_Tubastga_House(A_Piece_Position.Actual_Piece.all).Energy := 101;
                null;
             end if;
 
-            Trav_All_Pieces := Piece.Server.Pieces_Server_List.Next (Trav_All_Pieces);
+            Trav_All_Pieces :=
+              Piece.Server.Pieces_Server_List.Next (Trav_All_Pieces);
          end loop;
       end if;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_Upkeep_Game - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_Upkeep_Game - exit");
       end if;
 
    end Tubastga_Upkeep_Game;
@@ -3224,8 +3607,8 @@ package body Tubastga_Game.Server_Logic is
       A_Patch : Hexagon.Server_Map.Type_Server_Patch_Adress;
       A_Pos   : Hexagon.Type_Hexagon_Position;
 
-      Trav_All_Pieces                   : Piece.Server.Pieces_Server_List.Cursor;
-      A_Piece                           : Piece.Server.Type_Piece_Access_Class := null;
+      Trav_All_Pieces : Piece.Server.Pieces_Server_List.Cursor;
+      A_Piece : Piece.Server.Type_Piece_Access_Class := null;
       Enemy_Neighbours, Neighbour_Tiles : Integer;
 
       Winning_Player_Id, Loosing_Player_Id : Player.Type_Player_Id;
@@ -3233,20 +3616,28 @@ package body Tubastga_Game.Server_Logic is
       use Status;
    begin
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_End_Game - enter");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_End_Game - enter");
       end if;
 
       P_Game_Status   := Status.Playing;
-      Trav_All_Pieces := Piece.Server.Pieces_Server_List.First (Piece.Server.All_Pieces_In_Game);
+      Trav_All_Pieces :=
+        Piece.Server.Pieces_Server_List.First
+          (Piece.Server.All_Pieces_In_Game);
       while Piece.Server.Pieces_Server_List.Has_Element (Trav_All_Pieces) and
         P_Game_Status = Status.Playing
       loop
 
-         A_Piece := Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces).Actual_Piece;
-         A_Pos   := Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces).Actual_Pos;
+         A_Piece :=
+           Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces)
+             .Actual_Piece;
+         A_Pos :=
+           Piece.Server.Pieces_Server_List.Element (Trav_All_Pieces)
+             .Actual_Pos;
 
          if A_Piece.all.Type_Of_Piece = Tower_House then
-            -- check tiles nearby. if they are occupied by enemy the player owning the tower has
+            -- check tiles nearby. if they are occupied by enemy the player
+            -- owning the tower has
             --lost.
 
             Neighbour_Tiles  := 0;
@@ -3262,15 +3653,18 @@ package body Tubastga_Game.Server_Logic is
                   B :=
                     Hexagon.Type_Hexagon_Numbers
                       (Integer (A_Pos.B) + Integer (Win_Pattern.all (Trav).B));
-                  A_Patch := Hexagon.Server_Map.Get_Patch_Adress_From_AB (A, B);
+                  A_Patch :=
+                    Hexagon.Server_Map.Get_Patch_Adress_From_AB (A, B);
 
                   Neighbour_Tiles := Neighbour_Tiles + 1;
 
                   if not Piece.Server.Patch_Belongs_To_Player
-                      (Landscape.Type_Patch (A_Patch.all), A_Piece.Player_Id) then
+                      (Landscape.Type_Patch (A_Patch.all), A_Piece.Player_Id)
+                  then
                      Enemy_Neighbours  := Enemy_Neighbours + 1;
                      Winning_Player_Id :=
-                       Piece.Server.Get_Pieces_Players (Landscape.Type_Patch (A_Patch.all));
+                       Piece.Server.Get_Pieces_Players
+                         (Landscape.Type_Patch (A_Patch.all));
                      Loosing_Player_Id := A_Piece.Player_Id;
                   end if;
 
@@ -3312,30 +3706,36 @@ package body Tubastga_Game.Server_Logic is
 
          end if;
 
-         Trav_All_Pieces := Piece.Server.Pieces_Server_List.Next (Trav_All_Pieces);
+         Trav_All_Pieces :=
+           Piece.Server.Pieces_Server_List.Next (Trav_All_Pieces);
       end loop;
 
       if Verbose then
-         Text_IO.Put_Line ("Tubastga_Game.Server_Logic.Tubastga_End_Game - exit");
+         Text_IO.Put_Line
+           ("Tubastga_Game.Server_Logic.Tubastga_End_Game - exit");
       end if;
    end Tubastga_End_Game;
 
    function Roll
-     (P_Attack_Defence : in Tubastga_Game.Server_Logic.Type_Attack_Defence_Record)
+     (P_Attack_Defence : in Tubastga_Game.Server_Logic
+        .Type_Attack_Defence_Record)
       return Type_Attack_Defence_Types
    is
       Random_Number : Positive;
       Ret           : Type_Attack_Defence_Types;
    begin
       -- 1 to P_Attack_Defence.Attack gives attacker the win
-      -- (P_Attack_Defence.Attack + 1) to (P_Attack_Defence.Attack + P_Attack_Defence.Defence)
+      -- (P_Attack_Defence.Attack + 1) to (P_Attack_Defence.Attack
+      -- + P_Attack_Defence.Defence)
 
       Random_Number := Random.Random (RandomGen);
 
       if Random_Number in 1 .. (P_Attack_Defence.Attack) then
          Ret := Attacking_Wins;
       elsif Random_Number in
-          (P_Attack_Defence.Attack + 1) .. (P_Attack_Defence.Attack + P_Attack_Defence.Defence) then
+          (P_Attack_Defence.Attack + 1) ..
+                (P_Attack_Defence.Attack + P_Attack_Defence.Defence)
+      then
          Ret := Attacked_Wins;
       end if;
 
@@ -3344,14 +3744,30 @@ package body Tubastga_Game.Server_Logic is
       return Ret;
    end Roll;
 
-   function Movement_Cost (P_Player_Id : in     Player.Type_Player_Id;
-      P_Action_Type                    : in     Action.Type_Action_Type;
-      P_Piece                          : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_From_Patch                     : in out Landscape.Type_Patch;
-      P_To_Patch                       : in out Landscape.Type_Patch) return Integer
+   function Movement_Cost
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Start, P_End : in     Hexagon.Type_Hexagon_Position;
+
+      P_From_Patch : in out Landscape.Type_Patch;
+      P_To_Patch   : in out Landscape.Type_Patch) return Integer
    is
+      D : Integer;
    begin
-      return 1;
+      D :=
+        Hexagon.Server_Navigation.Hexagon_Distance (P_Start, P_To_Patch.Pos);
+
+      if D < 40 then
+         if Piece.Server.Patch_Belongs_To_Player (P_To_Patch, P_Player_Id) then
+            return 10;
+         else
+            return 50;
+         end if;
+      else
+         return 10;
+      end if;
+
    end Movement_Cost;
 
 begin

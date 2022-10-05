@@ -643,11 +643,12 @@ package Tubastga_Game.Server_Logic is
       P_Piece : in out Type_My_Tubastga_Piece);
 
    function Movement_Cost
-     (P_Player_Id   : in     Player.Type_Player_Id;
-      P_Action_Type : in     Action.Type_Action_Type;
-      P_Piece       : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
-      P_From_Patch  : in out Landscape.Type_Patch;
-      P_To_Patch    : in out Landscape.Type_Patch) return Integer;
+     (P_Player_Id    : in     Player.Type_Player_Id;
+      P_Action_Type  : in     Action.Type_Action_Type;
+      P_Piece        : in out Tubastga_Game.Server_Logic.Type_My_Tubastga_Piece;
+      P_Start, P_End : in     Hexagon.Type_Hexagon_Position;
+      P_From_Patch   : in out Landscape.Type_Patch;
+      P_To_Patch     : in out Landscape.Type_Patch) return Integer;
 
    procedure Upkeep
      (P_Patch : in out Hexagon.Server_Map.Type_Server_Patch;
