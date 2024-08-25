@@ -66,7 +66,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
      (P_Window : in out Type_Wnd_Action_Access;
       P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
-      Trav       : Landscape.Pieces_Here_List.Cursor;
+--      Trav       : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id : Piece.Type_Piece_Id;
       A_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
 
@@ -104,31 +104,31 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
 
       Gtk.List_Store.Clear (P_Window.all.Performing_Pieces_List_Store);
-      Trav := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
-      while Landscape.Pieces_Here_List.Has_Element (Trav) loop
-         A_Piece_Id := Landscape.Pieces_Here_List.Element (Trav);
-         A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
-
-         Tubastga_Window_Pkg.Callbacks.Actions_Menu.Activate_Action_Buttons
-           (P_Window, A_Piece.all.Category);
-
-         Gtk.List_Store.Append (P_Window.Performing_Pieces_List_Store, List_Store_Iter);
-         Gtk.List_Store.Set
-           (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 0, Glib.Gint (A_Piece.all.Id));
-         Gtk.List_Store.Set
-           (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 1,
-            Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Images,
-               Tubastga_Window_Pkg.Images.Find_Piece_Image
-                 (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
-              .Image_Data);
-         Gtk.List_Store.Set
-           (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 2,
-            Utilities.RemoteString.To_String (A_Piece.all.Name));
-
-         Trav := Landscape.Pieces_Here_List.Next (Trav);
-      end loop;
-
+      --  Trav := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
+      --  while Landscape.Pieces_Here_List.Has_Element (Trav) loop
+      --     A_Piece_Id := Landscape.Pieces_Here_List.Element (Trav);
+      --     A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
+      --
+      --     Tubastga_Window_Pkg.Callbacks.Actions_Menu.Activate_Action_Buttons
+      --       (P_Window, A_Piece.all.Category);
+      --
+      --     Gtk.List_Store.Append (P_Window.Performing_Pieces_List_Store, List_Store_Iter);
+      --     Gtk.List_Store.Set
+      --       (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 0, Glib.Gint (A_Piece.all.Id));
+      --     Gtk.List_Store.Set
+      --       (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 1,
+      --        Tubastga_Window_Pkg.Images.Get_Image
+      --          (Tubastga_Window_Pkg.Images.All_Images,
+      --           Tubastga_Window_Pkg.Images.Find_Piece_Image
+      --             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
+      --          .Image_Data);
+      --     Gtk.List_Store.Set
+      --       (P_Window.Performing_Pieces_List_Store, List_Store_Iter, 2,
+      --        Utilities.RemoteString.To_String (A_Piece.all.Name));
+      --
+      --     Trav := Landscape.Pieces_Here_List.Next (Trav);
+      --  end loop;
+      --
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces) /=
         Piece.Undefined_Piece_Id
       then
@@ -207,7 +207,7 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
      (P_Window : in out Type_Wnd_Action_Access;
       P_Patch  : in     Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
-      Trav       : Landscape.Pieces_Here_List.Cursor;
+--      Trav       : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id : Piece.Type_Piece_Id;
       A_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
 
@@ -245,28 +245,28 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
       end if;
 
       Gtk.List_Store.Clear (P_Window.all.Target_Pieces_List_Store);
-      Trav := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
-      while Landscape.Pieces_Here_List.Has_Element (Trav) loop
-         A_Piece_Id := Landscape.Pieces_Here_List.Element (Trav);
-         A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
-
-         Gtk.List_Store.Append (P_Window.all.Target_Pieces_List_Store, List_Store_Iter);
-         Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 0, Glib.Gint (A_Piece.all.Id));
-         Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 1,
-            Tubastga_Window_Pkg.Images.Get_Image
-              (Tubastga_Window_Pkg.Images.All_Images,
-               Tubastga_Window_Pkg.Images.Find_Piece_Image
-                 (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
-              .Image_Data);
-         Gtk.List_Store.Set
-           (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 2,
-            Utilities.RemoteString.To_String (A_Piece.all.Name));
-
-         Trav := Landscape.Pieces_Here_List.Next (Trav);
-      end loop;
-
+      --  Trav := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
+      --  while Landscape.Pieces_Here_List.Has_Element (Trav) loop
+      --     A_Piece_Id := Landscape.Pieces_Here_List.Element (Trav);
+      --     A_Piece    := Piece.Client_Piece.Find_Piece_In_List (A_Piece_Id);
+      --
+      --     Gtk.List_Store.Append (P_Window.all.Target_Pieces_List_Store, List_Store_Iter);
+      --     Gtk.List_Store.Set
+      --       (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 0, Glib.Gint (A_Piece.all.Id));
+      --     Gtk.List_Store.Set
+      --       (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 1,
+      --        Tubastga_Window_Pkg.Images.Get_Image
+      --          (Tubastga_Window_Pkg.Images.All_Images,
+      --           Tubastga_Window_Pkg.Images.Find_Piece_Image
+      --             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all)))
+      --          .Image_Data);
+      --     Gtk.List_Store.Set
+      --       (P_Window.all.Target_Pieces_List_Store, List_Store_Iter, 2,
+      --        Utilities.RemoteString.To_String (A_Piece.all.Name));
+      --
+      --     Trav := Landscape.Pieces_Here_List.Next (Trav);
+      --  end loop;
+      --
       if Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (RB_Selected_Pieces) /=
         Piece.Undefined_Piece_Id
       then

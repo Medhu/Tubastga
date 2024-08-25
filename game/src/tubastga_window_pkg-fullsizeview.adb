@@ -421,45 +421,62 @@ package body Tubastga_Window_Pkg.FullsizeView is
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+      P_All_Pieces   : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector)
    is
-      Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
+      Trav_Pieces  : Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Cursor;
       Player_Image : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Piece      : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Found        : Boolean;
 
       use Player;
+      use Hexagon;
    begin
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Players - enter");
       end if;
 
-      Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
-      if Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) then
+      Found       := False;
+      Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.First (P_All_Pieces);
+      while not Found
+        and then Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Has_Element (Trav_Pieces)
+      loop
 
-         A_Piece :=
-           Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
+         if Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces).Actual_Pos =
+           P_Patch.Pos
+         then
+            Found := True;
+            --
+            A_Piece :=
+              Piece.Client_Piece.Find_Piece_In_List
+                (Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces)
+                   .Actual_Piece_Id);
 
-         Player_Image :=
-           Tubastga_Window_Pkg.Images.Get_Image
-             (Tubastga_Window_Pkg.Images.All_Images,
-              Tubastga_Window_Pkg.Images.Find_Player_Image (A_Piece.all.Player_Id));
+            Player_Image :=
+              Tubastga_Window_Pkg.Images.Get_Image
+                (Tubastga_Window_Pkg.Images.All_Images,
+                 Tubastga_Window_Pkg.Images.Find_Player_Image (A_Piece.all.Player_Id));
 
-         declare
-            x, y : Glib.Gint;
-            use Hexagon;
-         begin
-            x :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_X_From_AB (P_Client_Map, P_Patch);
-            y :=
-              Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_Y_From_AB (P_Client_Map, P_Patch);
+            declare
+               x, y : Glib.Gint;
+               use Hexagon;
+            begin
+               x :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_X_From_AB
+                   (P_Client_Map, P_Patch);
+               y :=
+                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Player_Y_From_AB
+                   (P_Client_Map, P_Patch);
 
-            Gdk.Pixbuf.Composite
-              (Player_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y), Png_Width,
-               Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest,
-               255);
-         end;
+               Gdk.Pixbuf.Composite
+                 (Player_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y),
+                  Png_Width, Png_Height, Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0,
+                  Gdk.Pixbuf.Interp_Nearest, 255);
+            end;
 
-      end if;
+         end if;
+
+         Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (Trav_Pieces);
+      end loop;
 
       if Verbose then
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Players - exit");
@@ -470,9 +487,9 @@ package body Tubastga_Window_Pkg.FullsizeView is
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector)
    is
-      Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
+      Trav_Pieces : Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
       Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
@@ -481,6 +498,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
 
       use Piece;
       use Player;
+      use Hexagon;
       use Tubastga_Window_Pkg.Images;
    begin
       if Verbose then
@@ -488,44 +506,53 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
 
       Piece_No    := 1;
-      Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
-      while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
+      Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.First (P_Pieces_Here);
+      while Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Has_Element (Trav_Pieces) loop
 
-         A_Piece :=
-           Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
+         if Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces).Actual_Pos =
+           P_Patch.Pos
+         then
+            A_Piece :=
+              Piece.Client_Piece.Find_Piece_In_List
+                (Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces)
+                   .Actual_Piece_Id);
 
-         Piece_Image_Name :=
-           Tubastga_Window_Pkg.Images.Find_House_Image
-             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
-         Piece_Image :=
-           Tubastga_Window_Pkg.Images.Get_Image
-             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
-         -- Now houses
+            Piece_Image_Name :=
+              Tubastga_Window_Pkg.Images.Find_House_Image
+                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+            Piece_Image :=
+              Tubastga_Window_Pkg.Images.Get_Image
+                (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
 
-         if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
-            declare
-               x, y : Glib.Gint;
-               use Hexagon;
-            begin
-               x :=
-                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
-                   (P_Client_Map, P_Patch, Piece_No);
-               y :=
-                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
-                   (P_Client_Map, P_Patch, Piece_No);
+            -- Now houses
 
-               Gdk.Pixbuf.Composite
-                 (Piece_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y),
-                  Png_Width,--  + 150,
-                  Png_Height,-- + 150,
-                  Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0,
-                  Gdk.Pixbuf.Interp_Nearest, 255);
+            if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
+               declare
+                  x, y : Glib.Gint;
+                  use Hexagon;
+               begin
+                  x :=
+                    Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
+                      (P_Client_Map, P_Patch, Piece_No);
+                  y :=
+                    Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
+                      (P_Client_Map, P_Patch, Piece_No);
 
-            end;
+                  Gdk.Pixbuf.Composite
+                    (Piece_Image.all.Image_Data, P_Fullsizeview, Glib.Gint (x), Glib.Gint (y),
+                     Png_Width,--  + 150,
+                     Png_Height,-- + 150,
+                     Glib.Gdouble (x), Glib.Gdouble (y), 1.0, 1.0,
+                     Gdk.Pixbuf.Interp_Nearest, 255);
+
+               end;
+            end if;
+
+            Piece_No := Piece_No + 1;
          end if;
 
-         Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
-         Piece_No    := Piece_No + 1;
+         Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (Trav_Pieces);
+
       end loop;
 
       if Verbose then
@@ -537,15 +564,16 @@ package body Tubastga_Window_Pkg.FullsizeView is
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector)
+      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector)
    is
-      Trav_Pieces : Landscape.Pieces_Here_List.Cursor;
+      Trav_Pieces : Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
       Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
       A_Piece          : Piece.Client_Piece.Type_Client_Piece_Class_Access;
       Piece_No         : Integer;
 
+      use Hexagon;
       use Piece;
       use Player;
       use Tubastga_Window_Pkg.Images;
@@ -555,46 +583,53 @@ package body Tubastga_Window_Pkg.FullsizeView is
       end if;
 
       Piece_No    := 1;
-      Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
-      while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
+      Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.First (P_Pieces_Here);
+      while Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Has_Element (Trav_Pieces) loop
 
-         A_Piece :=
-           Piece.Client_Piece.Find_Piece_In_List (Landscape.Pieces_Here_List.Element (Trav_Pieces));
+         if Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces).Actual_Pos =
+           P_Patch.Pos
+         then
+            A_Piece :=
+              Piece.Client_Piece.Find_Piece_In_List
+                (Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces)
+                   .Actual_Piece_Id);
 
-         Piece_Image_Name :=
-           Tubastga_Window_Pkg.Images.Find_Piece_Image
-             (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
-         Piece_Image :=
-           Tubastga_Window_Pkg.Images.Get_Image
-             (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
+            Piece_Image_Name :=
+              Tubastga_Window_Pkg.Images.Find_Piece_Image
+                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+            Piece_Image :=
+              Tubastga_Window_Pkg.Images.Get_Image
+                (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
 
-         if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
+            if Piece_Image_Name /= Tubastga_Window_Pkg.Images.None then
 
-            declare
-               x, y : Glib.Gint;
-               use Hexagon;
-            begin
-               x :=
-                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
-                   (P_Client_Map, P_Patch, Piece_No);
-               y :=
-                 Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
-                   (P_Client_Map, P_Patch, Piece_No);
+               declare
+                  x, y : Glib.Gint;
+                  use Hexagon;
+               begin
+                  x :=
+                    Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_X_From_AB
+                      (P_Client_Map, P_Patch, Piece_No);
+                  y :=
+                    Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Piece_Y_From_AB
+                      (P_Client_Map, P_Patch, Piece_No);
 
-               Gdk.Pixbuf.Composite
-                 (Piece_Image.all.Image_Data, P_Fullsizeview,
-                  Glib.Gint (x + Piece_Image.all.Dest_X), Glib.Gint (y + Piece_Image.all.Dest_Y),
-                  Piece_Image.all.Image_Width,--  + 150,
-                  Piece_Image.all.Image_Height,-- + 150,
-                  Glib.Gdouble (x + Piece_Image.all.Offset_X),
-                  Glib.Gdouble (y + Piece_Image.all.Offset_Y), 1.0, 1.0, Gdk.Pixbuf.Interp_Nearest,
-                  255);
+                  Gdk.Pixbuf.Composite
+                    (Piece_Image.all.Image_Data, P_Fullsizeview,
+                     Glib.Gint (x + Piece_Image.all.Dest_X), Glib.Gint (y + Piece_Image.all.Dest_Y),
+                     Piece_Image.all.Image_Width,--  + 150,
+                     Piece_Image.all.Image_Height,-- + 150,
+                     Glib.Gdouble (x + Piece_Image.all.Offset_X),
+                     Glib.Gdouble (y + Piece_Image.all.Offset_Y), 1.0, 1.0,
+                     Gdk.Pixbuf.Interp_Nearest, 255);
 
-            end;
+               end;
+            end if;
+
+            Piece_No := Piece_No + 1;
          end if;
 
-         Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
-         Piece_No    := Piece_No + 1;
+         Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (Trav_Pieces);
       end loop;
 
       if Verbose then

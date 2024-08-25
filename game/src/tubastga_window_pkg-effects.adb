@@ -53,9 +53,9 @@ package body Tubastga_Window_Pkg.Effects is
         Piece.Client_Piece.Pieces_Client_List.First (Piece.Client_Piece.Client_Pieces_In_Game);
       while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav_Pieces) loop
 
-         A_Piece :=
-           Tubastga_Window_Pkg.Type_Client_Access_Class
-             (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces));
+--         A_Piece :=
+--          Tubastga_Window_Pkg.Type_Client_Access_Class
+--             (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces));
 
          A_Piece.all.Action_Point  := 0;
          A_Piece.all.Storage.Slots := (others => Goods.Type_Goods_Info'(Goods.None, 0));

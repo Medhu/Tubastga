@@ -120,10 +120,10 @@ package Hexagon.Client_Map is
    procedure Reset_Visit;
    procedure Reset_Visible (P_Client_Map : in out Type_Client_Map_Info);
 
-   procedure Traverse
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch      : in out Type_Client_Patch_Adress;
-      P_Visit      : in Type_Visit_Procedure);
+--   procedure Traverse
+--     (P_Client_Map : in out Type_Client_Map_Info;
+--      P_Patch      : in out Type_Client_Patch_Adress;
+--      P_Visit      : in Type_Visit_Procedure);
 
    procedure Traverse_In
      (P_Client_Map : in Type_Client_Map_Info;

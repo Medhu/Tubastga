@@ -45,8 +45,6 @@ package body Hexagon.Client_Map is
    begin
       if P_Patch.Pos.P_Valid then
          Landscape.Put (Landscape.Type_Patch (P_Patch));
-         Landscape.Put_Pieces_Here (P_Patch.Pieces_Here);
-
       else
          Text_IO.Put_Line ("Not a valid position of the patch you try to print");
       end if;
@@ -135,32 +133,19 @@ package body Hexagon.Client_Map is
       end loop;
    end Reset_Visible;
 
-   procedure Set_No_Pieces
-     (P_Client_Map : in Type_Client_Map;
-      P_Patch      : in out Type_Client_Patch)
-   is
-   begin
-      Landscape.Pieces_Here_List.Clear (P_Patch.Pieces_Here);
-   end Set_No_Pieces;
-
    procedure Set_Reports_On_Map
      (P_Client_Map                  : in Type_Client_Map_Info;
       P_Player_Observations_List    : in
         Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
-      P_Player_Observed_Pieces_List : in Observation.Observation_Of_Pieces.Changes_To_Pieces.Vector;
       P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector)
    is
       Trav_P_P               : Observation.Observation_Of_Patches.Changes_To_Patches.Cursor;
-      Trav_P_Pieces          : Observation.Observation_Of_Pieces.Changes_To_Pieces.Cursor;
-      Trav_Pieces_Here       : Landscape.Pieces_Here_List.Cursor;
       This_Observation       : Observation.Observation_Of_Patches.Type_Observed_Patch;
-      This_Piece_Observation : Observation.Observation_Of_Pieces.Type_Observed_Piece;
       A_Patch                : Type_Client_Patch_Adress;
 
       Trav_Patches_Effect : Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Cursor;
 
       use Observation.Observation_Of_Patches.Changes_To_Patches;
-      use Observation.Observation_Of_Pieces.Changes_To_Pieces;
       use Observation;
       use Piece;
    begin
@@ -179,64 +164,62 @@ package body Hexagon.Client_Map is
          A_Patch :=
             Get_Patch_Adress_From_AB (P_Client_Map, This_Observation.A, This_Observation.B);
 
-         Hexagon.Client_Map.Set_No_Pieces (P_Client_Map.Map, A_Patch.all);
-
          A_Patch.all.Visible := This_Observation.Visible;
 
          Observation.Observation_Of_Patches.Changes_To_Patches.Next (Trav_P_P);
       end loop;
 
       -- Set changes to pieces positions on map.
-      Trav_P_Pieces :=
-         Observation.Observation_Of_Pieces.Changes_To_Pieces.First (P_Player_Observed_Pieces_List);
-      while Trav_P_Pieces /= Observation.Observation_Of_Pieces.Changes_To_Pieces.No_Element loop
-
-         This_Piece_Observation :=
-            Observation.Observation_Of_Pieces.Changes_To_Pieces.Element (Trav_P_Pieces);
-
-         -- First remove the piece from any other patch where it might be
-         --already.
-         for Trav_A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
-            for Trav_B in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
-               Trav_Pieces_Here :=
-                  Landscape.Pieces_Here_List.First (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here);
-               while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces_Here) loop
-                  if Landscape.Pieces_Here_List.Element (Trav_Pieces_Here) =
-                     This_Piece_Observation.Piece_Here_Id
-                  then
-                     -- Remove the piece from this patch
-                     Landscape.Pieces_Here_List.Delete
-                       (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here,
-                        Landscape.Pieces_Here_List.To_Index (Trav_Pieces_Here));
-
-                  end if;
-                  Trav_Pieces_Here := Landscape.Pieces_Here_List.Next (Trav_Pieces_Here);
-               end loop;
-            end loop;
-         end loop;
-
-         -- If the new pieces' position is valid, it means it does exisit
-         --somewhere on the map and
-         -- we should place it there. If not, the piece has been removed from
-         --the map totally (died
-         --or destroyed).
-         if This_Piece_Observation.Pos.P_Valid then
-            A_Patch :=
-               Hexagon.Client_Map.Get_Patch_Adress_From_AB
-                 (P_Client_Map,
-                  This_Piece_Observation.Pos.A,
-                  This_Piece_Observation.Pos.B);
-
-            Landscape.Pieces_Here_List.Append
-              (A_Patch.all.Pieces_Here,
-               This_Piece_Observation.Piece_Here_Id);
-            Landscape.Pieces_Here_Sort.Sort (Landscape.Type_Patch (A_Patch.all).Pieces_Here);
-
-         end if;
-
-         Observation.Observation_Of_Pieces.Changes_To_Pieces.Next (Trav_P_Pieces);
-      end loop;
-
+--        Trav_P_Pieces :=
+--           Observation.Observation_Of_Pieces.Changes_To_Pieces.First (P_Player_Observed_Pieces_List);
+--        while Trav_P_Pieces /= Observation.Observation_Of_Pieces.Changes_To_Pieces.No_Element loop
+--
+--           This_Piece_Observation :=
+--              Observation.Observation_Of_Pieces.Changes_To_Pieces.Element (Trav_P_Pieces);
+--
+--           -- First remove the piece from any other patch where it might be
+--           --already.
+--           for Trav_A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
+--              for Trav_B in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
+--                 Trav_Pieces_Here :=
+--                    Landscape.Pieces_Here_List.First (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here);
+--                 while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces_Here) loop
+--                    if Landscape.Pieces_Here_List.Element (Trav_Pieces_Here) =
+--                       This_Piece_Observation.Piece_Here_Id
+--                    then
+--                       -- Remove the piece from this patch
+--                       Landscape.Pieces_Here_List.Delete
+--                         (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here,
+--                          Landscape.Pieces_Here_List.To_Index (Trav_Pieces_Here));
+--
+--                    end if;
+--                    Trav_Pieces_Here := Landscape.Pieces_Here_List.Next (Trav_Pieces_Here);
+--                 end loop;
+--              end loop;
+--           end loop;
+--
+--           -- If the new pieces' position is valid, it means it does exisit
+--           --somewhere on the map and
+--           -- we should place it there. If not, the piece has been removed from
+--           --the map totally (died
+--           --or destroyed).
+--  --         if This_Piece_Observation.Pos.P_Valid then
+--  --            A_Patch :=
+--  --               Hexagon.Client_Map.Get_Patch_Adress_From_AB
+--  --                 (P_Client_Map,
+--  --                  This_Piece_Observation.Pos.A,
+--  --                  This_Piece_Observation.Pos.B);
+--
+--  --            Landscape.Pieces_Here_List.Append
+--  --              (A_Patch.all.Pieces_Here,
+--  --               This_Piece_Observation.Piece_Here_Id);
+--  --            Landscape.Pieces_Here_Sort.Sort (Landscape.Type_Patch (A_Patch.all).Pieces_Here);
+--
+--  --         end if;
+--
+--  --         Observation.Observation_Of_Pieces.Changes_To_Pieces.Next (Trav_P_Pieces);
+--        end loop;
+--
       -- remove invisible
       Trav_Patches_Effect := Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.First (P_Player_Observed_Patches_Effects);
 
@@ -267,26 +250,6 @@ package body Hexagon.Client_Map is
          Text_IO.Put_Line ("Hexagon.Client.Map.Set_Reports_On_Map - exit");
       end if;
    end Set_Reports_On_Map;
-
-
-   procedure Traverse
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch      : in out Type_Client_Patch_Adress;
-      P_Visit      : in Type_Visit_Procedure)
-   is
-   begin
-
-      for A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
-         for B in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
-            P_Visit (P_Client_Map, P_Client_Map.Map (A, B));
-         end loop;
-      end loop;
-
-      if Verbose then
-         Text_IO.Put_Line ("Hexagon.Client_Map.Traverse - exit");
-      end if;
-
-   end Traverse;
 
    procedure Traverse_In
      (P_Client_Map : in Type_Client_Map_Info;
@@ -528,8 +491,6 @@ package body Hexagon.Client_Map is
       Write_File : Ada.Streams.Stream_IO.File_Type;
       Out_Stream : Stream_Access;
 
-      Trav : Landscape.Pieces_Here_List.Cursor;
-
       use Observation;
    begin
       if Verbose then
@@ -563,16 +524,6 @@ package body Hexagon.Client_Map is
                ") " &
                P_Client_Map.Map (Trav_X, Trav_Y).all.Landscape_Here'Img);
 
-            Trav :=
-               Landscape.Pieces_Here_List.First (P_Client_Map.Map (Trav_X, Trav_Y).Pieces_Here);
-            while Landscape.Pieces_Here_List.Has_Element (Trav) loop
-               String'Write
-                 (Ada.Streams.Stream_IO.Stream (Write_File),
-                  "Id=" & Landscape.Pieces_Here_List.Element (Trav)'Img & "-");
-
-               Trav := Landscape.Pieces_Here_List.Next (Trav);
-            end loop;
-
             String'Write (Ada.Streams.Stream_IO.Stream (Write_File), "    </td>");
          end loop;
          String'Write (Ada.Streams.Stream_IO.Stream (Write_File), "  </tr>");
@@ -598,7 +549,6 @@ package body Hexagon.Client_Map is
          for ArrayY in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop -- Vertical
 
             P_Client_Map.Map (ArrayX, ArrayY) := new Type_Client_Patch'(Hexagon.Client_Map.Empty);
-            Landscape.Pieces_Here_List.Clear (P_Client_Map.Map (ArrayX, ArrayY).Pieces_Here);
          end loop;
       end loop;
 

@@ -85,22 +85,22 @@ package Tubastga_Window_Pkg.FullsizeView is
    procedure Draw_Players
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf
-      --P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_All_Pieces   : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
      );
 
    procedure Draw_Houses
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf
-      --P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
      );
 
    procedure Draw_Pieces
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf
-      --P_Pieces_Here  : in     Landscape.Pieces_Here_List.Vector
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
+      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
      );
 
    procedure Draw_Invisible
