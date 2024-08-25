@@ -97,7 +97,7 @@ package body Piece.Client_Piece is
       while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav) and
         not Found
       loop
-         if Piece.Client_Piece.Pieces_Client_List.Element (Trav).all.Id =
+         if Piece.Client_Piece.Pieces_Client_List.Element (Trav).Actual_Piece.all.Id =
            P_Piece_Id
          then
             Found := True;
@@ -127,7 +127,7 @@ package body Piece.Client_Piece is
       Trav := Find_Piece_In_List (P_Piece_Id);
 
       if Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav) then
-         Ret := Piece.Client_Piece.Pieces_Client_List.Element (Trav);
+         Ret := Piece.Client_Piece.Pieces_Client_List.Element (Trav).Actual_Piece;
       else
          Ret := null;
       end if;
@@ -607,8 +607,8 @@ package body Piece.Client_Piece is
       Trav_Pieces_Change_Effects : Piece.Client_Piece.Pieces_Client_List
         .Cursor;
 
-      Existing : Pieces_Client_List.Cursor;
-      A_Piece  : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Existing         : Pieces_Client_List.Cursor;
+      A_Piece_Position : Piece.Client_Piece.Type_Piece_Position;
    begin
       if Verbose then
          Text_IO.Put_Line ("Piece.Client_Piece.Set_Reports_On_Pieces - enter");
@@ -627,44 +627,44 @@ package body Piece.Client_Piece is
              (Trav)
              .Valid
          then
-            A_Piece :=
+            A_Piece_Position.Actual_Piece :=
               new Piece.Client_Piece.Type_Client_Piece'Class'(Piece_Class.all);
 
-            A_Piece.all.Id :=
+            A_Piece_Position.Actual_Piece.all.Id :=
               Observation.Observation_Of_Pieces_Info.Changes_To_Pieces_Info
                 .Element
                 (Trav)
                 .Piece_Here
                 .Id;
-            A_Piece.all.Type_Of_Piece :=
+            A_Piece_Position.Actual_Piece.all.Type_Of_Piece :=
               Observation.Observation_Of_Pieces_Info.Changes_To_Pieces_Info
                 .Element
                 (Trav)
                 .Piece_Here
                 .Type_Of_Piece;
-            A_Piece.all.Category :=
+            A_Piece_Position.Actual_Piece.all.Category :=
               Observation.Observation_Of_Pieces_Info.Changes_To_Pieces_Info
                 .Element
                 (Trav)
                 .Piece_Here
                 .Category;
-            A_Piece.all.Name :=
+            A_Piece_Position.Actual_Piece.all.Name :=
               Observation.Observation_Of_Pieces_Info.Changes_To_Pieces_Info
                 .Element
                 (Trav)
                 .Piece_Here
                 .Name;
-            A_Piece.all.Player_Id :=
+            A_Piece_Position.Actual_Piece.all.Player_Id :=
               Observation.Observation_Of_Pieces_Info.Changes_To_Pieces_Info
                 .Element
                 (Trav)
                 .Piece_Here
                 .Player_Id;
-            Effect.Effect_List.Clear (A_Piece.all.Effects_On_Piece);
+            Effect.Effect_List.Clear (A_Piece_Position.Actual_Piece.all.Effects_On_Piece);
 
             Pieces_Client_List.Append
               (Piece.Client_Piece.Client_Pieces_In_Game,
-               A_Piece);
+               Type_Piece_Position'(A_Piece_Position) );
 
          else
             Existing :=
@@ -694,12 +694,12 @@ package body Piece.Client_Piece is
           (Trav_Pieces_Change_Effects)
       loop
 
-         A_Piece :=
+         A_Piece_Position.Actual_Piece :=
            Piece.Client_Piece.Pieces_Client_List.Element
-             (Trav_Pieces_Change_Effects);
+             (Trav_Pieces_Change_Effects).Actual_Piece;
 
          Piece.Client_Piece.Set_Effects_On_Piece
-           (Piece.Client_Piece.Type_Client_Piece (A_Piece.all),
+           (Piece.Client_Piece.Type_Client_Piece (A_Piece_Position.Actual_Piece.all),
             P_Effects);
 
          Trav_Pieces_Change_Effects :=
@@ -716,20 +716,26 @@ package body Piece.Client_Piece is
      (P_Patch : in Hexagon.Client_Map.Type_Client_Patch)
       return Player.Type_Player_Id
    is
-      Piece_Cursor : Piece.Client_Piece.Pieces_Client_List.Cursor;
-      Trav         : Landscape.Pieces_Here_List.Cursor;
+      A_Piece_Position : Piece.Client_Piece.Type_Piece_Position;
+      Trav         : Piece.Client_Piece.Pieces_Client_List.Cursor;-- Piece.Pieces_Here_List.Cursor;
       Ret          : Player.Type_Player_Id;
 
-      use Piece;
+      use Hexagon;
    begin
 
-   ---only one player can be on any patch, so it is enough to test one of them
-      Trav         := Landscape.Pieces_Here_List.First (P_Patch.Pieces_Here);
-      Piece_Cursor :=
-        Piece.Client_Piece.Find_Piece_In_List
-          (Landscape.Pieces_Here_List.Element (Trav));
-      Ret :=
-        Piece.Client_Piece.Pieces_Client_List.Element (Piece_Cursor).Player_Id;
+      ---only one player can be on any patch, so it is enough to test one of them
+      Trav := Piece.Client_Piece.Pieces_Client_List.First(Piece.Client_Piece.Client_Pieces_In_Game);
+
+      while Piece.Client_Piece.Pieces_Client_List.Has_Element(Trav) loop
+         A_Piece_Position := Piece.Client_Piece.Pieces_Client_List.Element(Trav);
+         if A_Piece_Position.Actual_Pos = P_Patch.Pos then
+
+            Ret := A_Piece_Position.Actual_Piece.all.Player_Id;
+
+         end if;
+
+         Trav := Piece.Client_Piece.Pieces_Client_List.Next(Trav);
+      end loop;
 
       return Ret;
 
@@ -738,10 +744,27 @@ package body Piece.Client_Piece is
    function Is_Patch_Empty
      (P_Patch : in Hexagon.Client_Map.Type_Client_Patch) return Boolean
    is
-      use Ada.Containers;
-   begin
+      Trav : Piece.Client_Piece.Pieces_Client_List.Cursor;
+      A_Piece_Position :Piece.Client_Piece.Type_Piece_Position;
 
-      return Landscape.Pieces_Here_List.Length (P_Patch.Pieces_Here) = 0;
+      Number_Of_Pieces : Integer;
+
+      use Hexagon;
+   begin
+      Number_Of_Pieces := 0;
+      Trav := Piece.Client_Piece.Pieces_Client_List.First(Piece.Client_Piece.Client_Pieces_In_Game);
+      while Piece.Client_Piece.Pieces_Client_List.Has_Element(Trav) and Number_Of_Pieces = 0 loop
+         A_Piece_Position := Piece.Client_Piece.Pieces_Client_List.Element(Trav);
+
+         if A_Piece_Position.Actual_Pos = P_Patch.Pos then
+            Number_Of_Pieces := Number_Of_Pieces + 1;
+         end if;
+
+         Trav := Piece.Client_Piece.Pieces_Client_List.Next(Trav);
+      end loop;
+
+
+      return Number_Of_Pieces = 0;
    end Is_Patch_Empty;
 
    function Patch_Belongs_To_Player

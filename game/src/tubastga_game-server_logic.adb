@@ -3759,7 +3759,7 @@ package body Tubastga_Game.Server_Logic is
         Hexagon.Server_Navigation.Hexagon_Distance (P_Start, P_To_Patch.Pos) * 10;
 
       if D < 40 then
-         if not Landscape.Server.Has_Patch_Free_Slot(P_To_Patch) then
+         if not Piece.Server.Has_Patch_Free_Slot(P_To_Patch) then
             return 10000;
          end if;
 

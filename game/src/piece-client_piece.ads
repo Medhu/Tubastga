@@ -139,9 +139,14 @@ package Piece.Client_Piece is
         .Changes_To_Pieces_Effects
         .Vector);
 
+   type Type_Piece_Position is record
+      Actual_Piece : Type_Client_Piece_Class_Access;
+      Actual_Pos   : Hexagon.Type_Hexagon_Position;
+   end record;
+
    package Pieces_Client_List is new Ada.Containers.Vectors
      (Natural,
-      Type_Client_Piece_Class_Access,
+      Type_Piece_Position,
       Piece.Client_Piece."=");
 
    function Find_Piece_In_List

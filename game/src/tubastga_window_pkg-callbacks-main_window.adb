@@ -159,7 +159,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav_Towers) loop
             A_Piece :=
               Tubastga_Window_Pkg.Type_Client_Access_Class
-                (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Towers));
+                (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Towers).Actual_Piece);
 
             if A_Piece.all.Type_Of_Piece = Tubastga_Game.Tower_House then
 
@@ -302,27 +302,28 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
      (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
    is
-      Trav_Pieces      : Landscape.Pieces_Here_List.Cursor;
+--      Trav_Pieces      : Landscape.Pieces_Here_List.Cursor;
       A_Piece_Id       : Piece.Type_Piece_Id;
       A_Piece_Position : Tubastga_Window_Pkg.Lists.Type_Piece_Position;
 
    begin
 
-      Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
-      while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
+--      Trav_Pieces := Landscape.Pieces_Here_List.First (P_Patch.all.Pieces_Here);
+--      while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
 
-         A_Piece_Id       := Landscape.Pieces_Here_List.Element (Trav_Pieces);
-         A_Piece_Position :=
-           Tubastga_Window_Pkg.Lists.Type_Piece_Position'(A_Piece_Id, P_Patch.all.Pos);
-         Tubastga_Window_Pkg.Lists.Set_All_Piece_In_List
-           (Tubastga_Window_Pkg.Lists.All_Pieces_List, A_Piece_Position);
+--         A_Piece_Id       := Landscape.Pieces_Here_List.Element (Trav_Pieces);
+--         A_Piece_Position :=
+--           Tubastga_Window_Pkg.Lists.Type_Piece_Position'(A_Piece_Id, P_Patch.all.Pos);
+--         Tubastga_Window_Pkg.Lists.Set_All_Piece_In_List
+--           (Tubastga_Window_Pkg.Lists.All_Pieces_List, A_Piece_Position);
 
-         Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
-      end loop;
+--         Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
+--      end loop;
 
-      Tubastga_Window_Pkg.Lists.All_Pieces_Sort_Pkg.Sort
-        (Tubastga_Window_Pkg.Lists.All_Pieces_List);
+--      Tubastga_Window_Pkg.Lists.All_Pieces_Sort_Pkg.Sort
+--        (Tubastga_Window_Pkg.Lists.All_Pieces_List);
 
+      null;
    end All_Pieces_On_Map;
 
    procedure Draw_Map
@@ -360,14 +361,14 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
               (A_Client_Map, P_Patch.all, All_Pix, All_Landscape_On_Patch,
                All_Constructions_On_Patch, All_Effects_On_Patch);
 
-            Tubastga_Window_Pkg.FullsizeView.Draw_Houses
-              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
+--            Tubastga_Window_Pkg.FullsizeView.Draw_Houses
+--              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
 
-            Tubastga_Window_Pkg.FullsizeView.Draw_Players
-              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
+--            Tubastga_Window_Pkg.FullsizeView.Draw_Players
+--              (A_Client_Map, P_Patch.all, All_Pix, P_Patch.all.Pieces_Here);
 
-            Tubastga_Window_Pkg.FullsizeView.Draw_Pieces
-              (A_Client_Map, P_Patch.all, Pieces_Pix, P_Patch.all.Pieces_Here);
+--            Tubastga_Window_Pkg.FullsizeView.Draw_Pieces
+--              (A_Client_Map, P_Patch.all, Pieces_Pix, P_Patch.all.Pieces_Here);
             --
             --
             -- Now UI Aid Selection
@@ -589,7 +590,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Hexagon.Client_Map.Set_Reports_On_Map
               (A_Client_Map,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Patches,
-               Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Pieces,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor)
                  .Patches_Effects_Info);
 
@@ -690,7 +690,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
          declare
             use Utilities;
-            Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
+--            Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
             Curr_Piece   : Piece.Client_Piece.Type_Client_Piece_Class_Access;
             Curr_Name    : Utilities.RemoteString.Type_String;
             Patch_Zoom_x : Glib.Gint := 0;
@@ -705,22 +705,22 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                   "Information for patch (" & Curr_Patch.Pos.A'Img & ", " & Curr_Patch.Pos.B'Img &
                   ")" & ASCII.LF);
 
-               Trav_Pieces := Landscape.Pieces_Here_List.First (Curr_Patch.Pieces_Here);
-               while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
-                  Gtk.Text_Buffer.Get_End_Iter (The_Window.Buffer_Hover_Info, Iter);
-                  Curr_Piece :=
-                    Piece.Client_Piece.Find_Piece_In_List (Curr_Patch.Pieces_Here (Trav_Pieces));
-                  Curr_Name :=
-                    Piece.Get_Name
-                      (Piece.Type_Piece (Tubastga_Window_Pkg.Type_Client_Piece (Curr_Piece.all)));
+--               Trav_Pieces := Landscape.Pieces_Here_List.First (Curr_Patch.Pieces_Here);
+--               while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces) loop
+--                  Gtk.Text_Buffer.Get_End_Iter (The_Window.Buffer_Hover_Info, Iter);
+--                  Curr_Piece :=
+--                    Piece.Client_Piece.Find_Piece_In_List (Curr_Patch.Pieces_Here (Trav_Pieces));
+--                  Curr_Name :=
+--                    Piece.Get_Name
+--                      (Piece.Type_Piece (Tubastga_Window_Pkg.Type_Client_Piece (Curr_Piece.all)));
 
-                  Gtk.Text_Buffer.Insert
-                    (The_Window.Buffer_Hover_Info, Iter,
-                     "Player: " & Curr_Piece.Player_Id'Img & " Observed piece: " &
-                     Curr_Piece.Type_Of_Piece'Img & " Piece Id:" & Curr_Piece.Id'Img & " " &
-                     Utilities.RemoteString.To_String (Curr_Name) & ASCII.LF);
-                  Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
-               end loop;
+--                  Gtk.Text_Buffer.Insert
+--                    (The_Window.Buffer_Hover_Info, Iter,
+--                     "Player: " & Curr_Piece.Player_Id'Img & " Observed piece: " &
+--                     Curr_Piece.Type_Of_Piece'Img & " Piece Id:" & Curr_Piece.Id'Img & " " &
+--                     Utilities.RemoteString.To_String (Curr_Name) & ASCII.LF);
+--                  Trav_Pieces := Landscape.Pieces_Here_List.Next (Trav_Pieces);
+--               end loop;
 
                Gtk.Text_Buffer.Get_End_Iter (The_Window.Buffer_Hover_Info, Iter);
                Curr_Piece :=

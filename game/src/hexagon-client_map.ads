@@ -101,7 +101,6 @@ package Hexagon.Client_Map is
      (P_Client_Map                  : in Type_Client_Map_Info;
       P_Player_Observations_List    : in
      Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
-      P_Player_Observed_Pieces_List : in Observation.Observation_Of_Pieces.Changes_To_Pieces.Vector;
       P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector);
 
    procedure Save_Map
@@ -138,7 +137,7 @@ package Hexagon.Client_Map is
      (True,
       Hexagon.Type_Hexagon_Position'(P_Valid => False),
       Landscape.Undefined_Landscape,
-      Landscape.Pieces_Here_List.Empty_Vector,
+--      Landscape.Pieces_Here_List.Empty_Vector,
       Effect.Effect_List.Empty_Map,
       Neighbours           =>
      Type_Neighbour_List'(Type_Client_Patch_Adress'(null),
