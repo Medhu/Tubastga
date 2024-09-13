@@ -19,11 +19,13 @@
 --
 
 package Tubastga_Window_Pkg.Effects is
-   procedure Format_Piece_Effects (P_Buffer : in out Gtk.Text_Buffer.Gtk_Text_Buffer;
-                                   P_Piece : in Tubastga_Window_Pkg.Type_Client_Piece);
+   procedure Format_Piece_Effects
+     (P_Buffer : in out Gtk.Text_Buffer.Gtk_Text_Buffer;
+      P_Piece  : in     Tubastga_Window_Pkg.Type_Client_Piece);
 
-   procedure Format_Patch_Effects (P_Buffer : in out Gtk.Text_Buffer.Gtk_Text_Buffer;
-                                   P_Patch : Hexagon.Client_Map.Type_Client_Patch);
+   procedure Format_Patch_Effects
+     (P_Buffer : in out Gtk.Text_Buffer.Gtk_Text_Buffer;
+      P_Patch  :        Hexagon.Client_Map.Type_Client_Patch);
 
    procedure Update_Client_Piece;
 end Tubastga_Window_Pkg.Effects;

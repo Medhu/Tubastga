@@ -28,7 +28,7 @@ with Gdk.Cairo;
 with Ada.Numerics.Generic_Elementary_Functions;
 
 package body Tubastga_Window_Pkg.FullsizeView is
-   Verbose : constant Boolean := False;
+   Verbose : constant Boolean := True;
 
    Game_Area_Origo_X : constant Integer   := 50;
    Game_Area_Origo_Y : constant Integer   := 1_050;
@@ -486,14 +486,13 @@ package body Tubastga_Window_Pkg.FullsizeView is
    procedure Draw_Houses
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector)
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
-      Trav_Pieces : Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Cursor;
+      Trav_Pieces : Piece.Client_Piece.Pieces_Client_List.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
       Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      A_Piece          : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      A_Piece_Position : Piece.Client_Piece.Type_Piece_Position;
       Piece_No         : Integer;
 
       use Piece;
@@ -505,21 +504,18 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Houses - enter");
       end if;
 
+      -- Find all pieces on this P_Patch
       Piece_No    := 1;
-      Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.First (P_Pieces_Here);
-      while Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Has_Element (Trav_Pieces) loop
+      Trav_Pieces :=
+        Piece.Client_Piece.Pieces_Client_List.First (Piece.Client_Piece.Client_Pieces_In_Game);
+      while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav_Pieces) loop
 
-         if Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces).Actual_Pos =
-           P_Patch.Pos
-         then
-            A_Piece :=
-              Piece.Client_Piece.Find_Piece_In_List
-                (Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces)
-                   .Actual_Piece_Id);
+         A_Piece_Position := Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces);
+         if A_Piece_Position.Actual_Pos = P_Patch.Pos then
 
             Piece_Image_Name :=
               Tubastga_Window_Pkg.Images.Find_House_Image
-                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece_Position.Actual_Piece.all));
             Piece_Image :=
               Tubastga_Window_Pkg.Images.Get_Image
                 (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
@@ -551,7 +547,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
             Piece_No := Piece_No + 1;
          end if;
 
-         Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (Trav_Pieces);
+         Trav_Pieces := Piece.Client_Piece.Pieces_Client_List.Next (Trav_Pieces);
 
       end loop;
 
@@ -563,14 +559,13 @@ package body Tubastga_Window_Pkg.FullsizeView is
    procedure Draw_Pieces
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector)
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf)
    is
-      Trav_Pieces : Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Cursor;
+      Trav_Pieces : Piece.Client_Piece.Pieces_Client_List.Cursor;
 
       Piece_Image_Name : Tubastga_Window_Pkg.Images.Type_Image_Names;
       Piece_Image      : Tubastga_Window_Pkg.Images.Type_Image_Access;
-      A_Piece          : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      A_Piece_Position : Piece.Client_Piece.Type_Piece_Position;
       Piece_No         : Integer;
 
       use Hexagon;
@@ -582,21 +577,21 @@ package body Tubastga_Window_Pkg.FullsizeView is
          Text_IO.Put_Line ("Tubastga_Window_Pkg.FullsizeView.Draw_Pieces - enter");
       end if;
 
-      Piece_No    := 1;
-      Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.First (P_Pieces_Here);
-      while Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Has_Element (Trav_Pieces) loop
+      Piece_No := 1;
 
-         if Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces).Actual_Pos =
-           P_Patch.Pos
+      Trav_Pieces :=
+        Piece.Client_Piece.Pieces_Client_List.First (Piece.Client_Piece.Client_Pieces_In_Game);
+      while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav_Pieces) loop
+
+         A_Piece_Position := Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces);
+         Text_IO.Put_Line ("Piece Trav:");
+         if Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces).Actual_Pos = P_Patch.Pos
          then
-            A_Piece :=
-              Piece.Client_Piece.Find_Piece_In_List
-                (Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Element (Trav_Pieces)
-                   .Actual_Piece_Id);
+            Text_IO.Put_Line ("Piece Trav Finner piece:");
 
             Piece_Image_Name :=
               Tubastga_Window_Pkg.Images.Find_Piece_Image
-                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece.all));
+                (Tubastga_Window_Pkg.Type_Client_Piece (A_Piece_Position.Actual_Piece.all));
             Piece_Image :=
               Tubastga_Window_Pkg.Images.Get_Image
                 (Tubastga_Window_Pkg.Images.All_Images, Piece_Image_Name);
@@ -629,7 +624,7 @@ package body Tubastga_Window_Pkg.FullsizeView is
             Piece_No := Piece_No + 1;
          end if;
 
-         Trav_Pieces := Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Next (Trav_Pieces);
+         Trav_Pieces := Piece.Client_Piece.Pieces_Client_List.Next (Trav_Pieces);
       end loop;
 
       if Verbose then

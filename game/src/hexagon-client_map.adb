@@ -20,11 +20,12 @@
 with Text_IO;
 with Ada.Numerics.Generic_Elementary_Functions;
 with Piece;
+with Piece.Client_Piece;
 with Client.ClientRPC;
-with Ada.Streams.Stream_IO;                     use Ada.Streams.Stream_IO;
+with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 
 package body Hexagon.Client_Map is
-   Verbose : constant Boolean := False;
+   Verbose : constant Boolean := True;
 
    type Type_Visited_Map is array (1 .. 100, 1 .. 100) of Boolean;
    Visited_Map : Type_Visited_Map;
@@ -34,8 +35,7 @@ package body Hexagon.Client_Map is
    Map_Buffer : Landscape.Type_Map;
 
    procedure Set_Origo_Patch
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_A, P_B     : in Type_Hexagon_Numbers)
+     (P_Client_Map : in out Type_Client_Map_Info; P_A, P_B : in Type_Hexagon_Numbers)
    is
    begin
       P_Client_Map.Origo_Patch := Get_Patch_Adress_From_AB (P_Client_Map, P_A, P_B);
@@ -52,9 +52,8 @@ package body Hexagon.Client_Map is
    end Put;
 
    function Get_Patch_Adress_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_A, P_B     : in Type_Hexagon_Numbers)
-      return         Type_Client_Patch_Adress
+     (P_Client_Map : in Type_Client_Map_Info; P_A, P_B : in Type_Hexagon_Numbers)
+      return Type_Client_Patch_Adress
    is
       Next : Type_Client_Patch_Adress;
    begin
@@ -85,8 +84,7 @@ package body Hexagon.Client_Map is
 
    -- Request all updates for the area according to subscription
    procedure Get_Map
-     (P_Player_Id  : in Player.Type_Player_Id;
-      P_Client_Map : in out Type_Client_Map_Info)
+     (P_Player_Id : in Player.Type_Player_Id; P_Client_Map : in out Type_Client_Map_Info)
    is
 
       use Piece;
@@ -128,23 +126,31 @@ package body Hexagon.Client_Map is
    begin
       for ArrayX in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop -- Horisontal
          for ArrayY in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop -- Vertical
-            P_Client_Map.Map (ArrayX, ArrayY).Visible := False ;
+            P_Client_Map.Map (ArrayX, ArrayY).Visible := False;
          end loop;
       end loop;
    end Reset_Visible;
 
    procedure Set_Reports_On_Map
-     (P_Client_Map                  : in Type_Client_Map_Info;
-      P_Player_Observations_List    : in
-        Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
-      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector)
+     (P_Client_Map                      : in Type_Client_Map_Info;
+      P_Player_Observations_List : in Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
+      P_Player_Observed_Pieces_List : in Observation.Observation_Of_Pieces.Changes_To_Pieces.Vector;
+      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects
+        .Changes_To_Patches_Effects
+        .Vector)
    is
       Trav_P_P               : Observation.Observation_Of_Patches.Changes_To_Patches.Cursor;
+      Trav_P_Pieces          : Observation.Observation_Of_Pieces.Changes_To_Pieces.Cursor;
       This_Observation       : Observation.Observation_Of_Patches.Type_Observed_Patch;
+      This_Piece_Observation : Observation.Observation_Of_Pieces.Type_Observed_Piece;
+      A_Piece_Position       : Piece.Client_Piece.Type_Piece_Position;
       A_Patch                : Type_Client_Patch_Adress;
+      Piece_Cursor           : Piece.Client_Piece.Pieces_Client_List.Cursor;
 
-      Trav_Patches_Effect : Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Cursor;
+      Trav_Patches_Effect : Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects
+        .Cursor;
 
+      use Observation.Observation_Of_Pieces.Changes_To_Pieces;
       use Observation.Observation_Of_Patches.Changes_To_Patches;
       use Observation;
       use Piece;
@@ -155,14 +161,13 @@ package body Hexagon.Client_Map is
 
       -- First set and unset the patches that are visible or are not visible.
       Trav_P_P :=
-         Observation.Observation_Of_Patches.Changes_To_Patches.First (P_Player_Observations_List);
+        Observation.Observation_Of_Patches.Changes_To_Patches.First (P_Player_Observations_List);
       while Trav_P_P /= Observation.Observation_Of_Patches.Changes_To_Patches.No_Element loop
 
          This_Observation :=
-            Observation.Observation_Of_Patches.Changes_To_Patches.Element (Trav_P_P);
+           Observation.Observation_Of_Patches.Changes_To_Patches.Element (Trav_P_P);
 
-         A_Patch :=
-            Get_Patch_Adress_From_AB (P_Client_Map, This_Observation.A, This_Observation.B);
+         A_Patch := Get_Patch_Adress_From_AB (P_Client_Map, This_Observation.A, This_Observation.B);
 
          A_Patch.all.Visible := This_Observation.Visible;
 
@@ -170,80 +175,80 @@ package body Hexagon.Client_Map is
       end loop;
 
       -- Set changes to pieces positions on map.
---        Trav_P_Pieces :=
---           Observation.Observation_Of_Pieces.Changes_To_Pieces.First (P_Player_Observed_Pieces_List);
---        while Trav_P_Pieces /= Observation.Observation_Of_Pieces.Changes_To_Pieces.No_Element loop
---
---           This_Piece_Observation :=
---              Observation.Observation_Of_Pieces.Changes_To_Pieces.Element (Trav_P_Pieces);
---
---           -- First remove the piece from any other patch where it might be
---           --already.
---           for Trav_A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
---              for Trav_B in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
---                 Trav_Pieces_Here :=
---                    Landscape.Pieces_Here_List.First (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here);
---                 while Landscape.Pieces_Here_List.Has_Element (Trav_Pieces_Here) loop
---                    if Landscape.Pieces_Here_List.Element (Trav_Pieces_Here) =
---                       This_Piece_Observation.Piece_Here_Id
---                    then
---                       -- Remove the piece from this patch
---                       Landscape.Pieces_Here_List.Delete
---                         (P_Client_Map.Map (Trav_A, Trav_B).Pieces_Here,
---                          Landscape.Pieces_Here_List.To_Index (Trav_Pieces_Here));
---
---                    end if;
---                    Trav_Pieces_Here := Landscape.Pieces_Here_List.Next (Trav_Pieces_Here);
---                 end loop;
---              end loop;
---           end loop;
---
---           -- If the new pieces' position is valid, it means it does exisit
---           --somewhere on the map and
---           -- we should place it there. If not, the piece has been removed from
---           --the map totally (died
---           --or destroyed).
---  --         if This_Piece_Observation.Pos.P_Valid then
---  --            A_Patch :=
---  --               Hexagon.Client_Map.Get_Patch_Adress_From_AB
---  --                 (P_Client_Map,
---  --                  This_Piece_Observation.Pos.A,
---  --                  This_Piece_Observation.Pos.B);
---
---  --            Landscape.Pieces_Here_List.Append
---  --              (A_Patch.all.Pieces_Here,
---  --               This_Piece_Observation.Piece_Here_Id);
---  --            Landscape.Pieces_Here_Sort.Sort (Landscape.Type_Patch (A_Patch.all).Pieces_Here);
---
---  --         end if;
---
---  --         Observation.Observation_Of_Pieces.Changes_To_Pieces.Next (Trav_P_Pieces);
---        end loop;
+      Trav_P_Pieces :=
+        Observation.Observation_Of_Pieces.Changes_To_Pieces.First (P_Player_Observed_Pieces_List);
+      while Trav_P_Pieces /= Observation.Observation_Of_Pieces.Changes_To_Pieces.No_Element loop
+         --
+         This_Piece_Observation :=
+           Observation.Observation_Of_Pieces.Changes_To_Pieces.Element (Trav_P_Pieces);
+
+         Piece_Cursor :=
+           Piece.Client_Piece.Find_Piece_In_List (This_Piece_Observation.Piece_Here_Id);
+         A_Piece_Position := Piece.Client_Piece.Pieces_Client_List.Element (Piece_Cursor);
+         A_Piece_Position.Actual_Pos := This_Piece_Observation.Pos;
+         Piece.Client_Piece.Pieces_Client_List.Replace_Element
+           (Piece.Client_Piece.Client_Pieces_In_Game, Piece_Cursor, A_Piece_Position);
+
+         Observation.Observation_Of_Pieces.Changes_To_Pieces.Next (Trav_P_Pieces);
+      end loop;
 --
       -- remove invisible
-      Trav_Patches_Effect := Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.First (P_Player_Observed_Patches_Effects);
+      Trav_Patches_Effect :=
+        Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.First
+          (P_Player_Observed_Patches_Effects);
 
-      while Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Has_Element (Trav_Patches_Effect) loop
-         if not Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Valid then
-            A_Patch := Hexagon.Client_Map.Get_Patch_Adress_From_AB(P_Client_Map,
-                                                                   Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Pos.A,
-                                                                   Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Pos.B);
+      while Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Has_Element
+          (Trav_Patches_Effect)
+      loop
+         if not Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+             (Trav_Patches_Effect)
+             .Valid
+         then
+            A_Patch :=
+              Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                (P_Client_Map,
+                 Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                   (Trav_Patches_Effect)
+                   .Pos
+                   .A,
+                 Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                   (Trav_Patches_Effect)
+                   .Pos
+                   .B);
 
             Effect.Effect_List.Exclude
               (A_Patch.all.Effects_Here,
-               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Effect_Info.Effect_Name);
+               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                 (Trav_Patches_Effect)
+                 .Effect_Info
+                 .Effect_Name);
          else
-            A_Patch := Hexagon.Client_Map.Get_Patch_Adress_From_AB(P_Client_Map,
-                                                                   Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Pos.A,
-                                                                   Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Pos.B);
+            A_Patch :=
+              Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                (P_Client_Map,
+                 Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                   (Trav_Patches_Effect)
+                   .Pos
+                   .A,
+                 Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                   (Trav_Patches_Effect)
+                   .Pos
+                   .B);
 
             Effect.Effect_List.Include
               (A_Patch.all.Effects_Here,
-               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Effect_Info.Effect_Name,
-               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element (Trav_Patches_Effect).Effect_Info);
+               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                 (Trav_Patches_Effect)
+                 .Effect_Info
+                 .Effect_Name,
+               Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Element
+                 (Trav_Patches_Effect)
+                 .Effect_Info);
          end if;
 
-         Trav_Patches_Effect := Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Next (Trav_Patches_Effect);
+         Trav_Patches_Effect :=
+           Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Next
+             (Trav_Patches_Effect);
       end loop;
 
       if Verbose then
@@ -252,16 +257,13 @@ package body Hexagon.Client_Map is
    end Set_Reports_On_Map;
 
    procedure Traverse_In
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress;
       P_Visit      : in Type_Visit_Procedure_In)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Hexagon.Client_Map.Traverse_In - enter " &
-            P_Patch.Pos.A'Img &
-            " " &
+           ("Hexagon.Client_Map.Traverse_In - enter " & P_Patch.Pos.A'Img & " " &
             P_Patch.Pos.B'Img);
       end if;
 
@@ -289,37 +291,33 @@ package body Hexagon.Client_Map is
    function Get_Absolute_Y_From_AB (P_Patch : in Type_Client_Patch) return Integer is
    begin
       if P_Patch.Pos.P_Valid then
-         return (Integer (Float (P_Patch.Pos.A - 1) * 0.5 * 72.0 +
-                          Float (P_Patch.Pos.B - 1) * 72.0) +
-                 36);
+         return
+           (Integer (Float (P_Patch.Pos.A - 1) * 0.5 * 72.0 + Float (P_Patch.Pos.B - 1) * 72.0) +
+            36);
       else
          return 0;
       end if;
    end Get_Absolute_Y_From_AB;
 
    function Get_X_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch)
-      return         Integer
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch) return Integer
    is
    begin
       if P_Patch.Pos.P_Valid then
-         return Get_Absolute_X_From_AB (P_Patch) -
-                Get_Absolute_X_From_AB (P_Client_Map.Origo_Patch.all);
+         return
+           Get_Absolute_X_From_AB (P_Patch) - Get_Absolute_X_From_AB (P_Client_Map.Origo_Patch.all);
       else
          return 0;
       end if;
    end Get_X_From_AB;
 
    function Get_Y_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch)
-      return         Integer
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch) return Integer
    is
    begin
       if P_Patch.Pos.P_Valid then
-         return Get_Absolute_Y_From_AB (P_Patch) -
-                Get_Absolute_Y_From_AB (P_Client_Map.Origo_Patch.all);
+         return
+           Get_Absolute_Y_From_AB (P_Patch) - Get_Absolute_Y_From_AB (P_Client_Map.Origo_Patch.all);
       else
          return 0;
       end if;
@@ -330,8 +328,7 @@ package body Hexagon.Client_Map is
    Closest_Distance     : Float;
 
    procedure Find_Closest
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch_Adress)
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress)
    is
       Dist             : Float;
       Delta_X, Delta_Y : Integer;
@@ -348,8 +345,7 @@ package body Hexagon.Client_Map is
    end Find_Closest;
 
    procedure Find_Closest_Absolute
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch_Adress)
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress)
    is
       Dist             : Float;
       Delta_X, Delta_Y : Integer;
@@ -367,17 +363,13 @@ package body Hexagon.Client_Map is
    end Find_Closest_Absolute;
 
    function Get_Patch_Adress_From_XY
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_X, P_Y     : in Integer  --; P_Origo_X, P_Origo_Y : in
-                                 --Hexagon.Type_Hexagon_Numbers
-        )
-      return         Type_Client_Patch_Adress
+     (P_Client_Map : in Type_Client_Map_Info; P_X, P_Y : in Integer) return Type_Client_Patch_Adress
    is
    begin
       Clicked_X            := P_X;
       Clicked_Y            := P_Y;
       Closest_Patch_Adress := null;
-      Closest_Distance     := 100000.0;
+      Closest_Distance     := 100_000.0;
 
       Reset_Visit;
       Traverse_In (P_Client_Map, P_Client_Map.Map (1, 1), Find_Closest'Access);
@@ -386,17 +378,13 @@ package body Hexagon.Client_Map is
    end Get_Patch_Adress_From_XY;
 
    function Get_Patch_Adress_From_Absolute_XY
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_X, P_Y     : in Integer  --; P_Origo_X, P_Origo_Y : in
-                                 --Hexagon.Type_Hexagon_Numbers
-        )
-      return         Type_Client_Patch_Adress
+     (P_Client_Map : in Type_Client_Map_Info; P_X, P_Y : in Integer) return Type_Client_Patch_Adress
    is
    begin
       Clicked_X            := P_X;
       Clicked_Y            := P_Y;
       Closest_Patch_Adress := null;
-      Closest_Distance     := 100000.0;
+      Closest_Distance     := 100_000.0;
 
       Reset_Visit;
       Traverse_In (P_Client_Map, P_Client_Map.Map (1, 1), Find_Closest_Absolute'Access);
@@ -405,10 +393,9 @@ package body Hexagon.Client_Map is
    end Get_Patch_Adress_From_Absolute_XY;
 
    function Capability_To_Area
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch;
       P_Capability : in Hexagon.Area.Client_Area.Type_Action_Capabilities_Access)
-      return         Type_Client_Patch_Area_Access
+      return Type_Client_Patch_Area_Access
    is
       Area_Tiles : Type_Client_Patch_Area_Access;
 
@@ -425,12 +412,12 @@ package body Hexagon.Client_Map is
          for Trav in P_Capability'First .. P_Capability'Last loop
             begin
                Area_Tiles.all (Trav) :=
-                  Get_Patch_Adress_From_AB
-                    (P_Client_Map,
-                     Type_Hexagon_Numbers (Integer (P_Patch.Pos.A) +
-                                           Integer (P_Capability (Trav).A)),
-                     Type_Hexagon_Numbers (Integer (P_Patch.Pos.B) +
-                                           Integer (P_Capability (Trav).B)));
+                 Get_Patch_Adress_From_AB
+                   (P_Client_Map,
+                    Type_Hexagon_Numbers
+                      (Integer (P_Patch.Pos.A) + Integer (P_Capability (Trav).A)),
+                    Type_Hexagon_Numbers
+                      (Integer (P_Patch.Pos.B) + Integer (P_Capability (Trav).B)));
             exception
                when others =>
                   Area_Tiles.all (Trav) := null; -- lat loesning for å loese
@@ -463,9 +450,7 @@ package body Hexagon.Client_Map is
       end if;
 
       Create
-        (Write_File,
-         Ada.Streams.Stream_IO.Out_File,
-         Ada.Strings.Unbounded.To_String (P_Filename));
+        (Write_File, Ada.Streams.Stream_IO.Out_File, Ada.Strings.Unbounded.To_String (P_Filename));
       Out_Stream := Ada.Streams.Stream_IO.Stream (Write_File);
 
       for Trav_X in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
@@ -498,9 +483,7 @@ package body Hexagon.Client_Map is
       end if;
 
       Create
-        (Write_File,
-         Ada.Streams.Stream_IO.Out_File,
-         Ada.Strings.Unbounded.To_String (P_Filename));
+        (Write_File, Ada.Streams.Stream_IO.Out_File, Ada.Strings.Unbounded.To_String (P_Filename));
       Out_Stream := Ada.Streams.Stream_IO.Stream (Write_File);
 
       String'Write (Ada.Streams.Stream_IO.Stream (Write_File), "<table border=""1""  >");
@@ -517,11 +500,8 @@ package body Hexagon.Client_Map is
 
             String'Write
               (Ada.Streams.Stream_IO.Stream (Write_File),
-               "(" &
-               P_Client_Map.Map (Trav_X, Trav_Y).Pos.A'Img &
-               "," &
-               P_Client_Map.Map (Trav_X, Trav_Y).Pos.B'Img &
-               ") " &
+               "(" & P_Client_Map.Map (Trav_X, Trav_Y).Pos.A'Img & "," &
+               P_Client_Map.Map (Trav_X, Trav_Y).Pos.B'Img & ") " &
                P_Client_Map.Map (Trav_X, Trav_Y).all.Landscape_Here'Img);
 
             String'Write (Ada.Streams.Stream_IO.Stream (Write_File), "    </td>");
@@ -554,7 +534,7 @@ package body Hexagon.Client_Map is
 
       for ArrayX in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop -- Horisontal
          for ArrayY in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop -- Vertical
-         --
+            --
             begin
                P_Client_Map.Map (ArrayX, ArrayY).Neighbours (1) :=
                  (P_Client_Map.Map (ArrayX + 1, ArrayY + 0));

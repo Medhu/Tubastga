@@ -22,7 +22,6 @@ with Glib;
 with Gdk.Pixbuf;
 with Tubastga_Window_Pkg;
 with Effect;
---with Construction;
 with Landscape;
 with Tubastga_Window_Pkg.Lists;
 
@@ -48,78 +47,61 @@ package Tubastga_Window_Pkg.FullsizeView is
 
    function Get_All_Pix_Piece_X_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint;
 
    function Get_All_Pix_Piece_Y_From_AB
      (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in Hexagon.Client_Map.Type_Client_Patch;
-      P_Trav_Draw  : in Natural) return Glib.Gint;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Trav_Draw : in Natural) return Glib.Gint;
 
    procedure Draw_Effects
-     (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Effect_List : in     Effect.Effect_List.Map);
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Effect_List : in Effect.Effect_List.Map);
 
    procedure Draw_Constructions
-     (P_Pixbuf            : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Construction_List : in     Effect.Effect_List.Map);
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Construction_List : in Effect.Effect_List.Map);
 
    procedure Draw_Landscapes
-     (P_Pixbuf    : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Landscape : in     Landscape.Type_Landscape);
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Landscape : in Landscape.Type_Landscape);
 
    procedure Draw_Arrow
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_From_Patch                         : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_To_Patch                         : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_From_Patch   : in     Hexagon.Client_Map.Type_Client_Patch;
+      P_To_Patch     : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_All_Patch
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_All_Landscape_On_Patch,
-      P_All_Constructions_On_Patch,
+      P_All_Landscape_On_Patch, P_All_Constructions_On_Patch,
       P_All_Effects_On_Patch : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_Players
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
       P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_All_Pieces   : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
-     );
+      P_All_Pieces   : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector);
 
    procedure Draw_Houses
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
-     );
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_Pieces
      (P_Client_Map   : in     Hexagon.Client_Map.Type_Client_Map_Info;
       P_Patch        : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Pieces_Here  : in     Tubastga_Window_Pkg.Lists.All_Pieces_List_Pkg.Vector
-     );
+      P_Fullsizeview : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_Invisible
-     (P_Client_Map : in     Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in     Hexagon.Client_Map.Type_Client_Patch;
-      P_Pixbuf     : in out Gdk.Pixbuf.Gdk_Pixbuf);
+     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Patch : in Hexagon.Client_Map.Type_Client_Patch; P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf);
 
    procedure Draw_Patch_Selections
-     (P_Pixbuf                             : in out Gdk.Pixbuf.Gdk_Pixbuf;
-      P_Patch                              : in     Hexagon.Client_Map.Type_Client_Patch;
+     (P_Pixbuf : in out Gdk.Pixbuf.Gdk_Pixbuf; P_Patch : in Hexagon.Client_Map.Type_Client_Patch;
       P_LB_Selected_Pos, P_RB_Selected_Pos :        Tubastga_Window_Pkg.Lists.Pos_List_Pkg.Vector);
 
---   procedure Draw_Arrow
---          (P_Pixbuf      : in out Gdk.Pixbuf.Gdk_Pixbuf);
-
    function Selected_Patch
-     (P_Client_Map : in Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Fullsizeview_X,
-      P_Fullsizeview_Y : Glib.Gdouble)
+     (P_Client_Map                       : in Hexagon.Client_Map.Type_Client_Map_Info;
+      P_Fullsizeview_X, P_Fullsizeview_Y :    Glib.Gdouble)
       return Hexagon.Client_Map.Type_Client_Patch_Adress;
 
 end Tubastga_Window_Pkg.FullsizeView;

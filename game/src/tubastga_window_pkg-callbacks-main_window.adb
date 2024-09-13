@@ -335,16 +335,14 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
                      All_Constructions_On_Patch, All_Effects_On_Patch);
 
                   Tubastga_Window_Pkg.FullsizeView.Draw_Houses
-                    (P_Client_Map, P_Client_Map.Map (A, B).all, All_Pix,
-                     Tubastga_Window_Pkg.Lists.All_Pieces_List);
+                    (P_Client_Map, P_Client_Map.Map (A, B).all, All_Pix);
 
                   Tubastga_Window_Pkg.FullsizeView.Draw_Players
                     (P_Client_Map, P_Client_Map.Map (A, B).all, All_Pix,
                      Tubastga_Window_Pkg.Lists.All_Pieces_List);
 
                   Tubastga_Window_Pkg.FullsizeView.Draw_Pieces
-                    (P_Client_Map, P_Client_Map.Map (A, B).all, Pieces_Pix,
-                     Tubastga_Window_Pkg.Lists.All_Pieces_List);
+                    (P_Client_Map, P_Client_Map.Map (A, B).all, Pieces_Pix);
                   --
                   --
                   -- Now UI Aid Selection
@@ -571,6 +569,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
             Hexagon.Client_Map.Set_Reports_On_Map
               (A_Client_Map,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Patches,
+               Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor).Observed_Pieces,
                Observation.Frames.Piece_Visibility_Frames.Element (Frame_Cursor)
                  .Patches_Effects_Info);
 
@@ -656,12 +655,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
          Gdk.Pixbuf.Fill (Pieces_Pix, Glib.Guint32 (0));
 
          Draw_Map (A_Client_Map);
---         Hexagon.Client_Map.Traverse
---           (A_Client_Map,
---            A_Client_Map.Origo_Patch, -- current origo for
-         --this client.
-
---          Draw_Map'Access);
 
          Hexagon.Client_Map.Reset_Visit;
 
@@ -673,7 +666,7 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
          declare
             use Utilities;
---            Trav_Pieces  : Landscape.Pieces_Here_List.Cursor;
+
             Curr_Piece   : Piece.Client_Piece.Type_Client_Piece_Class_Access;
             Curr_Name    : Utilities.RemoteString.Type_String;
             Patch_Zoom_x : Glib.Gint := 0;

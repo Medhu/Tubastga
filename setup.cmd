@@ -10,6 +10,6 @@ rem adjust this to be the IP-adress of the server.
 rem
 rem 
 
-set POLYORB_DSA_NAME_SERVICE=corbaloc:iiop:1.2@10.0.1.16:2809/_NameService
+set POLYORB_DSA_NAME_SERVICE=corbaloc:iiop:1.2@10.0.0.7:2809/_NameService
 
 

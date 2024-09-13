@@ -26,7 +26,7 @@ with Effect;
 
 package Hexagon.Client_Map is
 
-   Not_Existing_Patch : exception;
+   Not_Existing_Patch       : exception;
    Slot_Not_Found_For_Piece : exception;
 
    type Type_Client_Patch;
@@ -35,7 +35,7 @@ package Hexagon.Client_Map is
 
    type Type_Client_Patch is new Landscape.Type_Patch with record
       Neighbours : Type_Neighbour_List;
-      Visible              : Boolean;
+      Visible    : Boolean;
    end record;
 
    type Type_Client_Patch_Area is array (Positive range <>) of Type_Client_Patch_Adress;
@@ -50,8 +50,7 @@ package Hexagon.Client_Map is
    type Type_Client_Map_Adress is access all Type_Client_Map;
 
    procedure Set_Origo_Patch
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_A, P_B     : in Type_Hexagon_Numbers);
+     (P_Client_Map : in out Type_Client_Map_Info; P_A, P_B : in Type_Hexagon_Numbers);
 
    function Get_Absolute_X_From_AB (P_Patch : in Type_Client_Patch) return Integer;
 
@@ -59,49 +58,40 @@ package Hexagon.Client_Map is
 
    -- Calculates X, Y for the patch in the client map array
    function Get_X_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch)
-      return         Integer;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch) return Integer;
    function Get_Y_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch)
-      return         Integer;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch) return Integer;
 
    -- Get adress for the patch in the client map array
    function Get_Patch_Adress_From_XY
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_X, P_Y     : in Integer
-     )
-      return         Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info; P_X, P_Y : in Integer)
+      return Type_Client_Patch_Adress;
 
    -- Get adress for the patch in the client map array
    function Get_Patch_Adress_From_Absolute_XY
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_X, P_Y     : in Integer
-     )
-      return         Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info; P_X, P_Y : in Integer)
+      return Type_Client_Patch_Adress;
 
    function Get_Patch_Adress_From_AB
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_A, P_B     : in Type_Hexagon_Numbers)
-      return         Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info; P_A, P_B : in Type_Hexagon_Numbers)
+      return Type_Client_Patch_Adress;
 
    -- Get the map with terrain and positions
    procedure Get_Map
-     (P_Player_Id  : in Player.Type_Player_Id;
-      P_Client_Map : in out Type_Client_Map_Info);
+     (P_Player_Id : in Player.Type_Player_Id; P_Client_Map : in out Type_Client_Map_Info);
 
    function Capability_To_Area
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch;
       P_Capability : in Hexagon.Area.Client_Area.Type_Action_Capabilities_Access)
-      return         Type_Client_Patch_Area_Access;
+      return Type_Client_Patch_Area_Access;
 
    procedure Set_Reports_On_Map
-     (P_Client_Map                  : in Type_Client_Map_Info;
-      P_Player_Observations_List    : in
-     Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
-      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects.Changes_To_Patches_Effects.Vector);
+     (P_Client_Map                      : in Type_Client_Map_Info;
+      P_Player_Observations_List : in Observation.Observation_Of_Patches.Changes_To_Patches.Vector;
+      P_Player_Observed_Pieces_List : in Observation.Observation_Of_Pieces.Changes_To_Pieces.Vector;
+      P_Player_Observed_Patches_Effects : in Observation.Observation_Of_Patches_Effects
+        .Changes_To_Patches_Effects
+        .Vector);
 
    procedure Save_Map
      (P_Filename   : in Ada.Strings.Unbounded.Unbounded_String;
@@ -111,56 +101,39 @@ package Hexagon.Client_Map is
       P_Client_Map : in Type_Client_Map_Info);
 
    type Type_Visit_Procedure is access procedure
-     (P_Client_Map : in out Type_Client_Map_Info;
-      P_Patch      : in out Type_Client_Patch_Adress);
+     (P_Client_Map : in out Type_Client_Map_Info; P_Patch : in out Type_Client_Patch_Adress);
    type Type_Visit_Procedure_In is access procedure
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch_Adress);
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress);
 
    procedure Reset_Visit;
    procedure Reset_Visible (P_Client_Map : in out Type_Client_Map_Info);
 
---   procedure Traverse
---     (P_Client_Map : in out Type_Client_Map_Info;
---      P_Patch      : in out Type_Client_Patch_Adress;
---      P_Visit      : in Type_Visit_Procedure);
-
    procedure Traverse_In
-     (P_Client_Map : in Type_Client_Map_Info;
-      P_Patch      : in Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress;
       P_Visit      : in Type_Visit_Procedure_In);
 
    procedure Put (P_Patch : in Type_Client_Patch);
 
    Empty : constant Type_Client_Patch :=
      Type_Client_Patch'
-     (True,
-      Hexagon.Type_Hexagon_Position'(P_Valid => False),
-      Landscape.Undefined_Landscape,
---      Landscape.Pieces_Here_List.Empty_Vector,
-      Effect.Effect_List.Empty_Map,
-      Neighbours           =>
-     Type_Neighbour_List'(Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-          Type_Client_Patch_Adress'(null)),
-      Visible => False);
+       (True, Hexagon.Type_Hexagon_Position'(P_Valid => False), Landscape.Undefined_Landscape,
+        Effect.Effect_List.Empty_Map,
+        Neighbours =>
+          Type_Neighbour_List'
+            (Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null),
+             Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null),
+             Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null)),
+        Visible => False);
 
    Unknown : constant Type_Client_Patch :=
      Type_Client_Patch'
-     (False,
-      Hexagon.Type_Hexagon_Position'(P_Valid => False),
-      Landscape.Undefined_Landscape,
-      Neighbours           =>
-     Type_Neighbour_List'(Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-                          Type_Client_Patch_Adress'(null),
-          Type_Client_Patch_Adress'(null)),
-      Visible => False);
+       (False, Hexagon.Type_Hexagon_Position'(P_Valid => False), Landscape.Undefined_Landscape,
+        Neighbours =>
+          Type_Neighbour_List'
+            (Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null),
+             Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null),
+             Type_Client_Patch_Adress'(null), Type_Client_Patch_Adress'(null)),
+        Visible => False);
 
    procedure Init_Client_Map (P_Client_Map : in out Type_Client_Map_Info);
 

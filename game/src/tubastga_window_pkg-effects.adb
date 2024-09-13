@@ -31,7 +31,8 @@ package body Tubastga_Window_Pkg.Effects is
 
    function Format_Effect (P_Effect : in Effect.Type_Effect) return String is
    begin
-      return Utilities.RemoteString.To_String
+      return
+        Utilities.RemoteString.To_String
           (Tubastga_Game.Effect_Type_Info_List (P_Effect.Effect_Name).Type_Name);
 
    end Format_Effect;
@@ -53,9 +54,9 @@ package body Tubastga_Window_Pkg.Effects is
         Piece.Client_Piece.Pieces_Client_List.First (Piece.Client_Piece.Client_Pieces_In_Game);
       while Piece.Client_Piece.Pieces_Client_List.Has_Element (Trav_Pieces) loop
 
---         A_Piece :=
---          Tubastga_Window_Pkg.Type_Client_Access_Class
---             (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces));
+         A_Piece :=
+           Tubastga_Window_Pkg.Type_Client_Access_Class
+             (Piece.Client_Piece.Pieces_Client_List.Element (Trav_Pieces).Actual_Piece);
 
          A_Piece.all.Action_Point  := 0;
          A_Piece.all.Storage.Slots := (others => Goods.Type_Goods_Info'(Goods.None, 0));
@@ -128,9 +129,7 @@ package body Tubastga_Window_Pkg.Effects is
       Gtk.Text_Buffer.Get_End_Iter (P_Buffer, Msg_End_Iter);
 
       Gtk.Text_Buffer.Insert
-        (P_Buffer,
-         Msg_End_Iter,
-         "Action Points " & P_Piece.Action_Point'Img & ASCII.LF);
+        (P_Buffer, Msg_End_Iter, "Action Points " & P_Piece.Action_Point'Img & ASCII.LF);
 
       if P_Piece.Captain then
          Gtk.Text_Buffer.Insert (P_Buffer, Msg_End_Iter, "Captain" & ASCII.LF);
@@ -140,27 +139,18 @@ package body Tubastga_Window_Pkg.Effects is
          Gtk.Text_Buffer.Get_End_Iter (P_Buffer, Msg_End_Iter);
 
          Gtk.Text_Buffer.Insert
-           (P_Buffer,
-            Msg_End_Iter,
-            "Storing " &
-            P_Piece.Storage.Slots (Trav_Slot).Quantity'Img &
-            " of " &
-            P_Piece.Storage.Slots (Trav_Slot).The_Goods'Img &
-            ASCII.LF);
+           (P_Buffer, Msg_End_Iter,
+            "Storing " & P_Piece.Storage.Slots (Trav_Slot).Quantity'Img & " of " &
+            P_Piece.Storage.Slots (Trav_Slot).The_Goods'Img & ASCII.LF);
       end loop;
 
       for Trav_Stops in P_Piece.Stops'First .. P_Piece.Stops'Last loop
          Gtk.Text_Buffer.Get_End_Iter (P_Buffer, Msg_End_Iter);
 
          Gtk.Text_Buffer.Insert
-           (P_Buffer,
-            Msg_End_Iter,
-            "Stopping at " &
-            P_Piece.Stops (Trav_Stops)'Img &
-            " to load " &
-            P_Piece.Load (Trav_Stops)'Img &
-            " to unload " &
-            P_Piece.Unload (Trav_Stops)'Img &
+           (P_Buffer, Msg_End_Iter,
+            "Stopping at " & P_Piece.Stops (Trav_Stops)'Img & " to load " &
+            P_Piece.Load (Trav_Stops)'Img & " to unload " & P_Piece.Unload (Trav_Stops)'Img &
             ASCII.LF);
 
       end loop;
@@ -181,12 +171,9 @@ package body Tubastga_Window_Pkg.Effects is
 
          Gtk.Text_Buffer.Get_End_Iter (P_Buffer, Msg_End_Iter);
          Gtk.Text_Buffer.Insert
-           (P_Buffer,
-            Msg_End_Iter,
-            Format_Effect (Effect.Effect_List.Element (Trav_Patch_Effects)) &
-            " " &
-            Effect.Effect_List.Element (Trav_Patch_Effects).Aux'Img &
-            ASCII.LF);
+           (P_Buffer, Msg_End_Iter,
+            Format_Effect (Effect.Effect_List.Element (Trav_Patch_Effects)) & " " &
+            Effect.Effect_List.Element (Trav_Patch_Effects).Aux'Img & ASCII.LF);
 
          Trav_Patch_Effects := Effect.Effect_List.Next (Trav_Patch_Effects);
       end loop;
