@@ -257,14 +257,13 @@ package body Hexagon.Client_Map is
    end Set_Reports_On_Map;
 
    procedure Traverse_In
-     (P_Client_Map : in Type_Client_Map_Info; P_Patch : in Type_Client_Patch_Adress;
+     (P_Client_Map : in Type_Client_Map_Info;
       P_Visit      : in Type_Visit_Procedure_In)
    is
    begin
       if Verbose then
          Text_IO.Put_Line
-           ("Hexagon.Client_Map.Traverse_In - enter " & P_Patch.Pos.A'Img & " " &
-            P_Patch.Pos.B'Img);
+           ("Hexagon.Client_Map.Traverse_In - enter");
       end if;
 
       for A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
@@ -372,7 +371,7 @@ package body Hexagon.Client_Map is
       Closest_Distance     := 100_000.0;
 
       Reset_Visit;
-      Traverse_In (P_Client_Map, P_Client_Map.Map (1, 1), Find_Closest'Access);
+      Traverse_In (P_Client_Map, Find_Closest'Access);
 
       return Closest_Patch_Adress;
    end Get_Patch_Adress_From_XY;
@@ -387,7 +386,7 @@ package body Hexagon.Client_Map is
       Closest_Distance     := 100_000.0;
 
       Reset_Visit;
-      Traverse_In (P_Client_Map, P_Client_Map.Map (1, 1), Find_Closest_Absolute'Access);
+      Traverse_In (P_Client_Map, Find_Closest_Absolute'Access);
 
       return Closest_Patch_Adress;
    end Get_Patch_Adress_From_Absolute_XY;
