@@ -55,6 +55,7 @@ with Gtk.Text_Iter;
 with Gtk.Tree_Model;
 with Glib.Values;
 with Tubastga_Window_Pkg.Images;
+with Tubastga_Window_Pkg.Lists;
 with Tubastga_Window_Pkg.ScrolledView;
 with Tubastga_Window_Pkg.FullsizeView;
 with Tubastga_Window_Pkg.ZoomedView;
@@ -119,15 +120,17 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
    The_Window : Window1_Access;
 
    procedure Draw_Map
-     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info;
-      P_Patch      : in out Hexagon.Client_Map.Type_Client_Patch_Adress)
+     (P_Client_Map : in out Hexagon.Client_Map.Type_Client_Map_Info)
    is
    begin
+      for A in P_Client_Map.Map'First (1) .. P_Client_Map.Map'Last (1) loop
+         for B in P_Client_Map.Map'First (2) .. P_Client_Map.Map'Last (2) loop
+
       if Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_X_From_AB
-          (A_Client_Map, P_Patch.all) in
+          (A_Client_Map, P_Client_Map.Map(A, B).all) in
           0 .. 2460 and
         Tubastga_Window_Pkg.FullsizeView.Get_All_Pix_Patch_Y_From_AB
-          (A_Client_Map, P_Patch.all) in
+          (A_Client_Map, P_Client_Map.Map(A, B).all) in
           0 .. 1050
       then
 
@@ -135,14 +138,17 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
          Gdk.Pixbuf.Fill (All_Landscape_On_Patch, Glib.Guint32 (0));
          Tubastga_Window_Pkg.FullsizeView.Draw_Landscapes
-           (All_Landscape_On_Patch, P_Patch.all.Landscape_Here);
+           (All_Landscape_On_Patch, P_Client_Map.Map(A, B).all.Landscape_Here);
          Tubastga_Window_Pkg.FullsizeView.Draw_All_Patch
-           (A_Client_Map, P_Patch.all, All_Pix, All_Constructions_On_Patch,
+           (A_Client_Map, P_Client_Map.Map(A, B).all, All_Pix, All_Constructions_On_Patch,
             All_Effects_On_Patch, All_Landscape_On_Patch);
-         Tubastga_Window_Pkg.FullsizeView.Draw_Players(A_Client_Map, P_Patch.all, All_Pix,
-                                                       P_Patch.all.Pieces_Here);
+         Tubastga_Window_Pkg.FullsizeView.Draw_Players(A_Client_Map, P_Client_Map.Map(A, B).all, All_Pix,
+                                                       Tubastga_Window_Pkg.Lists.All_Pieces_List);
 
       end if;
+
+         end loop;
+      end loop;
 
    end Draw_Map;
 
@@ -815,8 +821,7 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
 
       Hexagon.Client_Map.Reset_Visit;
 
-      Hexagon.Client_Map.Traverse
-        (A_Client_Map, A_Client_Map.Origo_Patch, Draw_Map'Access);
+      Draw_Map (A_Client_Map);
 
       declare
          Land_Navigation : Hexagon.Server_Navigation
@@ -1033,15 +1038,12 @@ package body TubastgaEditor_Window_Pkg.Callbacks is
                Hexagon.Server_Map.Put(A_Patch.all);
 
                Piece.Client_Piece.Pieces_Client_List.Append(Piece.Client_Piece.Client_Pieces_In_Game,
+                                                            Piece.Client_Piece.Type_Piece_Position'(
                                                             new Piece.Client_Piece.Type_Client_Piece'(1, Tubastga_Game.Sentry_Piece,
                                                               Piece.Fighting_Piece, Utilities.RemoteString.To_Unbounded_String("Name"),
-                                                              Player.Type_Player_Id(1), Effect.Effect_List.Empty_Map) );
-               Landscape.Pieces_Here_List.Append(
-                  A_Client_Map.Map
-                    (Integer (Left_Button_Server_Pressed_Patch.all.Pos.A),
-                     Integer (Left_Button_Server_Pressed_Patch.all.Pos.B)).all
-                    .Pieces_Here, 1);
-
+                                                                Player.Type_Player_Id(1), Effect.Effect_List.Empty_Map),
+                                                              Hexagon.Type_Hexagon_Position'(P_Valid => False) )
+                                                             );
             end;
 
             TubastgaEditor_UI_Aux.UI_State := TubastgaEditor_UI_Aux.None;
