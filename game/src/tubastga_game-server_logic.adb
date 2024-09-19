@@ -1437,7 +1437,6 @@ package body Tubastga_Game.Server_Logic is
             P_Piece.Id'Img & " P_Effect_Name=" & P_Effect_Name'Img);
       end if;
 
-      Text_IO.Put_Line ("Perform_Patch_Effect- A");
       Effect_Found := False;
       for T in P_Area'First .. P_Area'Last loop
          declare
@@ -1463,8 +1462,6 @@ package body Tubastga_Game.Server_Logic is
          end;
 
       end loop;
-
-      Text_IO.Put_Line ("Perform_Patch_Effect- B");
 
       if Effect_Found then
          Lua.Get_Global (Tubastga_Game.Server_Logic.Lua_State, "Tubastga");
