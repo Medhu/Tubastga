@@ -583,7 +583,6 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
             Gdk.Pixbuf.Fill (All_Minimap_Pix, Glib.Guint32 (0));
             Draw_Map (A_Client_Map);
---            Hexagon.Client_Map.Traverse (A_Client_Map, A_Client_Map.Origo_Patch, Draw_Map'Access);
 
             Hexagon.Client_Map.Reset_Visit;
 
@@ -596,24 +595,43 @@ package body Tubastga_Window_Pkg.Callbacks.Main_Window is
 
                -- Left Mouse Button
                declare
-                  A_Pos   : Hexagon.Type_Hexagon_Position;
-                  A_Patch : Hexagon.Client_Map.Type_Client_Patch_Adress;
+                  A_Pos           : Hexagon.Type_Hexagon_Position;
+                  A_Patch         : Hexagon.Client_Map.Type_Client_Patch_Adress;
+                  Find_Focus : Piece.Client_Piece.Pieces_Client_List.Cursor;
 
                   use Piece.Client_Piece;
                begin
 
-                  -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be maintained when
-                  -- pieces are killed or they disappear from view.
-                  --
-                  A_Pos := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
-                  if A_Pos.P_Valid then
-                     A_Patch :=
-                       Hexagon.Client_Map.Get_Patch_Adress_From_AB (A_Client_Map, A_Pos.A, A_Pos.B);
+                  --hvis focus_On = true:
+                  if Focus_On_Piece_Id /= Piece.Undefined_Piece_Id then
+                     Find_Focus := Piece.Client_Piece.Find_Piece_In_List (Focus_On_Piece_Id);
 
-                     Tubastga_Window_Pkg.Callbacks.Actions_Menu.Set_Selected_Performing_Patch_Window
-                       (The_Window.all.Wnd_Action, A_Patch);
+                     if Piece.Client_Piece.Pieces_Client_List.Element (Find_Focus)
+                         .Actual_Piece.all
+                         .Id =
+                       Focus_On_Piece_Id
+                     then
+                        A_Pos :=
+                          Piece.Client_Piece.Pieces_Client_List.Element (Find_Focus)
+                            .Actual_Pos;
+                     end if;
+
                   else
-                     A_Patch := null;
+                     -- TODO: The list of Pieces_GUI_Positions and Tab's needs to be maintained when
+                     -- pieces are killed or they disappear from view.
+                     --
+                     A_Pos := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Pos (LB_Selected_Pos);
+                     if A_Pos.P_Valid then
+                        A_Patch :=
+                          Hexagon.Client_Map.Get_Patch_Adress_From_AB
+                            (A_Client_Map, A_Pos.A, A_Pos.B);
+
+                        Tubastga_Window_Pkg.Callbacks.Actions_Menu
+                          .Set_Selected_Performing_Patch_Window
+                          (The_Window.all.Wnd_Action, A_Patch);
+                     else
+                        A_Patch := null;
+                     end if;
                   end if;
 
                end;

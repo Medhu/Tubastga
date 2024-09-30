@@ -32,6 +32,8 @@ package Tubastga_Window_Pkg.Callbacks is
    LB_Selected_Pieces : Tubastga_Window_Pkg.Lists.Piece_List_Pkg.Vector;
    RB_Selected_Pieces : Tubastga_Window_Pkg.Lists.Piece_List_Pkg.Vector;
 
+   Focus_On_Piece_Id : Piece.Type_Piece_Id := Piece.Undefined_Piece_Id;
+
    The_Window   : Type_Wnd_Main_Access;
    A_Client_Map : Hexagon.Client_Map.Type_Client_Map_Info;
    type Type_Player_Name_List is array (1 .. 3) of Utilities.RemoteString.Type_String;

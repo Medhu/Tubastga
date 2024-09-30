@@ -912,6 +912,41 @@ package body Tubastga_Window_Pkg.Callbacks.Actions_Menu is
          raise;
    end On_Button_Remove_Wall6;
 
+   procedure On_Button_Focus_On (Object : access Gtk.Button.Gtk_Button_Record'Class) is
+
+      Selected_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Selected_Piece_Id : Piece.Type_Piece_Id;
+      Selected_Patch    : Hexagon.Client_Map.Type_Client_Patch_Adress;
+      Selected_Pos      : Hexagon.Type_Hexagon_Position;
+
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Focus_On - clicked");
+      end if;
+
+
+      Focus_On_Piece_Id := Tubastga_Window_Pkg.Lists.Get_Last_Selected_Piece (LB_Selected_Pieces);
+
+      Text_IO.Put_Line("On_Button_Focus_On:" & Focus_On_Piece_Id'Img);
+   end On_Button_Focus_On;
+
+   procedure On_Button_Focus_Off (Object : access Gtk.Button.Gtk_Button_Record'Class) is
+
+      Selected_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;
+      Selected_Piece_Id : Piece.Type_Piece_Id;
+      Selected_Patch    : Hexagon.Client_Map.Type_Client_Patch_Adress;
+      Selected_Pos      : Hexagon.Type_Hexagon_Position;
+
+   begin
+      if Verbose then
+         Text_IO.Put_Line ("Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Focus_On - clicked");
+      end if;
+
+      Focus_On_Piece_Id := Piece.Undefined_Piece_Id;
+
+      Text_IO.Put_Line("On_Button_Focus_Off:" & Focus_On_Piece_Id'Img);
+   end On_Button_Focus_Off;
+
    procedure On_Button_Move (Object : access Gtk.Button.Gtk_Button_Record'Class) is
 
       Selected_Piece    : Piece.Client_Piece.Type_Client_Piece_Class_Access;

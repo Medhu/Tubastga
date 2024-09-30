@@ -949,6 +949,12 @@ package body Tubastga_Window_Pkg is
    begin
       P_Wnd_Action.all.Fighting_Piece_Action1_VBox := Gtk.Box.Gtk_Vbox_New (True, Glib.Gint (2));
 
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Focus_On);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Focus_On, "Focus on");
+
+      Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Focus_Off);
+      Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Focus_Off, "Focus off");
+
       Gtk.Button.Gtk_New (P_Wnd_Action.all.Btn_Move);
       Gtk.Button.Set_Label (P_Wnd_Action.all.Btn_Move, "Move");
 
@@ -984,6 +990,9 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Btn_Create_Path,
          Gtk.Image.Gtk_Image_New_From_File ("resources\demote.png"));
 
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Focus_On);
+      Gtk.Box.Pack_Start (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Focus_Off);
+
       Gtk.Box.Pack_Start (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Move);
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Attack);
@@ -999,6 +1008,17 @@ package body Tubastga_Window_Pkg is
         (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Create_Path);
       Gtk.Box.Pack_Start
         (P_Wnd_Action.all.Fighting_Piece_Action1_VBox, P_Wnd_Action.all.Btn_Remove_Path);
+
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Focus_On, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Focus_On'Access),
+         False);
+      Callbacks_Tubastga.Button_Cb.Connect
+        (P_Wnd_Action.all.Btn_Focus_Off, "clicked",
+         Callbacks_Tubastga.Button_Cb.To_Marshaller
+           (Tubastga_Window_Pkg.Callbacks.Actions_Menu.On_Button_Focus_Off'Access),
+         False);
 
       Callbacks_Tubastga.Button_Cb.Connect
         (P_Wnd_Action.all.Btn_Move, "clicked",

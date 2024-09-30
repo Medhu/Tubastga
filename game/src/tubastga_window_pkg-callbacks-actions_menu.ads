@@ -36,6 +36,8 @@ package Tubastga_Window_Pkg.Callbacks.Actions_Menu is
    procedure On_Button_Remove_Wall6 (Object : access Gtk.Button.Gtk_Button_Record'Class);
 
    --
+   procedure On_Button_Focus_On (Object : access Gtk.Button.Gtk_Button_Record'Class);
+   procedure On_Button_Focus_Off (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Move (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class);
    procedure On_Button_Ranged_Attack (Object : access Gtk.Button.Gtk_Button_Record'Class);

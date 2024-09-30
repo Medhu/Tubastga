@@ -139,6 +139,7 @@ package Tubastga_Window_Pkg is
        Btn_Remove_Wall1, Btn_Remove_Wall2, Btn_Remove_Wall3, Btn_Remove_Wall4,
       Btn_Remove_Wall5, Btn_Remove_Wall6 : Gtk.Button.Gtk_Button;
       -- Fighting_Piece
+      Btn_Focus_On, Btn_Focus_Off, -- Chose to focus on the currently selected Piece.
       Btn_Attack, Btn_Ranged_Attack, Btn_Move, Btn_Search, Btn_Promote,
       Btn_Demote : Gtk.Button.Gtk_Button;
       --
